@@ -1,0 +1,89 @@
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+
+interface Work {
+  id: string;
+  title: string;
+  description: string;
+  prod_year: number;
+  genre: string;
+  platform: string;
+  trailer_embed_url: string;
+  gallery: string[];
+  image: string;
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const lang = searchParams.get('lang') || 'tr';
+    const genre = searchParams.get('genre');
+    const platform = searchParams.get('platform');
+    const year = searchParams.get('year');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
+
+    // Read the works.json file
+    const filePath = path.join(process.cwd(), 'data', 'works.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    let works: Work[] = JSON.parse(fileContents);
+
+    // Apply filters
+    if (genre) {
+      works = works.filter((work: Work) =>
+        work.genre.toLowerCase() === genre.toLowerCase()
+      );
+    }
+
+    if (platform) {
+      works = works.filter((work: Work) =>
+        work.platform.toLowerCase().includes(platform.toLowerCase())
+      );
+    }
+
+    if (year) {
+      works = works.filter((work: Work) =>
+        work.prod_year.toString() === year
+      );
+    }
+
+    // Sort by production year (newest first)
+    works.sort((a: Work, b: Work) => b.prod_year - a.prod_year);
+
+    // Pagination
+    const total = works.length;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedWorks = works.slice(startIndex, endIndex);
+
+    // Get unique values for filters
+    const allWorks: Work[] = JSON.parse(fileContents);
+    const genres = [...new Set(allWorks.map((work: Work) => work.genre))];
+    const platforms = [...new Set(allWorks.map((work: Work) => work.platform))];
+    const years = [...new Set(allWorks.map((work: Work) => work.prod_year))].sort((a: number, b: number) => b - a);
+
+    return NextResponse.json({
+      works: paginatedWorks,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNext: endIndex < total,
+        hasPrev: page > 1
+      },
+      filters: {
+        genres,
+        platforms,
+        years
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching works:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch works' },
+      { status: 500 }
+    );
+  }
+}
