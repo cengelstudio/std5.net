@@ -1,81 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import tr from '../../locales/tr.json';
-import en from '../../locales/en.json';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Translations } from '../../types/translations';
-
-const locales = { tr, en } as { [key: string]: Translations };
 
 const studios = [
   {
     id: 1,
     name: "Studio A",
-    description: {
-      tr: "Renk düzenleme ve ses miksaj stüdyosu",
-      en: "Color grading and sound mixing studio"
-    },
-    images: ["/studios/studio-a-1.jpg", "/studios/studio-a-2.jpg", "/studios/studio-a-3.jpg"]
+    description: "Renk düzenleme ve ses miksaj stüdyosu",
+    images: ["/studios/1-1.jpg", "/studios/1-2.jpg", "/studios/1-3.jpg", "/studios/1-4.jpg", "/studios/1-5.jpg", "/studios/1-6.jpg"]
   },
   {
     id: 2,
     name: "Studio B",
-    description: {
-      tr: "Video kurgu ve animasyon stüdyosu",
-      en: "Video editing and animation studio"
-    },
-    images: ["/studios/studio-b-1.jpg", "/studios/studio-b-2.jpg", "/studios/studio-b-3.jpg"]
+    description: "Video kurgu ve animasyon stüdyosu",
+    images: ["/studios/2-1.jpg", "/studios/2-2.jpg", "/studios/2-3.jpg", "/studios/2-4.jpg", "/studios/2-5.jpg", "/studios/2-6.jpg"]
   },
   {
     id: 3,
     name: "Studio C",
-    description: {
-      tr: "Dublaj ve ses kayıt stüdyosu",
-      en: "Dubbing and voice recording studio"
-    },
-    images: ["/studios/studio-c-1.jpg", "/studios/studio-c-2.jpg", "/studios/studio-c-3.jpg"]
+    description: "Dublaj ve ses kayıt stüdyosu",
+    images: ["/studios/3-1.jpg", "/studios/3-2.jpg", "/studios/3-3.jpg", "/studios/3-4.jpg", "/studios/3-5.jpg", "/studios/3-6.jpg"]
   }
 ];
 
 export default function Studios() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [locale, setLocale] = useState('tr');
-  const [translations, setTranslations] = useState<Translations>(tr);
   const [currentSlides, setCurrentSlides] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
-    const langParam = searchParams.get('lang');
-    const validLang = langParam === 'en' ? 'en' : 'tr';
-    setLocale(validLang);
-    setTranslations(locales[validLang as keyof typeof locales]);
-
     // Initialize current slide for each studio
     const initialSlides = studios.reduce((acc, studio) => {
       acc[studio.id] = 0;
       return acc;
     }, {} as { [key: number]: number });
     setCurrentSlides(initialSlides);
-  }, [searchParams]);
-
-  const t = (key: string) => {
-    const keys = key.split('.');
-    let value: any = translations;
-    for (const k of keys) {
-      value = value?.[k];
-    }
-    return value || key;
-  };
-
-  const switchLanguage = (newLocale: string) => {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('lang', newLocale);
-    router.push(currentUrl.pathname + currentUrl.search);
-  };
+  }, []);
 
   const nextSlide = (studioId: number) => {
     setCurrentSlides(prev => ({
@@ -103,7 +66,7 @@ export default function Studios() {
             className="text-center mb-16"
           >
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
-              {locale === 'tr' ? 'Stüdyolarımız' : 'Our Studios'}
+              Stüdyolarımız
             </h1>
           </motion.div>
 
@@ -177,7 +140,7 @@ export default function Studios() {
                     {studio.name}
                   </h2>
                   <p className="text-gray-300 text-lg">
-                    {studio.description[locale as keyof typeof studio.description]}
+                    {studio.description}
                   </p>
                 </div>
               </motion.div>

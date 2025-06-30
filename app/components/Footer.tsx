@@ -1,100 +1,141 @@
+"use client";
 import { useRouter } from 'next/navigation';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+
+interface Studio {
+  id: number;
+  name: string;
+  address: string;
+  contact_email: string;
+  contact_phone: string;
+}
 
 export default function Footer() {
   const router = useRouter();
+  const [studios, setStudios] = useState<Studio[]>([]);
+
+  useEffect(() => {
+    // Fetch studios data
+    fetch('/data/studios.json')
+      .then(res => res.json())
+      .then(data => setStudios(data))
+      .catch(err => console.error('Error loading studios:', err));
+  }, []);
 
   return (
-    <footer className="bg-std5-darker/50 backdrop-blur-xl border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="relative bg-gradient-to-b from-std5-darker via-black to-black border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Company Info */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">STD5</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              İstanbul merkezli yerel ve küresel eğlence endüstrisine hizmet veren tam kapasiteli bir post prodüksiyon şirketi.
-            </p>
-          </div>
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <div className="relative w-32 h-12">
+                <Image
+                  src="/std5-white-cropped.png"
+                  alt="STD5"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <p className="text-gray-400 text-base leading-relaxed max-w-md">
+                İstanbul'un lider post prodüksiyon stüdyosu.
+                Yaratıcılık ve teknolojinin buluştuğu nokta.
+              </p>
+            </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">Hızlı Bağlantılar</h3>
-            <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => router.push('/about')}
-                  className="text-gray-400 hover:text-std5-accent transition-colors duration-300"
-                >
-                  Hakkımızda
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => router.push('/portfolio')}
-                  className="text-gray-400 hover:text-std5-accent transition-colors duration-300"
-                >
-                  Portfolyo
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => router.push('/studios')}
-                  className="text-gray-400 hover:text-std5-accent transition-colors duration-300"
-                >
-                  Stüdyolar
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => router.push('/contact')}
-                  className="text-gray-400 hover:text-std5-accent transition-colors duration-300"
-                >
-                  İletişim
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">İletişim</h3>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-2 text-gray-400">
-                <Mail className="w-4 h-4" />
-                <a href="mailto:info@std5.net" className="hover:text-std5-accent transition-colors duration-300">
+            {/* Contact */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-gray-400 group">
+                <Mail className="w-5 h-5 flex-shrink-0 group-hover:text-std5-accent transition-colors duration-300" />
+                <a href="mailto:info@std5.net" className="text-sm group-hover:text-std5-accent transition-colors duration-300">
                   info@std5.net
                 </a>
-              </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Phone className="w-4 h-4" />
-                <a href="tel:+902122222222" className="hover:text-std5-accent transition-colors duration-300">
-                  +90 212 222 22 22
+              </div>
+              <div className="flex items-center gap-3 text-gray-400 group">
+                <Phone className="w-5 h-5 flex-shrink-0 group-hover:text-std5-accent transition-colors duration-300" />
+                <a href="tel:+902121811" className="text-sm group-hover:text-std5-accent transition-colors duration-300">
+                  +90 212 18 11
                 </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Address */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">Adres</h3>
-            <div className="flex items-start gap-2 text-gray-400">
-              <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-              <div className="space-y-2 text-sm">
-                <p>Esentepe Mahallesi Dergiler Sokak No:5</p>
-                <p>Şişli/İstanbul</p>
-                <div className="w-12 h-0.5 bg-std5-accent/30 my-2" />
-                <p>Levent Mahallesi Fulyalı Sokak No:28</p>
-                <p>Beşiktaş/İstanbul</p>
               </div>
             </div>
           </div>
+
+          {/* Studios */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">Stüdyolarımız</h3>
+            <div className="space-y-6">
+              {studios.map((studio) => (
+                <div key={studio.id} className="group cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 mt-1 text-std5-accent flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                    <div>
+                      <h4 className="text-white font-medium text-sm mb-1 group-hover:text-std5-accent transition-colors duration-300">
+                        {studio.name}
+                      </h4>
+                      <p className="text-gray-400 text-xs leading-relaxed">
+                        {studio.address}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">Keşfet</h3>
+            <nav className="grid grid-cols-2 gap-4">
+              {[
+                { name: 'Hakkımızda', path: '/about' },
+                { name: 'Portfolyo', path: '/portfolio' },
+                { name: 'Stüdyolar', path: '/studios' },
+                { name: 'İletişim', path: '/contact' }
+              ].map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => router.push(item.path)}
+                  className="text-left text-gray-400 hover:text-std5-accent hover:translate-x-1 transition-all duration-300 text-sm py-1"
+                >
+                  {item.name}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-white/10">
-          <p className="text-center text-gray-400 text-sm">
+        {/* Bottom Section */}
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-500 text-xs">
             © {new Date().getFullYear()} STD5. Tüm hakları saklıdır.
           </p>
+
+          {/* Cengel Studio Logo */}
+          <div className="mt-4 md:mt-0">
+            <a
+              href="https://cengel.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors duration-300"
+            >
+              <span className="text-xs">Powered by</span>
+              <div className="relative w-8 h-8 overflow-hidden rounded-[13px] group-hover:scale-110 transition-transform duration-300">
+                <Image
+                  src="/cengelstudio-logo.png"
+                  alt="Cengel Studio"
+                  fill
+                  className="object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

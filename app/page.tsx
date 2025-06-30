@@ -1,107 +1,70 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Play,
-  ArrowRight,
-  Mail,
-  Palette,
-  Sparkles,
-  Film,
-  Layers,
-  Music,
-  Monitor,
-  PenTool,
-  Star
-} from "lucide-react";
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import tr from '../locales/tr.json';
-import en from '../locales/en.json';
+import { Play, ArrowRight, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, Star } from "lucide-react";
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-
-const locales = { tr, en };
-
-
+import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [locale, setLocale] = useState('tr');
-  const [translations, setTranslations] = useState(tr);
-
-  useEffect(() => {
-    const langParam = searchParams.get('lang');
-    const validLang = langParam === 'en' ? 'en' : 'tr';
-    setLocale(validLang);
-    setTranslations(locales[validLang as keyof typeof locales]);
-  }, [searchParams]);
-
-  const t = (key: string) => {
-    const keys = key.split('.');
-    let value: any = translations;
-    for (const k of keys) {
-      value = value?.[k];
-    }
-    return value || key;
-  };
 
   const services = [
     {
       icon: Palette,
-      title: t('services.colorGrading.title'),
-      description: t('services.colorGrading.description'),
+      title: 'Renk Düzenleme',
+      description: 'Profesyonel color grading ile projelerinize sinematik bir dokunuş katıyoruz.',
       color: '#430086'
     },
     {
       icon: Sparkles,
-      title: t('services.vfx.title'),
-      description: t('services.vfx.description'),
+      title: 'VFX & CGI',
+      description: 'Görsel efekt ve CGI ile hayal gücünüzü gerçeğe dönüştürüyoruz.',
       color: '#8b5cf6'
     },
     {
       icon: Film,
-      title: t('services.editing.title'),
-      description: t('services.editing.description'),
+      title: 'Kurgu & Montaj',
+      description: 'Yaratıcı kurgu ve montaj hizmetleriyle hikayenizi en iyi şekilde anlatın.',
       color: '#430086'
     },
     {
       icon: Layers,
-      title: t('services.animation.title'),
-      description: t('services.animation.description'),
+      title: 'Animasyon',
+      description: '2D/3D animasyonlarla projelerinize hareket katıyoruz.',
       color: '#8b5cf6'
     },
     {
       icon: Music,
-      title: t('services.audioDesign.title'),
-      description: t('services.audioDesign.description'),
+      title: 'Ses Tasarımı',
+      description: 'Duyguyu güçlendiren profesyonel ses tasarımı ve miksaj.',
       color: '#430086'
     },
     {
       icon: Monitor,
-      title: t('services.videoMapping.title'),
-      description: t('services.videoMapping.description'),
+      title: 'Video Mapping',
+      description: 'Etkinlikleriniz için etkileyici video mapping çözümleri.',
       color: '#8b5cf6'
     },
     {
       icon: Play,
-      title: t('services.titleSequence.title'),
-      description: t('services.titleSequence.description'),
+      title: 'Title Sequence',
+      description: 'Dikkat çekici açılış ve jenerik tasarımları.',
       color: '#430086'
     },
     {
       icon: PenTool,
-      title: t('services.infographics.title'),
-      description: t('services.infographics.description'),
+      title: 'İnfografik',
+      description: 'Bilgiyi görselleştiren yaratıcı infografik animasyonlar.',
       color: '#8b5cf6'
     }
   ];
 
   const stats = [
-    { number: "200+", label: t('stats.projects') },
-    { number: "50+", label: t('stats.clients') },
-    { number: "10+", label: t('stats.experience') },
-    { number: "4", label: t('stats.studios') }
+    { number: "200+", label: 'Tamamlanan Proje' },
+    { number: "50+", label: 'Mutlu Müşteri' },
+    { number: "10+", label: 'Yıllık Deneyim' },
+    { number: "4", label: 'Stüdyo Lokasyonu' }
   ];
 
   return (
@@ -109,15 +72,33 @@ export default function Home() {
       {/* Netflix-style Hero Section with Background Mosaic */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
         {/* Background Image Mosaic */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image
-            src="/api/mosaic-bg"
-            alt="STD5 Works Mosaic"
-            fill
-            className="object-cover opacity-90"
-            priority
-            sizes="100vw"
-          />
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <div
+            className="absolute inset-0 w-full h-full"
+            style={{
+              perspective: '1000px',
+              perspectiveOrigin: 'center center'
+            }}
+          >
+            <div
+              className="w-full h-full"
+              style={{
+                transform: 'rotateX(25deg) rotateY(10deg) rotateZ(-10deg) scale(1.4) translate(120px, 0px)',
+                transformOrigin: 'center center',
+                transformStyle: 'preserve-3d'
+              }}
+            >
+              <Image
+                src="/api/mosaic-bg"
+                alt="STD5 Works Mosaic"
+                fill
+                className="object-cover opacity-90"
+                priority
+                sizes="100vw"
+                unoptimized
+              />
+            </div>
+          </div>
         </div>
 
         {/* Dark Overlay with gradient */}
@@ -136,47 +117,34 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-              {locale === 'tr' ? (
-                <>
-                  Sınırsız yaratıcılık,<br />
-                  <span className="text-std5-accent">post prodüksiyon</span><br />
-                  ve çok daha fazlası
-                </>
-              ) : (
-                <>
-                  Unlimited creativity,<br />
-                  <span className="text-std5-accent">post production</span><br />
-                  and much more
-                </>
-              )}
+              Sınırsız yaratıcılık,<br />
+              <span className="text-std5-accent">post prodüksiyon</span><br />
+              ve çok daha fazlası
             </h1>
 
             <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              {locale === 'tr'
-                ? "İstanbul'un lider post prodüksiyon stüdyosunda projelerinizi hayata geçirin. Her türlü prodüksiyon ihtiyacınız için buradayız."
-                : "Bring your projects to life at Istanbul's leading post-production studio. We're here for all your production needs."
-              }
+              İstanbul'un lider post prodüksiyon stüdyosunda projelerinizi hayata geçirin. Her türlü prodüksiyon ihtiyacınız için buradayız.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => router.push(locale === 'en' ? '/portfolio?lang=en' : '/portfolio')}
+                onClick={() => router.push('/portfolio')}
                 className="px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-base flex items-center gap-2 transition-colors duration-300 w-full sm:w-auto justify-center"
               >
                 <Play className="w-4 h-4" />
-                {locale === 'tr' ? 'Portfolyoyu İncele' : 'Explore Portfolio'}
+                Portfolyoyu İncele
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => router.push(locale === 'en' ? '/contact?lang=en' : '/contact')}
+                onClick={() => router.push('/contact')}
                 className="px-6 py-3 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-base flex items-center gap-2 transition-colors duration-300 w-full sm:w-auto justify-center backdrop-blur-sm"
               >
                 <Mail className="w-4 h-4" />
-                {locale === 'tr' ? 'İletişime Geç' : 'Get in Touch'}
+                İletişime Geç
               </motion.button>
             </div>
 
@@ -200,22 +168,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2 }}
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/50"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-5 h-8 border-2 border-white/30 rounded-full flex justify-center"
-          >
-            <div className="w-0.5 h-2 bg-white/50 rounded-full mt-1.5" />
-          </motion.div>
-        </motion.div>
       </section>
 
       {/* Services Section */}
@@ -229,10 +181,10 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              {t('services.title')}
+              Hizmetlerimiz
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              {t('services.subtitle')}
+              Post prodüksiyonun tüm alanlarında yaratıcı ve yenilikçi çözümler sunuyoruz.
             </p>
           </motion.div>
 
@@ -275,24 +227,18 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              {locale === 'tr'
-                ? 'Projenizi Hayata Geçirmeye Hazır mısınız?'
-                : 'Ready to Bring Your Project to Life?'
-              }
+              Projenizi Hayata Geçirmeye Hazır mısınız?
             </h2>
             <p className="text-base text-white/90 mb-6 max-w-2xl mx-auto">
-              {locale === 'tr'
-                ? 'İstanbul\'un en deneyimli post prodüksiyon ekibiyle çalışın. Size özel çözümler sunuyoruz.'
-                : 'Work with Istanbul\'s most experienced post-production team. We offer custom solutions for you.'
-              }
+              İstanbul'un en deneyimli post prodüksiyon ekibiyle çalışın. Size özel çözümler sunuyoruz.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => router.push(locale === 'en' ? '/contact?lang=en' : '/contact')}
+              onClick={() => router.push('/contact')}
               className="px-6 py-3 bg-white text-std5-primary hover:bg-gray-100 rounded-lg font-semibold text-base flex items-center gap-2 mx-auto transition-colors duration-300"
             >
-              {locale === 'tr' ? 'Hemen Başlayın' : 'Get Started Now'}
+              Hemen Başlayın
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </motion.div>

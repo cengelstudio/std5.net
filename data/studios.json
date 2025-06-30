@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Esentepe",
+        "address": "Esentepe, Dergiler Sk. No: 5 Şişli / İstanbul",
+        "contact_email": "contact@std5.net",
+        "contact_phone": "+90 212 18 11"
+    },
+    {
+        "id": 2,
+        "name": "Fulyalı",
+        "address": "Levent, Fulyalı Sk. No: 28 Beşiktaş / İstanbul",
+        "contact_email": "contact@std5.net",
+        "contact_phone": "+90 212 18 11"
+    },
+    {
+        "id": 3,
+        "name": "Figen 2",
+        "address": "Levent, Figen Sk. No: 2 Beşiktaş / İstanbul",
+        "contact_email": "contact@std5.net",
+        "contact_phone": "+90 212 18 11"
+    }
+]

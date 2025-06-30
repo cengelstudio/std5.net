@@ -1,52 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import tr from '../../locales/tr.json';
-import en from '../../locales/en.json';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Translations } from '../../types/translations';
-
-const locales = { tr, en } as { [key: string]: Translations };
 
 const managementTeam = [
   {
     name: "Bülent Taban",
-    title: {
-      tr: "Kurucu Ortak",
-      en: "Co-Founder"
-    },
+    title: "Kurucu Ortak",
     image: "/team/bulent-taban.jpg"
   },
   {
     name: "Serdar Öngören",
-    title: {
-      tr: "Kurucu Ortak",
-      en: "Co-Founder"
-    },
+    title: "Kurucu Ortak",
     image: "/team/serdar-ongoren.jpg"
   }
 ];
 
 export default function About() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [locale, setLocale] = useState('tr');
-  const [translations, setTranslations] = useState<Translations>(tr);
-
-  useEffect(() => {
-    const langParam = searchParams.get('lang');
-    const validLang = langParam === 'en' ? 'en' : 'tr';
-    setLocale(validLang);
-    setTranslations(locales[validLang]);
-  }, [searchParams]);
-
-  const switchLanguage = (newLocale: string) => {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('lang', newLocale);
-    router.push(currentUrl.pathname + currentUrl.search);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-std5-dark to-std5-darker">
@@ -60,12 +32,10 @@ export default function About() {
             className="text-center mb-16"
           >
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
-              {locale === 'tr' ? 'Hakkımızda' : 'About Us'}
+              Hakkımızda
             </h1>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              {locale === 'tr'
-                ? "STD5, İstanbul merkezli yerel ve küresel eğlence endüstrisine hizmet veren tam kapasiteli bir post prodüksiyon şirketidir. TV kanalları, sinemalar, dijital platformlar ve bağımsız yapımlar için kurgu, ses tasarım, renk düzenleme, dublaj ve cast hizmetleri sunar."
-                : "STD5 is a full-capacity post-production company based in Istanbul, serving the local and global entertainment industry. It provides editing, sound design, color grading, dubbing, and casting services for TV channels, cinemas, digital platforms, and independent productions."}
+              STD5, İstanbul merkezli yerel ve küresel eğlence endüstrisine hizmet veren tam kapasiteli bir post prodüksiyon şirketidir. TV kanalları, sinemalar, dijital platformlar ve bağımsız yapımlar için kurgu, ses tasarım, renk düzenleme, dublaj ve cast hizmetleri sunar.
             </p>
           </motion.div>
 
@@ -77,7 +47,7 @@ export default function About() {
             className="max-w-5xl mx-auto"
           >
             <h2 className="text-3xl font-bold text-white text-center mb-12">
-              {locale === 'tr' ? 'Yönetim Ekibi' : 'Management Team'}
+              Yönetim Ekibi
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {managementTeam.map((member, index) => (
@@ -112,7 +82,7 @@ export default function About() {
                     {member.name}
                   </h3>
                   <p className="text-gray-400">
-                    {member.title[locale as keyof typeof member.title]}
+                    {member.title}
                   </p>
                 </motion.div>
               ))}

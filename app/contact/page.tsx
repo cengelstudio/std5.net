@@ -1,20 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import tr from '../../locales/tr.json';
-import en from '../../locales/en.json';
-import Image from 'next/image';
-import { ChevronLeft, Send } from 'lucide-react';
-
-const locales = { tr, en };
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Send } from 'lucide-react';
 
 export default function Contact() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [locale, setLocale] = useState('tr');
-  const [translations, setTranslations] = useState(tr);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,28 +15,6 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  useEffect(() => {
-    const langParam = searchParams.get('lang');
-    const validLang = langParam === 'en' ? 'en' : 'tr';
-    setLocale(validLang);
-    setTranslations(locales[validLang as keyof typeof locales]);
-  }, [searchParams]);
-
-  const t = (key: string) => {
-    const keys = key.split('.');
-    let value: any = translations;
-    for (const k of keys) {
-      value = value?.[k];
-    }
-    return value || key;
-  };
-
-  const switchLanguage = (newLocale: string) => {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('lang', newLocale);
-    router.push(currentUrl.pathname + currentUrl.search);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,12 +51,10 @@ export default function Contact() {
             className="text-center mb-12"
           >
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
-              {locale === 'tr' ? 'İletişim' : 'Contact'}
+              İletişim
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              {locale === 'tr'
-                ? "Her zaman yoğun çalışıyoruz ama misafirlerimizin de yeri her zaman ayrıdır. Renk, kurgu, animasyon, ses miksajı ve teknik desteğin yanında, Türk kahvesi de elbette sunuyoruz, her zaman bekleriz."
-                : "We are always working hard, but our guests always have a special place. Along with color, editing, animation, sound mixing, and technical support, we also offer Turkish coffee, you're always welcome."}
+              Her zaman yoğun çalışıyoruz ama misafirlerimizin de yeri her zaman ayrıdır. Renk, kurgu, animasyon, ses miksajı ve teknik desteğin yanında, Türk kahvesi de elbette sunuyoruz, her zaman bekleriz.
             </p>
           </motion.div>
 
@@ -101,7 +69,7 @@ export default function Contact() {
                 {/* Name */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    {locale === 'tr' ? 'Ad Soyad' : 'Full Name'}
+                    Ad Soyad
                   </label>
                   <input
                     type="text"
@@ -111,14 +79,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder={locale === 'tr' ? 'Adınız ve soyadınız' : 'Your full name'}
+                    placeholder="Adınız ve soyadınız"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    {locale === 'tr' ? 'E-posta' : 'Email'}
+                    E-posta
                   </label>
                   <input
                     type="email"
@@ -128,14 +96,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder={locale === 'tr' ? 'E-posta adresiniz' : 'Your email address'}
+                    placeholder="E-posta adresiniz"
                   />
                 </div>
 
                 {/* Subject */}
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-                    {locale === 'tr' ? 'Konu' : 'Subject'}
+                    Konu
                   </label>
                   <input
                     type="text"
@@ -145,14 +113,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder={locale === 'tr' ? 'Mesajınızın konusu' : 'Message subject'}
+                    placeholder="Mesajınızın konusu"
                   />
                 </div>
 
                 {/* Message */}
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    {locale === 'tr' ? 'Mesaj' : 'Message'}
+                    Mesaj
                   </label>
                   <textarea
                     id="message"
@@ -162,7 +130,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300 resize-none"
-                    placeholder={locale === 'tr' ? 'Mesajınız' : 'Your message'}
+                    placeholder="Mesajınız"
                   />
                 </div>
 
@@ -177,7 +145,7 @@ export default function Contact() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      {locale === 'tr' ? 'Gönder' : 'Send Message'}
+                      Gönder
                     </>
                   )}
                 </button>
@@ -185,20 +153,40 @@ export default function Contact() {
                 {/* Status Messages */}
                 {submitStatus === 'success' && (
                   <p className="text-green-400 text-center">
-                    {locale === 'tr'
-                      ? 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.'
-                      : 'Your message has been sent successfully. We will get back to you soon.'}
+                    Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.
                   </p>
                 )}
                 {submitStatus === 'error' && (
                   <p className="text-red-400 text-center">
-                    {locale === 'tr'
-                      ? 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.'
-                      : 'An error occurred. Please try again later.'}
+                    Bir hata oluştu. Lütfen daha sonra tekrar deneyin.
                   </p>
                 )}
               </div>
             </form>
+          </motion.div>
+
+          {/* Contact Info Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto"
+          >
+            {/* Email Card */}
+            <div className="glass rounded-2xl p-6 text-center">
+              <h3 className="text-xl font-bold text-white mb-4">E-posta</h3>
+              <a href="mailto:info@std5.net" className="text-std5-accent hover:text-std5-accent/80 transition-colors">
+                info@std5.net
+              </a>
+            </div>
+
+            {/* Phone Card */}
+            <div className="glass rounded-2xl p-6 text-center">
+              <h3 className="text-xl font-bold text-white mb-4">Telefon</h3>
+              <a href="tel:+902122222222" className="text-std5-accent hover:text-std5-accent/80 transition-colors">
+                +90 212 222 22 22
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
