@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play, ArrowRight, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, Star } from "lucide-react";
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { useEffect } from 'react';
+import { Play, ArrowRight, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool } from "lucide-react";
+import Link from 'next/link';
+import { useMemo } from 'react';
+import MosaicBackground from './components/MosaicBackground';
 
 export default function Home() {
-  const router = useRouter();
+  // Generate a random number for mosaic background
+  const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
 
   const services = [
     {
@@ -88,15 +89,7 @@ export default function Home() {
                 transformStyle: 'preserve-3d'
               }}
             >
-              <Image
-                src="/api/mosaic-bg"
-                alt="STD5 Works Mosaic"
-                fill
-                className="object-cover opacity-90"
-                priority
-                sizes="100vw"
-                unoptimized
-              />
+              <MosaicBackground seed={randomSeed} />
             </div>
           </div>
         </div>
@@ -123,29 +116,35 @@ export default function Home() {
             </h1>
 
             <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              İstanbul'un lider post prodüksiyon stüdyosunda projelerinizi hayata geçirin. Her türlü prodüksiyon ihtiyacınız için buradayız.
+              İstanbul&apos;un lider post prodüksiyon stüdyosunda projelerinizi hayata geçirin. Her türlü prodüksiyon ihtiyacınız için buradayız.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
-              <motion.button
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => router.push('/portfolio')}
-                className="px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-base flex items-center gap-2 transition-colors duration-300 w-full sm:w-auto justify-center"
               >
-                <Play className="w-4 h-4" />
-                Portfolyoyu İncele
-              </motion.button>
+                <Link
+                  href="/portfolio"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-base transition-colors duration-300 w-full sm:w-auto justify-center"
+                >
+                  <Play className="w-4 h-4" />
+                  Portfolyoyu İncele
+                </Link>
+              </motion.div>
 
-              <motion.button
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => router.push('/contact')}
-                className="px-6 py-3 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-base flex items-center gap-2 transition-colors duration-300 w-full sm:w-auto justify-center backdrop-blur-sm"
               >
-                <Mail className="w-4 h-4" />
-                İletişime Geç
-              </motion.button>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-base transition-colors duration-300 w-full sm:w-auto justify-center backdrop-blur-sm"
+                >
+                  <Mail className="w-4 h-4" />
+                  İletişime Geç
+                </Link>
+              </motion.div>
             </div>
 
             {/* Stats */}
@@ -155,7 +154,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 1 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto"
             >
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-xl md:text-2xl font-bold text-white mb-1">
                     {stat.number}
@@ -230,17 +229,20 @@ export default function Home() {
               Projenizi Hayata Geçirmeye Hazır mısınız?
             </h2>
             <p className="text-base text-white/90 mb-6 max-w-2xl mx-auto">
-              İstanbul'un en deneyimli post prodüksiyon ekibiyle çalışın. Size özel çözümler sunuyoruz.
+              İstanbul&apos;un en deneyimli post prodüksiyon ekibiyle çalışın. Size özel çözümler sunuyoruz.
             </p>
-            <motion.button
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/contact')}
-              className="px-6 py-3 bg-white text-std5-primary hover:bg-gray-100 rounded-lg font-semibold text-base flex items-center gap-2 mx-auto transition-colors duration-300"
             >
-              Hemen Başlayın
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-std5-primary hover:bg-gray-100 rounded-lg font-semibold text-base transition-colors duration-300"
+              >
+                Hemen Başlayın
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>

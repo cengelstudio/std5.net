@@ -17,15 +17,25 @@ const PLACEHOLDER_COLOR = '#222';
 
 const postersDir = path.join(process.cwd(), 'public', 'works');
 
+// Seeded random number generator
+function seededRandom(seed: number) {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
 export async function GET(req: NextRequest) {
+  // Get seed from URL or use timestamp
+  const { searchParams } = new URL(req.url);
+  const seed = parseInt(searchParams.get('seed') || Date.now().toString(), 10);
+
   // Get all poster image filenames
   const files = fs.readdirSync(postersDir).filter(f => f.match(/\.(jpg|jpeg|png|webp)$/i));
   if (files.length === 0) {
     return new Response('No posters found', { status: 404 });
   }
 
-  // Shuffle posters
-  const shuffled = files.sort(() => Math.random() - 0.5);
+  // Shuffle posters using seeded random
+  const shuffled = [...files].sort(() => seededRandom(seed) - 0.5);
 
   // Create canvas
   const canvas = createCanvas(WIDTH, HEIGHT);
@@ -48,7 +58,7 @@ export async function GET(req: NextRequest) {
         try {
           img = await loadImage(imgPath);
           found = true;
-        } catch (e) {
+        } catch {
           tryCount++;
         }
       }
@@ -85,7 +95,7 @@ export async function GET(req: NextRequest) {
   return new Response(buffer, {
     headers: {
       'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=3600',
+      'Cache-Control': 'no-store', // Disable caching
     },
   });
 }

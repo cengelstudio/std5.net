@@ -1,12 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Send } from 'lucide-react';
 
 export default function Contact() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,7 +25,7 @@ export default function Contact() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

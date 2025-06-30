@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -28,7 +27,6 @@ const studios = [
 ];
 
 export default function Studios() {
-  const router = useRouter();
   const [currentSlides, setCurrentSlides] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {

@@ -17,7 +17,7 @@ interface Work {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const lang = searchParams.get('lang') || 'tr';
+    // const lang = searchParams.get('lang') || 'tr'; // Reserved for future use
     const genre = searchParams.get('genre');
     const platform = searchParams.get('platform');
     const year = searchParams.get('year');

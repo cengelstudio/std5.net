@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 const managementTeam = [
@@ -18,8 +17,6 @@ const managementTeam = [
 ];
 
 export default function About() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-std5-dark to-std5-darker">
       {/* About Content */}

@@ -3,11 +3,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 export default function Header() {
-  const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,11 +34,6 @@ export default function Header() {
     { name: 'İletişim', path: '/contact' }
   ];
 
-  const handleNavigation = (path: string) => {
-    router.push(path);
-    setIsMobileMenuOpen(false);
-  };
-
   return (
     <>
       <motion.nav
@@ -58,10 +53,9 @@ export default function Header() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center cursor-pointer"
-              onClick={() => handleNavigation('/')}
+              className="flex items-center"
             >
-              <div className="relative">
+              <Link href="/" className="relative">
                 <Image
                   src="/std5-white-cropped.png"
                   alt="STD5"
@@ -70,40 +64,44 @@ export default function Header() {
                   className="h-12 w-auto filter drop-shadow-lg"
                   priority
                 />
-              </div>
+              </Link>
             </motion.div>
 
-                        {/* Desktop Navigation */}
+            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.path;
                 return (
-                  <motion.button
+                  <motion.div
                     key={item.path}
-                    onClick={() => handleNavigation(item.path)}
-                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
-                      isActive
-                        ? 'text-std5-accent'
-                        : 'text-white hover:text-std5-accent'
-                    }`}
+                    className="relative"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className="relative z-10">{item.name}</span>
+                    <Link
+                      href={item.path}
+                      className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
+                        isActive
+                          ? 'text-std5-accent'
+                          : 'text-white hover:text-std5-accent'
+                      }`}
+                    >
+                      <span className="relative z-10">{item.name}</span>
 
-                    {/* Active indicator */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTab"
-                        className="absolute inset-0 bg-std5-accent/20 rounded-lg"
-                        initial={false}
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
+                      {/* Active indicator */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 bg-std5-accent/20 rounded-lg"
+                          initial={false}
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
 
-                    {/* Hover effect */}
-                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </motion.button>
+                      {/* Hover effect */}
+                      <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>
@@ -138,24 +136,26 @@ export default function Header() {
                 {navItems.map((item, index) => {
                   const isActive = pathname === item.path;
                   return (
-                    <motion.button
+                    <motion.div
                       key={item.path}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      onClick={() => handleNavigation(item.path)}
-                      className={`block w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-all duration-300 ${
-                        isActive
-                          ? 'text-std5-accent bg-std5-accent/10'
-                          : 'text-white hover:text-std5-accent hover:bg-white/5'
-                      }`}
                     >
-                      {item.name}
-                    </motion.button>
+                      <Link
+                        href={item.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-all duration-300 ${
+                          isActive
+                            ? 'text-std5-accent bg-std5-accent/10'
+                            : 'text-white hover:text-std5-accent hover:bg-white/5'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
                   );
                 })}
-
-
               </div>
             </motion.div>
           )}
