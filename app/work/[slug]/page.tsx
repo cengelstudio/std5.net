@@ -6,18 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-
-interface Work {
-  id: string;
-  title: string;
-  description: string;
-  prod_year: number;
-  genre: string;
-  platform: string;
-  trailer_embed_url: string;
-  gallery: string[];
-  image: string;
-}
+import { Work } from '../../../types';
+import { createSlug } from '../../utils';
 
 export default function WorkDetail() {
   const router = useRouter();
@@ -28,21 +18,7 @@ export default function WorkDetail() {
   const [showTrailer, setShowTrailer] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // Create slug from title
-  const createSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/ğ/g, 'g')
-      .replace(/ü/g, 'u')
-      .replace(/ş/g, 's')
-      .replace(/ı/g, 'i')
-      .replace(/ö/g, 'o')
-      .replace(/ç/g, 'c')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-  };
+
 
   const copyToClipboard = async () => {
     try {

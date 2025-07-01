@@ -10,35 +10,10 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
-
-interface Work {
-  id: string;
-  title: string;
-  description: string;
-  prod_year: number;
-  genre: string;
-  platform: string;
-  trailer_embed_url: string;
-  gallery: string[];
-  image: string;
-}
-
-interface WorksResponse {
-  works: Work[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-    hasNext: boolean;
-    hasPrev: boolean;
-  };
-  filters: {
-    genres: string[];
-    platforms: string[];
-    years: number[];
-  };
-}
+import LoadingSpinner from '../components/LoadingSpinner';
+import { createSlug, handleImageError, debounce } from '../utils';
+import { PAGINATION } from '../constants';
+import { Work, WorksResponse } from '../../types';
 
 export default function Portfolio() {
   const [works, setWorks] = useState<Work[]>([]);
@@ -56,7 +31,7 @@ export default function Portfolio() {
     try {
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: '9'
+        limit: PAGINATION.DEFAULT_LIMIT.toString()
       });
 
       if (selectedGenre) params.append('genre', selectedGenre);
@@ -122,21 +97,13 @@ export default function Portfolio() {
     setCurrentPage(page);
   };
 
-  // Create slug from title
-  const createSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/ğ/g, 'g')
-      .replace(/ü/g, 'u')
-      .replace(/ş/g, 's')
-      .replace(/ı/g, 'i')
-      .replace(/ö/g, 'o')
-      .replace(/ç/g, 'c')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-  };
+  // Debounced search function for better performance
+  const debouncedSearch = useCallback(
+    debounce((term: string) => {
+      setSearchTerm(term);
+    }, 300),
+    []
+  );
 
   return (
     <div className="min-h-screen bg-std5-darker">
@@ -229,7 +196,7 @@ export default function Portfolio() {
           {/* Content Section */}
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="w-8 h-8 border-2 border-std5-accent border-t-transparent rounded-full animate-spin"></div>
+              <LoadingSpinner size="lg" />
             </div>
           ) : (
             <>

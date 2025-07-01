@@ -1,60 +1,85 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { MOSAIC_CONFIG, MOCK_IMAGES, COLORS } from '../constants';
+import { MosaicBackgroundProps } from '../../types';
 
-interface MosaicBackgroundProps {
-  seed?: number;
-  className?: string;
-}
-
-export default function MosaicBackground({ seed = Date.now(), className = "" }: MosaicBackgroundProps) {
+const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fallbackTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  // Seeded random number generator - memoized
+  const seededRandom = useCallback((seedVal: number, increment: number = 1) => {
+    const x = Math.sin(seedVal + increment) * 10000;
+    return x - Math.floor(x);
+  }, []);
+
+  // Object-fit cover logic - memoized
+  const calculateCropDimensions = useCallback((
+    imgWidth: number,
+    imgHeight: number,
+    cellWidth: number,
+    cellHeight: number
+  ) => {
+    const imgRatio = imgWidth / imgHeight;
+    const cellRatio = cellWidth / cellHeight;
+    let sx = 0, sy = 0, sw = imgWidth, sh = imgHeight;
+
+    if (imgRatio > cellRatio) {
+      sw = imgHeight * cellRatio;
+      sx = (imgWidth - sw) / 2;
+    } else {
+      sh = imgWidth / cellRatio;
+      sy = (imgHeight - sh) / 2;
+    }
+
+    return { sx, sy, sw, sh };
+  }, []);
+
+  // Generate mosaic canvas
+  const generateMosaic = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const WIDTH = 1920;
-    const HEIGHT = 1080;
-    const POSTER_RATIO = 2 / 3;
-    const POSTER_HEIGHT = 360;
+    const {
+      WIDTH,
+      HEIGHT,
+      POSTER_RATIO,
+      POSTER_HEIGHT,
+      ROWS,
+      POSTER_MARGIN,
+      PLACEHOLDER_COLOR,
+      FALLBACK_TIMEOUT
+    } = MOSAIC_CONFIG;
+
     const POSTER_WIDTH = Math.round(POSTER_HEIGHT * POSTER_RATIO);
-    const ROWS = 3;
     const COLS = Math.ceil(WIDTH / POSTER_WIDTH);
-    const POSTER_MARGIN = 9;
-    const PLACEHOLDER_COLOR = '#222';
 
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Seeded random number generator
-    function seededRandom(seedVal: number) {
-      const x = Math.sin(seedVal++) * 10000;
-      return x - Math.floor(x);
+    // Shuffle images using seeded random
+    const shuffled = [...MOCK_IMAGES];
+    // Fisher-Yates shuffle with seeded random
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(seededRandom(seed, i) * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
 
-    // Mock image list (you can extend this with actual image names)
-    const mockImages = [
-      'image-1.jpg', 'image-2.png', 'image-3.jpg', 'image-4.jpg', 'image-5.jpg',
-      'image-6.jpg', 'image-7.jpg', 'image-8.jpg', 'image-9.jpg', 'image-10.jpg',
-      'image-11.jpg', 'image-12.webp', 'image-13.jpg', 'image-14.jpg', 'image-15.jpg'
-    ];
-
-    // Shuffle images using seeded random
-    const shuffled = [...mockImages].sort(() => seededRandom(seed) - 0.5);
-
     // Fill background
-    ctx.fillStyle = '#111';
+    ctx.fillStyle = COLORS.DARKER;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
     // Track loaded images
     let loadedImages = 0;
     const totalCells = ROWS * COLS;
+    const imagePromises: Promise<void>[] = [];
 
-    // Draw posters in a grid
+    // Create image loading promises
     let posterIdx = 0;
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
@@ -64,73 +89,95 @@ export default function MosaicBackground({ seed = Date.now(), className = "" }: 
         const drawHeight = POSTER_HEIGHT - 2 * POSTER_MARGIN;
 
         const imageFile = shuffled[posterIdx % shuffled.length];
-        const img = new Image();
 
-        img.onload = () => {
-          // object-fit: cover logic
-          const imgRatio = img.width / img.height;
-          const cellRatio = drawWidth / drawHeight;
-          let sx = 0, sy = 0, sw = img.width, sh = img.height;
+        const imagePromise = new Promise<void>((resolve) => {
+          const img = new Image();
 
-          if (imgRatio > cellRatio) {
-            // Image is wider, crop sides
-            sw = img.height * cellRatio;
-            sx = (img.width - sw) / 2;
-          } else {
-            // Image is taller, crop top/bottom
-            sh = img.width / cellRatio;
-            sy = (img.height - sh) / 2;
-          }
+          img.onload = () => {
+            const { sx, sy, sw, sh } = calculateCropDimensions(
+              img.width,
+              img.height,
+              drawWidth,
+              drawHeight
+            );
 
-          ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
+            ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
+            loadedImages++;
+            resolve();
+          };
 
-          loadedImages++;
-          if (loadedImages === totalCells) {
-            // All images loaded, convert canvas to data URL
-            setImageSrc(canvas.toDataURL('image/png', 0.8));
-          }
-        };
+          img.onerror = () => {
+            // Fallback: draw placeholder
+            ctx.fillStyle = PLACEHOLDER_COLOR;
+            ctx.fillRect(x, y, drawWidth, drawHeight);
+            loadedImages++;
+            resolve();
+          };
 
-        img.onerror = () => {
-          // Fallback: draw placeholder
-          ctx.fillStyle = PLACEHOLDER_COLOR;
-          ctx.fillRect(x, y, drawWidth, drawHeight);
+          img.src = `/works/${imageFile}`;
+        });
 
-          loadedImages++;
-          if (loadedImages === totalCells) {
-            setImageSrc(canvas.toDataURL('image/png', 0.8));
-          }
-        };
-
-        img.src = `/works/${imageFile}`;
+        imagePromises.push(imagePromise);
         posterIdx++;
       }
     }
 
-    // Fallback: if no images load within 3 seconds, just use the basic canvas
-    const fallbackTimer = setTimeout(() => {
+    // Set fallback timer
+    fallbackTimerRef.current = setTimeout(() => {
       if (loadedImages < totalCells) {
         setImageSrc(canvas.toDataURL('image/png', 0.8));
+        setIsLoading(false);
       }
-    }, 3000);
+    }, FALLBACK_TIMEOUT);
 
-    return () => clearTimeout(fallbackTimer);
-  }, [seed]);
+    // Wait for all images or timeout
+    try {
+      await Promise.all(imagePromises);
+      setImageSrc(canvas.toDataURL('image/png', 0.8));
+    } catch (error) {
+      console.warn('Some images failed to load for mosaic');
+      setImageSrc(canvas.toDataURL('image/png', 0.8));
+    } finally {
+      setIsLoading(false);
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+      }
+    }
+  }, [seed, seededRandom, calculateCropDimensions]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    generateMosaic();
+
+    // Cleanup function
+    return () => {
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+      }
+    };
+  }, [generateMosaic]);
 
   return (
     <>
       <canvas
         ref={canvasRef}
         style={{ display: 'none' }}
+        aria-hidden="true"
       />
-      {imageSrc && (
+      {!isLoading && imageSrc && (
         <div
           className={`absolute inset-0 w-full h-full bg-cover bg-center opacity-90 ${className}`}
           style={{
             backgroundImage: `url(${imageSrc})`,
           }}
+          role="img"
+          aria-label="STD5 Works Mosaic Background"
         />
       )}
     </>
   );
-}
+});
+
+MosaicBackground.displayName = 'MosaicBackground';
+
+export default MosaicBackground;

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { NAV_ITEMS } from '../constants';
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,13 +27,8 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  const navItems = [
-    { name: 'Ana Sayfa', path: '/' },
-    { name: 'Hakkımızda', path: '/about' },
-    { name: 'Portfolyo', path: '/portfolio' },
-    { name: 'Stüdyolar', path: '/studios' },
-    { name: 'İletişim', path: '/contact' }
-  ];
+  // Import navItems from constants
+  const navItems = NAV_ITEMS;
 
   return (
     <>

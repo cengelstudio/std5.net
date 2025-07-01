@@ -1,72 +1,74 @@
 "use client";
 
+import React from 'react';
 import { motion } from "framer-motion";
 import { Play, ArrowRight, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool } from "lucide-react";
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
+import { SERVICES, STATS } from './constants';
+import { fadeInUp } from './utils';
+
+// Service icon mapping for performance
+const SERVICE_ICONS = {
+  'Renk Düzenleme': Palette,
+  'VFX & CGI': Sparkles,
+  'Kurgu & Montaj': Film,
+  'Animasyon': Layers,
+  'Ses Tasarımı': Music,
+  'Video Mapping': Monitor,
+  'Title Sequence': Play,
+  'İnfografik': PenTool
+} as const;
+
+// Memoized service card component
+const ServiceCard = memo(({ service, index }: { service: typeof SERVICES[number], index: number }) => {
+  const IconComponent = SERVICE_ICONS[service.title as keyof typeof SERVICE_ICONS];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      viewport={{ once: true }}
+      className="glass rounded-2xl p-6 group hover:bg-white/5 transition-all duration-300 cursor-pointer"
+      whileHover={{ y: -5 }}
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+        style={{ backgroundColor: service.color }}
+      >
+        <IconComponent className="w-6 h-6 text-white" />
+      </div>
+      <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-std5-accent transition-colors duration-300">
+        {service.title}
+      </h3>
+      <p className="text-gray-400 text-sm leading-relaxed">
+        {service.description}
+      </p>
+    </motion.div>
+  );
+});
+
+ServiceCard.displayName = 'ServiceCard';
+
+// Memoized stat card component
+const StatCard = memo(({ stat }: { stat: typeof STATS[0] }) => (
+  <div className="text-center">
+    <div className="text-xl md:text-2xl font-bold text-white mb-1">
+      {stat.number}
+    </div>
+    <div className="text-xs text-gray-400">
+      {stat.label}
+    </div>
+  </div>
+));
+
+StatCard.displayName = 'StatCard';
 
 export default function Home() {
-  // Generate a random number for mosaic background
+  // Generate a random number for mosaic background - memoized for performance
   const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
-
-  const services = [
-    {
-      icon: Palette,
-      title: 'Renk Düzenleme',
-      description: 'Profesyonel color grading ile projelerinize sinematik bir dokunuş katıyoruz.',
-      color: '#430086'
-    },
-    {
-      icon: Sparkles,
-      title: 'VFX & CGI',
-      description: 'Görsel efekt ve CGI ile hayal gücünüzü gerçeğe dönüştürüyoruz.',
-      color: '#8b5cf6'
-    },
-    {
-      icon: Film,
-      title: 'Kurgu & Montaj',
-      description: 'Yaratıcı kurgu ve montaj hizmetleriyle hikayenizi en iyi şekilde anlatın.',
-      color: '#430086'
-    },
-    {
-      icon: Layers,
-      title: 'Animasyon',
-      description: '2D/3D animasyonlarla projelerinize hareket katıyoruz.',
-      color: '#8b5cf6'
-    },
-    {
-      icon: Music,
-      title: 'Ses Tasarımı',
-      description: 'Duyguyu güçlendiren profesyonel ses tasarımı ve miksaj.',
-      color: '#430086'
-    },
-    {
-      icon: Monitor,
-      title: 'Video Mapping',
-      description: 'Etkinlikleriniz için etkileyici video mapping çözümleri.',
-      color: '#8b5cf6'
-    },
-    {
-      icon: Play,
-      title: 'Title Sequence',
-      description: 'Dikkat çekici açılış ve jenerik tasarımları.',
-      color: '#430086'
-    },
-    {
-      icon: PenTool,
-      title: 'İnfografik',
-      description: 'Bilgiyi görselleştiren yaratıcı infografik animasyonlar.',
-      color: '#8b5cf6'
-    }
-  ];
-
-  const stats = [
-    { number: "200+", label: 'Tamamlanan Proje' },
-    { number: "50+", label: 'Mutlu Müşteri' },
-    { number: "10+", label: 'Yıllık Deneyim' },
-    { number: "4", label: 'Stüdyo Lokasyonu' }
-  ];
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -154,7 +156,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 1 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto"
             >
-              {stats.map((stat) => (
+              {STATS.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-xl md:text-2xl font-bold text-white mb-1">
                     {stat.number}
@@ -188,29 +190,8 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="glass rounded-2xl p-6 group hover:bg-white/5 transition-all duration-300 cursor-pointer"
-                whileHover={{ y: -5 }}
-              >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                  style={{ backgroundColor: service.color }}
-                >
-                  <service.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-std5-accent transition-colors duration-300">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-              </motion.div>
+            {SERVICES.map((service, index) => (
+              <ServiceCard key={service.title} service={service} index={index} />
             ))}
           </div>
         </div>

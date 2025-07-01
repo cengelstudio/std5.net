@@ -1,18 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-
-interface Work {
-  id: string;
-  title: string;
-  description: string;
-  prod_year: number;
-  genre: string;
-  platform: string;
-  trailer_embed_url: string;
-  gallery: string[];
-  image: string;
-}
+import { Work } from '../../../types';
 
 export async function GET(request: Request) {
   try {

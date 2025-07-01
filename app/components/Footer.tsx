@@ -102,12 +102,21 @@ export default function Footer() {
             <p className="text-gray-500 text-sm">
               © 2024 STD5. Tüm hakları saklıdır.
             </p>
-            <div className="flex items-center gap-6">
-              <Link href="/contact" className="text-gray-500 hover:text-std5-accent transition-colors duration-300 text-sm">
-                Gizlilik Politikası
-              </Link>
-              <Link href="/contact" className="text-gray-500 hover:text-std5-accent transition-colors duration-300 text-sm">
-                Kullanım Şartları
+                        <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-xs">Developed by</span>
+              <Link
+                href="https://cengel.studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center hover:opacity-80 transition-opacity duration-300"
+              >
+                <Image
+                  src="/cengelstudio-logo.png"
+                  alt="Cengel Studio"
+                  width={80}
+                  height={24}
+                  className="h-6 w-auto filter brightness-75 group-hover:brightness-100 transition-all duration-300"
+                />
               </Link>
             </div>
           </div>
