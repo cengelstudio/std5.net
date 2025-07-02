@@ -58,7 +58,7 @@ export default function Studios() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-std5-dark to-std5-darker">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-24 pb-7 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-std5-dark/20 to-std5-darker"></div>
 
         <div className="relative max-w-7xl mx-auto text-center">
@@ -66,20 +66,27 @@ export default function Studios() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-20"
+            className="mb-12"
           >
-            <h1 className="text-6xl md:text-8xl font-bold text-white mb-12 leading-tight">
-              <span className="bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">
+            <div className="relative mb-8">
+              <motion.h1
+                className="text-[28px] md:text-[52px] font-bold text-white mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
                 Stüdyolarımız
-              </span>
-            </h1>
-
-            <div className="max-w-5xl mx-auto">
-              <p className="text-2xl md:text-3xl text-gray-300 leading-relaxed font-light">
-                İstanbul içi 3 farklı lokasyonda, post prodüksiyon için gereken tüm altyapıyı incelikle tasarladığımız,
-                alanındaki en iyi donanımları ve yazılımları içeren stüdyolarımızda, misafirlerimiz için buradayız.
-              </p>
+              </motion.h1>
+              <motion.div
+                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              />
             </div>
+            <p className="text-[20px] md:text-[26px] text-gray-300 max-w-5xl mx-auto">
+              İstanbul içi 3 farklı lokasyonda, post prodüksiyon için gereken tüm altyapıyı incelikle tasarladığımız, alanındaki en iyi donanımları ve yazılımları içeren stüdyolarımızda, misafirlerimiz için buradayız.
+            </p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

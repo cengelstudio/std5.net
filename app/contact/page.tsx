@@ -41,7 +41,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-std5-dark to-std5-darker">
       {/* Contact Content */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-24 pb-7 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -49,10 +49,23 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
-              İletişim
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <div className="relative mb-8">
+              <motion.h1
+                className="text-[28px] md:text-[52px] font-bold text-white mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                İletişim
+              </motion.h1>
+              <motion.div
+                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              />
+            </div>
+            <p className="text-[20px] md:text-[26px] text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Her zaman yoğun çalışıyoruz ama misafirlerimizin de yeri her zaman ayrıdır. Renk, kurgu, animasyon, ses miksajı ve teknik desteğin yanında, Türk kahvesi de elbette sunuyoruz, her zaman bekleriz.
             </p>
           </motion.div>

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Bülent Taban",
+    "title": "Kurucu",
+    "image": "/team/bulent-taban.jpg",
+    "linkedin": "https://www.linkedin.com/in/bulent-taban",
+    "imdb": "https://www.imdb.com/name/nm1234567",
+    "cv": "#"
+  },
+  {
+    "name": "Serdar Öngören",
+    "title": "Kurucu",
+    "image": "/team/serdar-ongoren.jpg",
+    "linkedin": "https://www.linkedin.com/in/serdar-ongoren",
+    "imdb": "https://www.imdb.com/name/nm7654321",
+    "cv": "#"
+  }
+]

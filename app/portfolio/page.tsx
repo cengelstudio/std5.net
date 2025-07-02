@@ -108,18 +108,31 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen bg-std5-darker">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-24 pb-7 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Portfolyo
-            </h1>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            <div className="relative mb-8">
+              <motion.h1
+                className="text-[28px] md:text-[52px] font-bold text-white mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                Portfolyo
+              </motion.h1>
+              <motion.div
+                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              />
+            </div>
+            <p className="text-[20px] md:text-[26px] text-gray-300 max-w-2xl mx-auto">
               Yaratıcılığımızın ve deneyimimizin bir yansıması olan projelerimizi keşfedin.
             </p>
           </motion.div>
