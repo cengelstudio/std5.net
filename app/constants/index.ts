@@ -12,9 +12,9 @@ export const MOSAIC_CONFIG: MosaicConfig = {
   WIDTH: 1920,
   HEIGHT: 1080,
   POSTER_RATIO: 2 / 3,
-  POSTER_HEIGHT: 360,
-  ROWS: 3,
-  POSTER_MARGIN: 9,
+  POSTER_HEIGHT: 216,
+  ROWS: 5,
+  POSTER_MARGIN: 3,
   PLACEHOLDER_COLOR: '#222',
   FALLBACK_TIMEOUT: 3000
 } as const;
@@ -52,29 +52,29 @@ export const NAV_ITEMS: readonly NavItem[] = [
 // Services Data
 export const SERVICES: readonly Service[] = [
   {
-    title: 'Renk Düzenleme',
-    description: 'Profesyonel color grading ile projelerinize sinematik bir dokunuş katıyoruz.',
-    color: COLORS.PRIMARY
-  },
-  {
-    title: 'VFX & CGI',
-    description: 'Görsel efekt ve CGI ile hayal gücünüzü gerçeğe dönüştürüyoruz.',
-    color: COLORS.ACCENT
-  },
-  {
     title: 'Kurgu & Montaj',
     description: 'Yaratıcı kurgu ve montaj hizmetleriyle hikayenizi en iyi şekilde anlatın.',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Animasyon',
-    description: '2D/3D animasyonlarla projelerinize hareket katıyoruz.',
-    color: COLORS.ACCENT
-  },
-  {
     title: 'Ses Tasarımı',
     description: 'Duyguyu güçlendiren profesyonel ses tasarımı ve miksaj.',
     color: COLORS.PRIMARY
+  },
+  {
+    title: 'Renk Düzenleme',
+    description: 'Profesyonel color grading ile projelerinize sinematik bir dokunuş katıyoruz.',
+    color: COLORS.PRIMARY
+  },
+  {
+    title: 'Görsel Efektler',
+    description: 'Görsel efekt ve CGI ile hayal gücünüzü gerçeğe dönüştürüyoruz.',
+    color: COLORS.ACCENT
+  },
+  {
+    title: 'Düblaj',
+    description: 'Profesyonel dublaj ve seslendirme hizmetleriyle içeriklerinizi uyarlıyoruz.',
+    color: COLORS.ACCENT
   },
   {
     title: 'Video Mapping',
@@ -95,10 +95,10 @@ export const SERVICES: readonly Service[] = [
 
 // Stats Data
 export const STATS: readonly Stat[] = [
-  { number: "200+", label: 'Tamamlanan Proje' },
-  { number: "50+", label: 'Mutlu Müşteri' },
-  { number: "10+", label: 'Yıllık Deneyim' },
-  { number: "4", label: 'Stüdyo Lokasyonu' }
+  { number: "250+", label: 'Tamamlanan Proje' },
+  { number: "3+", label: 'Yerleşke' },
+  { number: "45+", label: 'Stüdyo' },
+  { number: "8+", label: 'Yıllık Deneyim' },
 ] as const;
 
 // Image paths for mosaic

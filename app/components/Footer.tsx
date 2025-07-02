@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Youtube } from 'lucide-react';
 import Image from 'next/image';
 
 const STUDIOS = [
@@ -49,6 +49,26 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-std5-accent flex-shrink-0" />
                 <span>info@std5.net</span>
               </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="flex items-center gap-4 pt-2">
+              <Link
+                href="https://instagram.com/std5_postproduction"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300"
+              >
+                <Instagram className="w-5 h-5 text-gray-400 group-hover:text-std5-accent transition-colors duration-300" />
+              </Link>
+              <Link
+                href="https://youtube.com/@std5_postproduction"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300"
+              >
+                <Youtube className="w-5 h-5 text-gray-400 group-hover:text-std5-accent transition-colors duration-300" />
+              </Link>
             </div>
           </div>
 

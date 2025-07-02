@@ -53,7 +53,7 @@ export default function Header() {
             >
               <Link href="/" className="relative">
                 <Image
-                  src="/std5-white-cropped.png"
+                  src="/std5-purple-cropped.png"
                   alt="STD5"
                   width={140}
                   height={46}

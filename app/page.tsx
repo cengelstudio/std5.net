@@ -12,9 +12,9 @@ import { fadeInUp } from './utils';
 // Service icon mapping for performance
 const SERVICE_ICONS = {
   'Renk Düzenleme': Palette,
-  'VFX & CGI': Sparkles,
+  'Görsel Efektler': Sparkles,
   'Kurgu & Montaj': Film,
-  'Animasyon': Layers,
+  'Düblaj': Layers,
   'Ses Tasarımı': Music,
   'Video Mapping': Monitor,
   'Title Sequence': Play,
@@ -112,13 +112,12 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-              Sınırsız yaratıcılık,<br />
-              <span className="text-std5-accent">post prodüksiyon</span><br />
-              ve çok daha fazlası
+              Ekranların arkasındaki<br />
+              <span className="text-std5-accent">yaratıcı güç</span>
             </h1>
 
             <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              İstanbul&apos;un lider post prodüksiyon stüdyosunda projelerinizi hayata geçirin. Her türlü prodüksiyon ihtiyacınız için buradayız.
+              Sektörün en yüksek standartlarından yararlanmak, yaratıcılığımızla tanışmak istersen; Türkiye'nin en büyüğü olarak buradayız
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
@@ -131,7 +130,7 @@ export default function Home() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-base transition-colors duration-300 w-full sm:w-auto justify-center"
                 >
                   <Play className="w-4 h-4" />
-                  Portfolyoyu İncele
+                  Projeleri İncele
                 </Link>
               </motion.div>
 
@@ -156,16 +155,30 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 1 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto"
             >
-              {STATS.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-xl md:text-2xl font-bold text-white mb-1">
-                    {stat.number}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+              {STATS.map((stat) => {
+                let href = '/';
+                if (stat.label === 'Tamamlanan Proje') href = '/portfolio';
+                else if (stat.label === 'Yerleşke') href = '/studios';
+                else if (stat.label === 'Stüdyo') href = '/studios';
+                else if (stat.label === 'Yıllık Deneyim') href = '/about';
+
+                return (
+                  <Link key={stat.label} href={href}>
+                    <motion.div
+                      className="text-center cursor-pointer group"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="text-xl md:text-2xl font-bold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
+                        {stat.number}
+                      </div>
+                      <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  </Link>
+                );
+              })}
             </motion.div>
           </motion.div>
         </div>
@@ -197,36 +210,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-std5-primary to-std5-accent">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Projenizi Hayata Geçirmeye Hazır mısınız?
-            </h2>
-            <p className="text-base text-white/90 mb-6 max-w-2xl mx-auto">
-              İstanbul&apos;un en deneyimli post prodüksiyon ekibiyle çalışın. Size özel çözümler sunuyoruz.
-            </p>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-std5-primary hover:bg-gray-100 rounded-lg font-semibold text-base transition-colors duration-300"
-              >
-                Hemen Başlayın
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 }
