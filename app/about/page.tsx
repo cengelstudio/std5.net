@@ -85,11 +85,11 @@ export default function About() {
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla{' '}
-                <span className="text-white font-semibold bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">kurgu</span>,{' '}
-                <span className="text-white font-semibold bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">ses tasarımı</span>,{' '}
-                <span className="text-white font-semibold bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">renk</span>,{' '}
-                <span className="text-white font-semibold bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">dublaj</span> ve{' '}
-                <span className="text-white font-semibold bg-gradient-to-r from-std5-primary to-std5-accent bg-clip-text text-transparent">görsel efektleri</span>{' '}
+                <span className="font-semibold text-white">kurgu</span>,{' '}
+                <span className="font-semibold text-white">ses tasarımı</span>,{' '}
+                <span className="font-semibold text-white">renk</span>,{' '}
+                <span className="font-semibold text-white">dublaj</span> ve{' '}
+                <span className="font-semibold text-white">görsel efektleri</span>{' '}
                 yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri{' '}
                 <span className="text-std5-accent font-bold text-xl">250'den fazla projeye</span>{' '}
                 imzasını atmıştır.

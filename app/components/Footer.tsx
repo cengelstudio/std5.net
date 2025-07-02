@@ -80,14 +80,12 @@ export default function Footer() {
                 <div key={studio.id} className="group cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
                   <div className="flex items-start gap-3">
                     <MapPin className="w-4 h-4 mt-1 text-std5-accent flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                    <div>
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(studio.address)}`} target="_blank" rel="noopener noreferrer" className="group block">
                       <h4 className="text-white font-medium text-sm mb-1 group-hover:text-std5-accent transition-colors duration-300">
                         STD5 {studio.name}
                       </h4>
-                      <p className="text-gray-400 text-xs leading-relaxed">
-                        {studio.address}
-                      </p>
-                    </div>
+                      <span className="text-gray-400 text-xs leading-relaxed group-hover:text-std5-accent transition-colors duration-300">{studio.address}</span>
+                    </a>
                   </div>
                 </div>
               ))}

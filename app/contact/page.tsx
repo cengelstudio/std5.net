@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Phone, Mail, Instagram, Youtube } from 'lucide-react';
 import { ContactFormData, SubmitStatus } from '../../types';
 
 export default function Contact() {
@@ -65,9 +65,6 @@ export default function Contact() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               />
             </div>
-            <p className="text-[20px] md:text-[26px] text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Her zaman yoğun çalışıyoruz ama misafirlerimizin de yeri her zaman ayrıdır. Renk, kurgu, animasyon, ses miksajı ve teknik desteğin yanında, Türk kahvesi de elbette sunuyoruz, her zaman bekleriz.
-            </p>
           </motion.div>
 
           <motion.div
@@ -177,27 +174,35 @@ export default function Contact() {
             </form>
           </motion.div>
 
-          {/* Contact Info Cards */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto"
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 max-w-2xl mx-auto mt-12"
           >
-            {/* Email Card */}
-            <div className="glass rounded-2xl p-6 text-center">
-              <h3 className="text-xl font-bold text-white mb-4">E-posta</h3>
-              <a href="mailto:info@std5.net" className="text-std5-accent hover:text-std5-accent/80 transition-colors">
+            <div className="glass rounded-2xl p-6 text-center flex flex-col items-center">
+              <Phone className="w-6 h-6 text-std5-accent mb-2" />
+              <span className="text-xl font-bold text-white mb-1">Telefon</span>
+              <a href="tel:+902122678094" className="text-std5-accent hover:text-std5-accent/80 transition-colors text-lg font-medium">
+                +90 (212) 267 80 94
+              </a>
+            </div>
+            <div className="glass rounded-2xl p-6 text-center flex flex-col items-center">
+              <Mail className="w-6 h-6 text-std5-accent mb-2" />
+              <span className="text-xl font-bold text-white mb-1">E-posta</span>
+              <a href="mailto:info@std5.net" className="text-std5-accent hover:text-std5-accent/80 transition-colors text-lg font-medium">
                 info@std5.net
               </a>
             </div>
-
-            {/* Phone Card */}
-            <div className="glass rounded-2xl p-6 text-center">
-              <h3 className="text-xl font-bold text-white mb-4">Telefon</h3>
-              <a href="tel:+902122222222" className="text-std5-accent hover:text-std5-accent/80 transition-colors">
-                +90 212 222 22 22
-              </a>
+            <div className="glass rounded-2xl p-6 text-center flex flex-col items-center">
+              <Instagram className="w-6 h-6 text-std5-accent mb-2" />
+              <span className="text-xl font-bold text-white mb-1">Instagram</span>
+              <a href="https://instagram.com/std5_postproduction" target="_blank" rel="noopener noreferrer" className="text-std5-accent hover:text-std5-accent/80 transition-colors text-lg font-medium">@std5_postproduction</a>
+            </div>
+            <div className="glass rounded-2xl p-6 text-center flex flex-col items-center">
+              <Youtube className="w-6 h-6 text-std5-accent mb-2" />
+              <span className="text-xl font-bold text-white mb-1">YouTube</span>
+              <a href="https://youtube.com/@std5_postproduction" target="_blank" rel="noopener noreferrer" className="text-std5-accent hover:text-std5-accent/80 transition-colors text-lg font-medium">@std5_postproduction</a>
             </div>
           </motion.div>
         </div>

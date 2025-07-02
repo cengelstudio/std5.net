@@ -163,7 +163,7 @@ export default function Home() {
                 else if (stat.label === 'Yıllık Deneyim') href = '/about';
 
                 return (
-                  <Link key={stat.label} href={href}>
+                  <Link key={stat.label + '-' + stat.number} href={href}>
                     <motion.div
                       className="text-center cursor-pointer group"
                       whileHover={{ scale: 1.05 }}
