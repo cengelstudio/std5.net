@@ -68,10 +68,10 @@ export default function WorkDetail() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-4">İçerik bulunamadı</h1>
           <Link
-            href="/portfolio"
+            href="/projects"
             className="inline-block px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-xl transition-colors duration-300"
           >
-            Portfolyoya Dön
+            Projelere Dön
           </Link>
         </div>
       </div>
@@ -102,11 +102,11 @@ export default function WorkDetail() {
             transition={{ duration: 0.6 }}
           >
             <Link
-              href="/portfolio"
+              href="/projects"
               className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-300"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span className="font-medium">Portfolyoya Dön</span>
+              <span className="font-medium">Projelere Dön</span>
             </Link>
           </motion.div>
         </div>

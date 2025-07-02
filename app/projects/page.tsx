@@ -5,9 +5,15 @@ import {
   Play,
   Search,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Filter,
+  X,
+  Calendar,
+  Tag,
+  Monitor,
+  RotateCcw
 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -15,67 +21,48 @@ import { createSlug, handleImageError, debounce } from '../utils';
 import { PAGINATION } from '../constants';
 import { Work, WorksResponse } from '../../types';
 
-export default function Portfolio() {
+export default function Projeler() {
   const [works, setWorks] = useState<Work[]>([]);
   const [filters, setFilters] = useState<{ genres: string[]; platforms: string[]; years: number[] }>({ genres: [], platforms: [], years: [] });
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, hasNext: false, hasPrev: false });
   const [loading, setLoading] = useState(true);
-  const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchWorks = useCallback(async (page = 1) => {
+  const fetchWorks = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: PAGINATION.DEFAULT_LIMIT.toString()
-      });
-
-      if (selectedGenre) params.append('genre', selectedGenre);
+      const params = new URLSearchParams();
       if (selectedPlatform) params.append('platform', selectedPlatform);
       if (selectedYear) params.append('year', selectedYear);
-
       const response = await fetch(`/api/works?${params}`);
       const data: WorksResponse = await response.json();
-
       let filteredWorks = data.works;
-
-      // Client-side search filtering
       if (searchTerm) {
         filteredWorks = filteredWorks.filter(work =>
           work.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           work.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-
       setWorks(filteredWorks);
       setFilters(data.filters);
-      setPagination(data.pagination);
     } catch (error) {
       console.error('Error fetching works:', error);
     } finally {
       setLoading(false);
     }
-  }, [selectedGenre, selectedPlatform, selectedYear, searchTerm]);
+  }, [selectedPlatform, selectedYear, searchTerm]);
 
   useEffect(() => {
-    fetchWorks(currentPage);
-  }, [selectedGenre, selectedPlatform, selectedYear, currentPage, fetchWorks]);
+    fetchWorks();
+  }, [selectedPlatform, selectedYear, fetchWorks]);
 
   useEffect(() => {
-    fetchWorks(1);
-    setCurrentPage(1);
+    fetchWorks();
   }, [searchTerm, fetchWorks]);
 
   const handleFilterChange = (type: string, value: string) => {
-    setCurrentPage(1);
     switch (type) {
-      case 'genre':
-        setSelectedGenre(value === selectedGenre ? '' : value);
-        break;
       case 'platform':
         setSelectedPlatform(value === selectedPlatform ? '' : value);
         break;
@@ -86,15 +73,9 @@ export default function Portfolio() {
   };
 
   const clearFilters = () => {
-    setSelectedGenre('');
     setSelectedPlatform('');
     setSelectedYear('');
     setSearchTerm('');
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   // Debounced search function for better performance
@@ -104,6 +85,32 @@ export default function Portfolio() {
     }, 300),
     []
   );
+
+  // Get active filters count and data
+  const getActiveFilters = () => {
+    const activeFilters = [];
+    if (selectedPlatform) activeFilters.push({ type: 'platform', value: selectedPlatform, label: selectedPlatform });
+    if (selectedYear) activeFilters.push({ type: 'year', value: selectedYear, label: selectedYear.toString() });
+    if (searchTerm) activeFilters.push({ type: 'search', value: searchTerm, label: `"${searchTerm}"` });
+    return activeFilters;
+  };
+
+  const removeFilter = (type: string) => {
+    switch (type) {
+      case 'platform':
+        setSelectedPlatform('');
+        break;
+      case 'year':
+        setSelectedYear('');
+        break;
+      case 'search':
+        setSearchTerm('');
+        break;
+    }
+  };
+
+  const activeFilters = getActiveFilters();
+  const hasActiveFilters = activeFilters.length > 0;
 
   return (
     <div className="min-h-screen bg-std5-darker">
@@ -123,7 +130,7 @@ export default function Portfolio() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Portfolyo
+                Projeler
               </motion.h1>
               <motion.div
                 className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
@@ -133,19 +140,19 @@ export default function Portfolio() {
               />
             </div>
             <p className="text-[20px] md:text-[26px] text-gray-300 max-w-2xl mx-auto">
-              Yaratıcılığımızın ve deneyimimizin bir yansıması olan projelerimizi keşfedin.
+              250'den fazla projeye imzamızı attık
             </p>
           </motion.div>
 
-          {/* Clean Filter Section */}
+          {/* Compact Filter Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-12"
           >
-            <div className="glass rounded-2xl p-8">
-              <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+            <div className="glass rounded-2xl p-6">
+              <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
                 {/* Search */}
                 <div className="w-full lg:flex-1 lg:max-w-md">
                   <div className="relative">
@@ -155,54 +162,93 @@ export default function Portfolio() {
                       placeholder="Proje ara..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
+                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent focus:ring-2 focus:ring-std5-accent/20 transition-all duration-300"
                     />
                   </div>
                 </div>
 
-                {/* Filters */}
-                <div className="flex flex-wrap gap-4 items-center justify-center">
-                  <select
-                    value={selectedGenre}
-                    onChange={(e) => handleFilterChange('genre', e.target.value)}
-                    className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                  >
-                    <option value="" className="bg-std5-dark text-white">Tüm Türler</option>
-                    {filters.genres.map(genre => (
-                      <option key={genre} value={genre} className="bg-std5-dark text-white">{genre}</option>
-                    ))}
-                  </select>
+                {/* Filters Row */}
+                <div className="flex flex-wrap gap-3 items-center">
+                  {/* Platform Filter */}
+                  <div className="relative">
+                    <Monitor className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <select
+                      value={selectedPlatform}
+                      onChange={(e) => handleFilterChange('platform', e.target.value)}
+                      className={`pl-9 pr-4 py-3 bg-white/5 border rounded-xl text-white text-sm focus:outline-none focus:border-std5-accent transition-all duration-300 ${
+                        selectedPlatform ? 'border-std5-accent bg-std5-accent/10' : 'border-white/10'
+                      }`}
+                    >
+                      <option value="" className="bg-std5-dark text-white">Tüm Platformlar</option>
+                      {filters.platforms.map(platform => (
+                        <option key={platform} value={platform} className="bg-std5-dark text-white">{platform}</option>
+                      ))}
+                    </select>
+                  </div>
 
-                  <select
-                    value={selectedPlatform}
-                    onChange={(e) => handleFilterChange('platform', e.target.value)}
-                    className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                  >
-                    <option value="" className="bg-std5-dark text-white">Tüm Platformlar</option>
-                    {filters.platforms.map(platform => (
-                      <option key={platform} value={platform} className="bg-std5-dark text-white">{platform}</option>
-                    ))}
-                  </select>
+                  {/* Year Filter */}
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => handleFilterChange('year', e.target.value)}
+                      className={`pl-9 pr-4 py-3 bg-white/5 border rounded-xl text-white text-sm focus:outline-none focus:border-std5-accent transition-all duration-300 ${
+                        selectedYear ? 'border-std5-accent bg-std5-accent/10' : 'border-white/10'
+                      }`}
+                    >
+                      <option value="" className="bg-std5-dark text-white">Tüm Yıllar</option>
+                      {filters.years.filter(year => Number(year) >= 2017).map(year => (
+                        <option key={year} value={year} className="bg-std5-dark text-white">{year}</option>
+                      ))}
+                    </select>
+                  </div>
 
-                  <select
-                    value={selectedYear}
-                    onChange={(e) => handleFilterChange('year', e.target.value)}
-                    className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                  >
-                    <option value="" className="bg-std5-dark text-white">Tüm Yıllar</option>
-                    {filters.years.map(year => (
-                      <option key={year} value={year} className="bg-std5-dark text-white">{year}</option>
-                    ))}
-                  </select>
-
-                  <button
-                    onClick={clearFilters}
-                    className="px-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl transition-colors duration-300"
-                  >
-                    Temizle
-                  </button>
+                  {/* Clear Button */}
+                  {hasActiveFilters && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      onClick={clearFilters}
+                      className="flex items-center gap-1.5 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-lg transition-all duration-300 text-sm"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Temizle</span>
+                    </motion.button>
+                  )}
                 </div>
               </div>
+
+              {/* Active Filters - Compact */}
+              {hasActiveFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="border-t border-white/10 pt-3 mt-3"
+                >
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {activeFilters.map((filter, index) => (
+                      <motion.div
+                        key={`${filter.type}-${filter.value}`}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="flex items-center gap-1.5 px-2 py-1 bg-std5-accent/20 border border-std5-accent/30 text-std5-accent rounded text-xs"
+                      >
+                        <span>{filter.label}</span>
+                        <button
+                          onClick={() => removeFilter(filter.type)}
+                          className="hover:bg-std5-accent/20 p-0.5 rounded transition-colors duration-200"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
             </div>
           </motion.div>
 
@@ -266,46 +312,6 @@ export default function Portfolio() {
                   </motion.div>
                 ))}
               </motion.div>
-
-              {/* Clean Pagination */}
-              {pagination.totalPages > 1 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                  className="flex justify-center items-center gap-2 mt-16"
-                >
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={!pagination.hasPrev}
-                    className="p-3 glass rounded-xl text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-
-                  {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`px-4 py-3 rounded-xl transition-colors duration-300 ${
-                        currentPage === page
-                          ? 'bg-std5-accent text-white'
-                          : 'glass text-white hover:bg-white/10'
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={!pagination.hasNext}
-                    className="p-3 glass rounded-xl text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </motion.div>
-              )}
             </>
           )}
         </div>

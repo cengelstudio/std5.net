@@ -40,12 +40,6 @@ export async function GET(request: Request) {
     // Sort by production year (newest first)
     works.sort((a: Work, b: Work) => b.prod_year - a.prod_year);
 
-    // Pagination
-    const total = works.length;
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedWorks = works.slice(startIndex, endIndex);
-
     // Get unique values for filters
     const allWorks: Work[] = JSON.parse(fileContents);
     const genres = [...new Set(allWorks.map((work: Work) => work.genre))];
@@ -53,15 +47,7 @@ export async function GET(request: Request) {
     const years = [...new Set(allWorks.map((work: Work) => work.prod_year))].sort((a: number, b: number) => b - a);
 
     return NextResponse.json({
-      works: paginatedWorks,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-        hasNext: endIndex < total,
-        hasPrev: page > 1
-      },
+      works: works,
       filters: {
         genres,
         platforms,

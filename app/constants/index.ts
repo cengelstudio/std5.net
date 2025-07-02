@@ -44,8 +44,8 @@ export const PAGINATION: PaginationConfig = {
 export const NAV_ITEMS: readonly NavItem[] = [
   { name: 'Ana Sayfa', path: '/' },
   { name: 'Hakkımızda', path: '/about' },
-  { name: 'Portfolyo', path: '/portfolio' },
-  { name: 'Stüdyolar', path: '/studios' },
+  { name: 'Projeler', path: '/projects' },
+  { name: 'Yerleşkeler', path: '/locations' },
   { name: 'İletişim', path: '/contact' }
 ] as const;
 
@@ -97,7 +97,7 @@ export const SERVICES: readonly Service[] = [
 export const STATS: readonly Stat[] = [
   { number: "250+", label: 'Tamamlanan Proje' },
   { number: "3+", label: 'Yerleşke' },
-  { number: "45+", label: 'Stüdyo' },
+  { number: "45+", label: 'Yerleşke' },
   { number: "8+", label: 'Yıllık Deneyim' },
 ] as const;
 

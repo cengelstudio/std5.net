@@ -16,7 +16,7 @@ const STUDIOS = [
   },
   {
     id: 3,
-    name: "Figen 2",
+    name: "Figen",
     address: "Levent, Figen Sk. No: 2 Beşiktaş / İstanbul"
   }
 ];
@@ -74,7 +74,7 @@ export default function Footer() {
 
           {/* Studios */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-white">Stüdyolarımız</h3>
+            <h3 className="text-xl font-semibold text-white">Yerleşkelerimiz</h3>
             <div className="space-y-6">
               {STUDIOS.map((studio) => (
                 <div key={studio.id} className="group cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
@@ -100,8 +100,8 @@ export default function Footer() {
             <nav className="grid grid-cols-2 gap-4">
               {[
                 { name: 'Hakkımızda', path: '/about' },
-                { name: 'Portfolyo', path: '/portfolio' },
-                { name: 'Stüdyolar', path: '/studios' },
+                { name: 'Projeler', path: '/projects' },
+                { name: 'Yerleşkeler', path: '/locations' },
                 { name: 'İletişim', path: '/contact' }
               ].map((item) => (
                 <Link
