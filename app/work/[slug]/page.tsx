@@ -31,15 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!work) {
     return {
-      title: 'Proje Bulunamadı | STD5 - Post Prodüksiyon',
+      title: 'Proje Bulunamadı | STD5',
       description: 'Aradığınız proje bulunamadı.'
     };
   }
   return {
-    title: `${work.title} (${work.prod_year}) | STD5 - Post Prodüksiyon`,
+    title: `${work.title} (${work.prod_year}) | STD5`,
     description: `${work.description} - ${work.platform}`,
     openGraph: {
-      title: `${work.title} (${work.prod_year}) | STD5 - Post Prodüksiyon`,
+      title: `${work.title} (${work.prod_year}) | STD5`,
       description: `${work.description} - ${work.platform}`,
       images: [
         {
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${work.title} (${work.prod_year}) | STD5 - Post Prodüksiyon`,
+      title: `${work.title} (${work.prod_year}) | STD5`,
       description: `${work.description} - ${work.platform}`,
       images: [work.image],
     },

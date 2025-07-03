@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
   return {
-    title: "Yerleşkeler | STD5 - Post Prodüksiyon",
+    title: "Yerleşkeler | STD5",
     description: "İstanbul’da 3 lokasyonda, özenle tasarlanmış stüdyolarımız ve en iyi donanım-yazılımlarla post prodüksiyonun her aşamasında yanınızdayız.",
     keywords: [
       "STD5 yerleşkeler",
@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "yaratıcı içerik üretim stüdyoları"
     ].join(", "),
     openGraph: {
-      title: "Yerleşkeler | STD5 - Post Prodüksiyon",
+      title: "Yerleşkeler | STD5",
       description: "İstanbul’da 3 lokasyonda, özenle tasarlanmış stüdyolarımız ve en iyi donanım-yazılımlarla post prodüksiyonun her aşamasında yanınızdayız.",
       images: [
         {
@@ -67,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: "Yerleşkeler | STD5 - Post Prodüksiyon",
+      title: "Yerleşkeler | STD5",
       description: "İstanbul’da 3 lokasyonda, özenle tasarlanmış stüdyolarımız ve en iyi donanım-yazılımlarla post prodüksiyonun her aşamasında yanınızdayız.",
       images: [`${baseUrl}/og-image.png`],
     },

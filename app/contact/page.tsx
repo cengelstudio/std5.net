@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
   return {
-    title: "İletişim | STD5 - Post Prodüksiyon",
+    title: "İletişim | STD5",
     description: "Her zaman yoğunuz ama misafirlerimiz baş tacı. Renk, kurgu, animasyon, ses miksajı, teknik destek ve Türk kahvesiyle sizi bekliyoruz.",
     keywords: [
       "STD5 iletişim",
@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "renk düzenleme fiyat"
     ].join(", "),
     openGraph: {
-      title: "İletişim | STD5 - Post Prodüksiyon",
+      title: "İletişim | STD5",
       description: "Her zaman yoğunuz ama misafirlerimiz baş tacı. Renk, kurgu, animasyon, ses miksajı, teknik destek ve Türk kahvesiyle sizi bekliyoruz.",
       images: [
         {
@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: "İletişim | STD5 - Post Prodüksiyon",
+      title: "İletişim | STD5",
       description: "Her zaman yoğunuz ama misafirlerimiz baş tacı. Renk, kurgu, animasyon, ses miksajı, teknik destek ve Türk kahvesiyle sizi bekliyoruz.",
       images: [`${baseUrl}/og-image.png`],
     },

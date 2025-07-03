@@ -9,11 +9,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
   return {
-    title: "Projeler | STD5 - Post Prodüksiyon",
+    title: "Projeler | STD5",
     description: "Color grading, VFX, kurgu, animasyon, video mapping, ses tasarımı, infografik ve daha fazlasıyla buradayız. Portföyümüz her gün büyüyor.",
     keywords: "post prodüksiyon, video düzenleme, sinema, dizi, reklam, belgesel, kurgu, renk düzenleme, ses düzenleme, görsel efektler, motion graphics, animasyon, İstanbul, Türkiye, prodüksiyon şirketi, film prodüksiyon, video prodüksiyon, dijital içerik, streaming platformları, Netflix, Disney+, TRT, Show TV, Kanal D",
     openGraph: {
-      title: "Projeler | STD5 - Post Prodüksiyon",
+      title: "Projeler | STD5",
       description: "Color grading, VFX, kurgu, animasyon, video mapping, ses tasarımı, infografik ve daha fazlasıyla buradayız. Portföyümüz her gün büyüyor.",
       images: [
         {
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: "Projeler | STD5 - Post Prodüksiyon",
+      title: "Projeler | STD5",
       description: "Color grading, VFX, kurgu, animasyon, video mapping, ses tasarımı, infografik ve daha fazlasıyla buradayız. Portföyümüz her gün büyüyor.",
       images: [`${baseUrl}/og-image.png`],
     },

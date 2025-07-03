@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
   return {
-    title: "Hakkında | STD5 - Post Prodüksiyon",
+    title: "Hakkında | STD5",
     description: "İstanbul merkezli STD5, 3 lokasyonda kurgu, ses, renk, dublaj ve VFX hizmetleri sunar; 250'den fazla projeye imza atmıştır.",
     keywords: [
       "STD5 hakkında",
@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "yüksek kalite video"
     ].join(", "),
     openGraph: {
-      title: "Hakkında | STD5 - Post Prodüksiyon",
+      title: "Hakkında | STD5",
       description: "İstanbul merkezli STD5, 3 lokasyonda kurgu, ses, renk, dublaj ve VFX hizmetleri sunar; 250'den fazla projeye imza atmıştır.",
       images: [
         {
@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: "Hakkında | STD5 - Post Prodüksiyon",
+      title: "Hakkında | STD5",
       description: "İstanbul merkezli STD5, 3 lokasyonda kurgu, ses, renk, dublaj ve VFX hizmetleri sunar; 250'den fazla projeye imza atmıştır.",
       images: [`${baseUrl}/og-image.png`],
     },
