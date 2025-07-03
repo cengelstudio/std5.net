@@ -8,13 +8,9 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-      try {
+  try {
     const { slug } = await params;
-
-
-
-
-
+    console.log('API /api/works/[slug] slug:', slug); // DEBUG
     // Read the works.json file
     const filePath = path.join(process.cwd(), 'data', 'works.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
@@ -23,10 +19,14 @@ export async function GET(
     // Find work by title (case insensitive)
     const work = works.find((w: Work) => {
       const workSlug = createSlug(w.title);
+      if (workSlug === slug) {
+        console.log('Eşleşen work bulundu:', w); // DEBUG
+      }
       return workSlug === slug;
     });
 
     if (!work) {
+      console.log('Work bulunamadı!'); // DEBUG
       return NextResponse.json(
         { error: 'Work not found' },
         { status: 404 }
