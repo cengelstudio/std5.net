@@ -1,21 +1,15 @@
 [
   {
-    "name": "Ahmet Yılmaz",
-    "title": "Baş Kurgu Uzmanı",
-    "department": "Kurgu",
-    "image": "https://randomuser.me/api/portraits/men/1.jpg",
-    "linkedin": "https://www.linkedin.com/in/ahmet-yilmaz",
-    "cv": "#"
+    "id": "crew-1",
+    "name": "Metehan Saral",
+    "title": "Yazılım Danışmanlığı",
+    "department": "Destek",
+    "image": "/team/1751598569345.png",
+    "linkedin": "https://creatorstation.com/",
+    "cv": "/team/1751598759709.pdf"
   },
   {
-    "name": "Zeynep Kaya",
-    "title": "Kıdemli Kurgu Uzmanı",
-    "department": "Kurgu",
-    "image": "https://randomuser.me/api/portraits/women/2.jpg",
-    "linkedin": "https://www.linkedin.com/in/zeynep-kaya",
-    "cv": "#"
-  },
-  {
+    "id": "crew-3",
     "name": "Mehmet Demir",
     "title": "Kurgu Uzmanı",
     "department": "Kurgu",
@@ -24,6 +18,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-4",
     "name": "Ayşe Çelik",
     "title": "Kurgu Asistanı",
     "department": "Kurgu",
@@ -32,6 +27,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-5",
     "name": "Mustafa Aydın",
     "title": "Kurgu Asistanı",
     "department": "Kurgu",
@@ -40,6 +36,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-6",
     "name": "Can Öztürk",
     "title": "Baş Renk Uzmanı",
     "department": "Renk",
@@ -48,6 +45,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-7",
     "name": "Elif Yıldız",
     "title": "Kıdemli Renk Uzmanı",
     "department": "Renk",
@@ -56,6 +54,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-8",
     "name": "Burak Şahin",
     "title": "Renk Uzmanı",
     "department": "Renk",
@@ -64,6 +63,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-9",
     "name": "Selin Arslan",
     "title": "Renk Asistanı",
     "department": "Renk",
@@ -72,6 +72,7 @@
     "cv": "#"
   },
   {
+    "id": "crew-10",
     "name": "Emre Koç",
     "title": "Renk Asistanı",
     "department": "Renk",
@@ -326,5 +327,14 @@
     "image": "https://randomuser.me/api/portraits/men/41.jpg",
     "linkedin": "https://www.linkedin.com/in/kuzey-avci",
     "cv": "#"
+  },
+  {
+    "name": "Mustafa Tezcan",
+    "title": "Havuz",
+    "department": "Havuzcu Başı",
+    "image": "/team/1751599035612.PNG",
+    "linkedin": "",
+    "cv": "#",
+    "id": "fea04d8f-4a52-4797-8275-66554d4050be"
   }
 ]

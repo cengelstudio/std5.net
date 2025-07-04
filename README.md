@@ -143,6 +143,31 @@ Smooth animations powered by Framer Motion:
 - Sitemap generation
 - Robots.txt
 
+## Admin Panel & Content Management
+
+### Admin Login
+- Accessible via /admin/login
+- JWT-based session management
+
+### Dashboard
+- Content management panel at /admin/dashboard
+- Full CRUD operations for Projects (works) and Crew Members (crew) tabs
+- Image upload support (JPEG/PNG) for projects and crew members
+- PDF CV upload support for crew members
+- Uploaded images and CVs are automatically saved to the appropriate directory
+- Automatic placeholder is shown if an image fails to load
+
+### API Endpoints
+- /api/admin/works: Project CRUD operations (GET, POST, PUT, DELETE)
+- /api/admin/crew: Crew member CRUD operations (GET, POST, PUT, DELETE)
+- /api/admin/upload: Image and file upload (POST)
+- /api/auth/login: Admin login (POST)
+
+### Usage Notes
+- Admin panel access requires login
+- When uploading images, you can use either a file name or a full path; the system will automatically resolve the correct path
+- If an image is missing or broken, a default placeholder icon will be displayed
+
 ## Acknowledgments
 
 - Built with [Next.js](https://nextjs.org/)
