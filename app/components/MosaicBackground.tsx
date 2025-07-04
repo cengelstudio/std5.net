@@ -79,7 +79,7 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
     const totalCells = ROWS * COLS;
     const imagePromises: Promise<void>[] = [];
 
-    // Create image loading promises
+    // Create image loading promises with better error handling
     let posterIdx = 0;
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
@@ -92,16 +92,23 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
 
         const imagePromise = new Promise<void>((resolve) => {
           const img = new Image();
+          img.crossOrigin = 'anonymous';
 
           img.onload = () => {
-            const { sx, sy, sw, sh } = calculateCropDimensions(
-              img.width,
-              img.height,
-              drawWidth,
-              drawHeight
-            );
+            try {
+              const { sx, sy, sw, sh } = calculateCropDimensions(
+                img.width,
+                img.height,
+                drawWidth,
+                drawHeight
+              );
 
-            ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
+              ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
+            } catch {
+              // Fallback: draw placeholder on error
+              ctx.fillStyle = PLACEHOLDER_COLOR;
+              ctx.fillRect(x, y, drawWidth, drawHeight);
+            }
             loadedImages++;
             resolve();
           };
@@ -125,7 +132,11 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
     // Set fallback timer
     fallbackTimerRef.current = setTimeout(() => {
       if (loadedImages < totalCells) {
-        setImageSrc(canvas.toDataURL('image/png', 0.8));
+        try {
+          setImageSrc(canvas.toDataURL('image/png', 0.8));
+        } catch {
+          console.warn('Failed to generate mosaic data URL');
+        }
         setIsLoading(false);
       }
     }, FALLBACK_TIMEOUT);
@@ -134,9 +145,13 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
     try {
       await Promise.all(imagePromises);
       setImageSrc(canvas.toDataURL('image/png', 0.8));
-    } catch (error) {
+    } catch {
       console.warn('Some images failed to load for mosaic');
-      setImageSrc(canvas.toDataURL('image/png', 0.8));
+      try {
+        setImageSrc(canvas.toDataURL('image/png', 0.8));
+      } catch {
+        console.warn('Failed to generate mosaic data URL');
+      }
     } finally {
       setIsLoading(false);
       if (fallbackTimerRef.current) {

@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://std5.net'
 
   // Read works data
-  let works: any[] = []
+  let works: Array<{ title: string }> = []
   try {
     const filePath = path.join(process.cwd(), 'data', 'works.json')
     const fileContents = fs.readFileSync(filePath, 'utf8')

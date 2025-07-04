@@ -65,7 +65,7 @@ export const staggerChildren = {
 };
 
 // Performance utilities
-export const debounce = <T extends (...args: any[]) => void>(
+export const debounce = <T extends (...args: unknown[]) => void>(
   func: T,
   delay: number
 ): T => {
@@ -76,9 +76,4 @@ export const debounce = <T extends (...args: any[]) => void>(
   }) as T;
 };
 
-// Memory management
-export const useCleanup = (cleanupFn: () => void) => {
-  return () => {
-    cleanupFn();
-  };
-};
+

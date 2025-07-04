@@ -12,6 +12,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "STD5 - Post Prodüksiyon",
   description: "Ekranların arkasındaki yaratıcı güç",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/favicon.png",
+  },
   openGraph: {
     title: "STD5 - Post Prodüksiyon",
     description: "Ekranların arkasındaki yaratıcı güç",
@@ -39,10 +46,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
-        <meta name="robots" content="index, follow" />
-      </head>
       <body>
         <Header />
         <main>{children}</main>

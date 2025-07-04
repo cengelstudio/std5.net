@@ -27,9 +27,6 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Import navItems from constants
-  const navItems = NAV_ITEMS;
-
   return (
     <>
       <motion.nav
@@ -65,7 +62,7 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
-              {navItems.map((item) => {
+              {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.path;
                 return (
                   <motion.div
@@ -129,7 +126,7 @@ export default function Header() {
               className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-white/10"
             >
               <div className="px-4 py-6 space-y-1">
-                {navItems.map((item, index) => {
+                {NAV_ITEMS.map((item, index) => {
                   const isActive = pathname === item.path;
                   return (
                     <motion.div

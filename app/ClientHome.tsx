@@ -2,12 +2,11 @@
 
 import React from 'react';
 import { motion } from "framer-motion";
-import { Play, ArrowRight, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool } from "lucide-react";
+import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool } from "lucide-react";
 import Link from 'next/link';
 import { useMemo, memo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
 import { SERVICES, STATS } from './constants';
-import { fadeInUp } from './utils';
 
 // Service icon mapping for performance
 const SERVICE_ICONS = {
@@ -52,19 +51,7 @@ const ServiceCard = memo(({ service, index }: { service: typeof SERVICES[number]
 
 ServiceCard.displayName = 'ServiceCard';
 
-// Memoized stat card component
-const StatCard = memo(({ stat }: { stat: typeof STATS[0] }) => (
-  <div className="text-center">
-    <div className="text-xl md:text-2xl font-bold text-white mb-1">
-      {stat.number}
-    </div>
-    <div className="text-xs text-gray-400">
-      {stat.label}
-    </div>
-  </div>
-));
 
-StatCard.displayName = 'StatCard';
 
 export default function ClientHome() {
   // Generate a random number for mosaic background - memoized for performance
@@ -117,7 +104,7 @@ export default function ClientHome() {
             </h1>
 
             <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              Sektörün en yüksek standartlarından yararlanmak, yaratıcılığımızla tanışmak istersen; Türkiye'nin en büyüğü olarak buradayız
+              Sektörün en yüksek standartlarından yararlanmak, yaratıcılığımızla tanışmak istersen; Türkiye&apos;nin en büyüğü olarak buradayız
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
@@ -156,14 +143,12 @@ export default function ClientHome() {
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto"
             >
               {STATS.map((stat) => {
-                let href = '/';
-                if (stat.label === 'Tamamlanan Proje') href = '/portfolio';
-                else if (stat.label === 'Yerleşke') href = '/studios';
-                else if (stat.label === 'Stüdyo') href = '/studios';
-                else if (stat.label === 'Yıllık Deneyim') href = '/about';
+                const href = stat.label === 'Tamamlanan Proje' ? '/portfolio' :
+                           stat.label === 'Yerleşke' || stat.label === 'Stüdyo' ? '/studios' :
+                           stat.label === 'Yıllık Deneyim' ? '/about' : '/';
 
                 return (
-                  <Link key={stat.label + '-' + stat.number} href={href}>
+                  <Link key={`${stat.label}-${stat.number}`} href={href}>
                     <motion.div
                       className="text-center cursor-pointer group"
                       whileHover={{ scale: 1.05 }}
