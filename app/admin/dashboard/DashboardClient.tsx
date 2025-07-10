@@ -35,10 +35,11 @@ interface Cat {
 }
 
 export default function DashboardClient() {
-  const [activeTab, setActiveTab] = useState<'works' | 'crew' | 'cats'>('works');
+  const [activeTab, setActiveTab] = useState<'works' | 'crew' | 'cats' | 'featured'>('works');
   const [works, setWorks] = useState<Work[]>([]);
   const [crew, setCrew] = useState<CrewMember[]>([]);
   const [cats, setCats] = useState<Cat[]>([]);
+  const [featuredProjectIds, setFeaturedProjectIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingWork, setEditingWork] = useState<Work | null>(null);
   const [editingCrew, setEditingCrew] = useState<CrewMember | null>(null);
@@ -78,23 +79,30 @@ export default function DashboardClient() {
 
   const fetchData = async () => {
     try {
-      const [worksRes, crewRes, catsRes] = await Promise.all([
+      const [worksRes, crewRes, catsRes, featuredRes] = await Promise.all([
         fetch('/api/admin/works'),
         fetch('/api/admin/crew'),
         fetch('/api/admin/cats', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
           }
+        }),
+        fetch('/api/admin/featured-projects', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+          }
         })
       ]);
 
-      if (worksRes.ok && crewRes.ok && catsRes.ok) {
+      if (worksRes.ok && crewRes.ok && catsRes.ok && featuredRes.ok) {
         const worksData = await worksRes.json();
         const crewData = await crewRes.json();
         const catsData = await catsRes.json();
+        const featuredData = await featuredRes.json();
         setWorks(worksData);
         setCrew(crewData);
         setCats(catsData.cats);
+        setFeaturedProjectIds(featuredData.featuredProjectIds || []);
       }
     } catch (error) {
       console.error('Veri yükleme hatası:', error);
@@ -241,6 +249,49 @@ export default function DashboardClient() {
     setShowCatForm(true);
   };
 
+  const handleFeaturedProjectsUpdate = async (selectedIds: string[]) => {
+    try {
+      const response = await fetch('/api/admin/featured-projects', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: JSON.stringify({ featuredProjectIds: selectedIds }),
+      });
+
+      if (response.ok) {
+        setFeaturedProjectIds(selectedIds);
+        alert('Öne çıkan projeler başarıyla güncellendi!');
+      } else {
+        const errorData = await response.json();
+        alert(`Hata: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Öne çıkan projeler güncelleme hatası:', error);
+      alert('Öne çıkan projeler güncellenirken bir hata oluştu.');
+    }
+  };
+
+  const toggleFeaturedProject = (projectId: string) => {
+    const isCurrentlyFeatured = featuredProjectIds.includes(projectId);
+    let newFeaturedIds: string[];
+
+    if (isCurrentlyFeatured) {
+      // Remove from featured
+      newFeaturedIds = featuredProjectIds.filter(id => id !== projectId);
+    } else {
+      // Add to featured (check if we're at the limit)
+      if (featuredProjectIds.length >= 6) {
+        alert('Maksimum 6 öne çıkan proje seçebilirsiniz.');
+        return;
+      }
+      newFeaturedIds = [...featuredProjectIds, projectId];
+    }
+
+    handleFeaturedProjectsUpdate(newFeaturedIds);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -307,6 +358,16 @@ export default function DashboardClient() {
               >
                 Ofis Kedileri ({cats.length})
               </button>
+              <button
+                onClick={() => setActiveTab('featured')}
+                className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+                  activeTab === 'featured'
+                    ? 'border-gray-900 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Öne Çıkan Projeler ({featuredProjectIds.length}/6)
+              </button>
             </nav>
           </div>
         </div>
@@ -337,7 +398,7 @@ export default function DashboardClient() {
                       <div className="aspect-[2/3] relative">
                         {work.image ? (
                           <img
-                            src={work.image.startsWith('http') ? work.image : `/works/${work.image}`}
+                            src={work.image.startsWith('http') ? work.image : work.image.startsWith('/') ? work.image : `/works/${work.image}`}
                             alt={work.title}
                             className="w-full h-full object-cover"
                             onError={(e) => {
@@ -617,6 +678,98 @@ export default function DashboardClient() {
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Featured Projects Tab */}
+          {activeTab === 'featured' && (
+            <div className="p-6">
+              <div className="mb-6">
+                <h2 className="text-lg font-medium text-gray-900">Öne Çıkan Projeler</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Ana sayfada gösterilecek projeleri seçin (Maksimum 6 adet)
+                </p>
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                  <p className="text-sm text-blue-800">
+                    <strong>Seçili Projeler:</strong> {featuredProjectIds.length}/6
+                  </p>
+                  {featuredProjectIds.length > 0 && (
+                    <p className="text-xs text-blue-600 mt-1">
+                      Seçili projeler ana sayfada bu sırayla gösterilecektir.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                {works.map((work) => {
+                  const isFeatured = featuredProjectIds.includes(work.id);
+                  return (
+                    <div key={work.id} className={`group relative ${isFeatured ? 'ring-2 ring-blue-500' : ''}`}>
+                      <div className="relative bg-gray-200 rounded-md overflow-hidden border border-gray-200">
+                        {/* 2:3 Aspect Ratio Container */}
+                        <div className="aspect-[2/3] relative">
+                          {work.image ? (
+                            <img
+                              src={work.image.startsWith('http') ? work.image : work.image.startsWith('/') ? work.image : `/works/${work.image}`}
+                              alt={work.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik03NSA5MEwxMjUgMTQwTDE3NSA5MFYyMTBIODVWMTMwTDc1IDkwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                          )}
+
+                          {/* Featured Badge */}
+                          {isFeatured && (
+                            <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                              Öne Çıkan
+                            </div>
+                          )}
+
+                          {/* Toggle Button */}
+                          <button
+                            onClick={() => toggleFeaturedProject(work.id)}
+                            className={`absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                              isFeatured
+                                ? 'bg-red-500 hover:bg-red-600 text-white'
+                                : 'bg-white hover:bg-gray-100 text-gray-600'
+                            } shadow-lg`}
+                            title={isFeatured ? 'Öne çıkanlardan çıkar' : 'Öne çıkan yap'}
+                          >
+                            {isFeatured ? (
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            ) : (
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Title and Info */}
+                      <div className="mt-2">
+                        <h3 className="font-medium text-gray-900 text-sm truncate">{work.title}</h3>
+                        <div className="flex items-center text-xs text-gray-500 mt-1">
+                          <span>{work.prod_year}</span>
+                          <span className="mx-1">•</span>
+                          <span className="truncate">{work.platform}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

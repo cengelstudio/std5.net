@@ -1,15 +1,15 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, easeInOut } from "framer-motion";
 import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, Coffee } from "lucide-react";
 import Link from 'next/link';
 import { useMemo, memo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
 import { SERVICES, STATS } from './constants';
-import worksData from '../data/works.json';
 import { createSlug } from './utils';
 import Image from 'next/image';
+import { Work } from '../types';
 
 // Service icon mapping for performance
 const SERVICE_ICONS = {
@@ -64,6 +64,9 @@ ServiceCard.displayName = 'ServiceCard';
 
 
 export default function ClientHome() {
+  const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
+  const [loading, setLoading] = useState(true);
+
   // Generate a random number for mosaic background - memoized for performance
   const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
 
@@ -95,8 +98,23 @@ export default function ClientHome() {
     { ease: easeInOut }
   );
 
-  // Öne çıkan işler: ilk 6 iş (veya rastgele 6 iş seçmek isterseniz değiştirilebilir)
-  const featuredWorks = worksData.slice(0, 6);
+  // Fetch featured projects
+  useEffect(() => {
+    const fetchFeaturedWorks = async () => {
+      try {
+        const response = await fetch('/api/featured-projects');
+        const data = await response.json();
+        setFeaturedWorks(data.works || []);
+      } catch (error) {
+        console.error('Error fetching featured works:', error);
+        setFeaturedWorks([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedWorks();
+  }, []);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -226,25 +244,31 @@ export default function ClientHome() {
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Gündemde Olan Projeler</h2>
           <br />
-          <div className="flex flex-row gap-4 w-full overflow-x-auto pb-2 scrollbar-hide sm:grid sm:grid-cols-3 md:grid-cols-6 sm:gap-4 sm:overflow-x-visible">
-            {featuredWorks.map((work) => (
-              <a
-                key={work.id}
-                href={`/work/${createSlug(work.title)}`}
-                className="relative min-w-[140px] sm:min-w-0 aspect-[2/3] w-[140px] sm:w-full h-auto block group rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300"
-                title={work.title}
-              >
-                <Image
-                  src={work.image}
-                  alt={work.title}
-                  fill
-                  className="object-cover rounded-xl group-hover:opacity-90 transition-opacity duration-300"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                  priority
-                />
-              </a>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-std5-accent"></div>
+            </div>
+          ) : (
+            <div className="flex flex-row gap-4 w-full overflow-x-auto pb-2 scrollbar-hide sm:grid sm:grid-cols-3 md:grid-cols-6 sm:gap-4 sm:overflow-x-visible">
+              {featuredWorks.map((work: Work) => (
+                <a
+                  key={work.id}
+                  href={`/work/${createSlug(work.title)}`}
+                  className="relative min-w-[140px] sm:min-w-0 aspect-[2/3] w-[140px] sm:w-full h-auto block group rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300"
+                  title={work.title}
+                >
+                  <Image
+                    src={work.image}
+                    alt={work.title}
+                    fill
+                    className="object-cover rounded-xl group-hover:opacity-90 transition-opacity duration-300"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                    priority
+                  />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
