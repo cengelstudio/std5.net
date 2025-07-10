@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Pencil, Trash2, Plus, X, Upload } from 'lucide-react';
 
 interface Work {
   id: string;
@@ -25,15 +27,32 @@ interface CrewMember {
   cv: string;
 }
 
+interface Cat {
+  name: string;
+  role: string;
+  about: string;
+  image: string;
+}
+
 export default function DashboardClient() {
-  const [activeTab, setActiveTab] = useState<'works' | 'crew'>('works');
+  const [activeTab, setActiveTab] = useState<'works' | 'crew' | 'cats'>('works');
   const [works, setWorks] = useState<Work[]>([]);
   const [crew, setCrew] = useState<CrewMember[]>([]);
+  const [cats, setCats] = useState<Cat[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingWork, setEditingWork] = useState<Work | null>(null);
   const [editingCrew, setEditingCrew] = useState<CrewMember | null>(null);
+  const [editingCat, setEditingCat] = useState<Cat | null>(null);
   const [showWorkForm, setShowWorkForm] = useState(false);
   const [showCrewForm, setShowCrewForm] = useState(false);
+  const [showCatForm, setShowCatForm] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [catFormData, setCatFormData] = useState<Cat>({
+    name: '',
+    role: '',
+    about: '',
+    image: ''
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -46,18 +65,36 @@ export default function DashboardClient() {
     fetchData();
   }, [router]);
 
+  useEffect(() => {
+    if (editingCat) {
+      setCatFormData({
+        name: editingCat.name || '',
+        role: editingCat.role || '',
+        about: editingCat.about || '',
+        image: editingCat.image || ''
+      });
+    }
+  }, [editingCat]);
+
   const fetchData = async () => {
     try {
-      const [worksRes, crewRes] = await Promise.all([
+      const [worksRes, crewRes, catsRes] = await Promise.all([
         fetch('/api/admin/works'),
-        fetch('/api/admin/crew')
+        fetch('/api/admin/crew'),
+        fetch('/api/admin/cats', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+          }
+        })
       ]);
 
-      if (worksRes.ok && crewRes.ok) {
+      if (worksRes.ok && crewRes.ok && catsRes.ok) {
         const worksData = await worksRes.json();
         const crewData = await crewRes.json();
+        const catsData = await catsRes.json();
         setWorks(worksData);
         setCrew(crewData);
+        setCats(catsData.cats);
       }
     } catch (error) {
       console.error('Veri yükleme hatası:', error);
@@ -119,6 +156,91 @@ export default function DashboardClient() {
     setShowCrewForm(true);
   };
 
+  const handleCatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/admin/cats/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.path) {
+        setCatFormData(prev => ({ ...prev, image: data.path }));
+      }
+    } catch (error) {
+      console.error('Görsel yükleme hatası:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleCatSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const method = editingCat ? 'PUT' : 'POST';
+      const response = await fetch('/api/admin/cats', {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: JSON.stringify(catFormData),
+      });
+
+      if (response.ok) {
+        setShowCatForm(false);
+        setEditingCat(null);
+        setCatFormData({ name: '', role: '', about: '', image: '' });
+        fetchData();
+      }
+    } catch (error) {
+      console.error('Kedi kaydetme hatası:', error);
+    }
+  };
+
+  const handleDeleteCat = async (name: string) => {
+    if (!confirm('Bu kediyi silmek istediğinizden emin misiniz?')) return;
+
+    try {
+      const response = await fetch('/api/admin/cats', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: JSON.stringify({ name }),
+      });
+
+      if (response.ok) {
+        fetchData();
+      }
+    } catch (error) {
+      console.error('Silme hatası:', error);
+    }
+  };
+
+  const openEditCatModal = (cat: Cat) => {
+    setEditingCat(cat);
+    setCatFormData({
+      name: cat.name,
+      role: cat.role,
+      about: cat.about,
+      image: cat.image
+    });
+    setShowCatForm(true);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -174,6 +296,16 @@ export default function DashboardClient() {
                 }`}
               >
                 Ekip Üyeleri ({crew.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('cats')}
+                className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+                  activeTab === 'cats'
+                    ? 'border-gray-900 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Ofis Kedileri ({cats.length})
               </button>
             </nav>
           </div>
@@ -319,6 +451,172 @@ export default function DashboardClient() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Cats Tab */}
+          {activeTab === 'cats' && (
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-lg font-medium text-gray-900">Ofis Kedileri</h2>
+                  <p className="text-sm text-gray-500 mt-1">Ofis kedilerini yönetin</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setEditingCat(null);
+                    setCatFormData({ name: '', role: '', about: '', image: '' });
+                    setShowCatForm(true);
+                  }}
+                  className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  Yeni Kedi
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                {cats.map((cat) => (
+                  <div key={cat.name} className="group">
+                    <div className="relative bg-gray-200 rounded-md overflow-hidden border border-gray-200">
+                      <div className="aspect-square relative">
+                        <Image
+                          src={cat.image}
+                          alt={cat.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <h3 className="font-medium text-gray-900 text-sm truncate">{cat.name}</h3>
+                      <p className="text-gray-500 text-xs mt-1">{cat.role}</p>
+                      <div className="flex gap-2 mt-2">
+                        <button
+                          onClick={() => openEditCatModal(cat)}
+                          className="flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200"
+                        >
+                          <Pencil size={12} />
+                          Düzenle
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCat(cat.name)}
+                          className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded text-xs hover:bg-red-200"
+                        >
+                          <Trash2 size={12} />
+                          Sil
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Cat Form Modal */}
+              {showCatForm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                  <div className="relative top-20 mx-auto p-6 border w-full max-w-2xl shadow-lg rounded-lg bg-white">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-lg font-medium text-gray-900">
+                        {editingCat ? 'Kedi Düzenle' : 'Yeni Kedi'}
+                      </h3>
+                      <button
+                        onClick={() => setShowCatForm(false)}
+                        className="text-gray-400 hover:text-gray-500"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleCatSubmit}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            İsim
+                          </label>
+                          <input
+                            type="text"
+                            value={catFormData.name}
+                            onChange={(e) => setCatFormData({ ...catFormData, name: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Ünvan
+                          </label>
+                          <input
+                            type="text"
+                            value={catFormData.role}
+                            onChange={(e) => setCatFormData({ ...catFormData, role: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            required
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Hakkında
+                          </label>
+                          <textarea
+                            value={catFormData.about}
+                            onChange={(e) => setCatFormData({ ...catFormData, about: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            rows={3}
+                            required
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Görsel
+                          </label>
+                          <div className="mt-1 flex items-center gap-4">
+                            {catFormData.image && (
+                              <div className="relative w-20 h-20 rounded overflow-hidden">
+                                <Image
+                                  src={catFormData.image}
+                                  alt="Preview"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                            <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
+                              <Upload size={16} />
+                              {isUploading ? 'Yükleniyor...' : 'Görsel Yükle'}
+                              <input
+                                type="file"
+                                onChange={handleCatImageUpload}
+                                accept="image/*"
+                                className="hidden"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end space-x-3 mt-6">
+                        <button
+                          type="button"
+                          onClick={() => setShowCatForm(false)}
+                          className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
+                        >
+                          İptal
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 disabled:opacity-50 cursor-pointer"
+                          disabled={isUploading}
+                        >
+                          {editingCat ? 'Güncelle' : 'Ekle'}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

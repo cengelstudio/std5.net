@@ -1,0 +1,34 @@
+{
+  "cats": [
+    {
+      "name": "Fiko",
+      "role": "Temsilci",
+      "about": "Ofisimizin en enerjik üyesi. Her toplantıya katılmayı sever ve çalışanlarımızın moralini yüksek tutmakta uzman.",
+      "image": "/cats/1752104790305-Screenshot 2025-07-10 at 02.45.42.png"
+    },
+    {
+      "name": "Barbo",
+      "role": "Şef",
+      "about": "Mutfak bölümünün vazgeçilmez üyesi. Yemek saatlerini asla kaçırmaz ve kalite kontrolünü titizlikle yapar.",
+      "image": "/cats/1752104849808-Screenshot 2025-07-10 at 02.45.42.png"
+    },
+    {
+      "name": "Luna",
+      "role": "Güvenlik Müdürü",
+      "about": "Ofisimizin gece bekçisi. Özellikle gece vardiyasında üstün performans gösterir.",
+      "image": "/cats/1752104931106-Screenshot 2025-07-10 at 02.45.42.png"
+    },
+    {
+      "name": "Mia",
+      "role": "Halkla İlişkiler Uzmanı",
+      "about": "Misafirlerimizi karşılama konusunda bir numara. Herkesin sevgilisi ve ofisimizin yüzü.",
+      "image": "/cats/1752104936604-Screenshot 2025-07-10 at 02.45.42.png"
+    },
+    {
+      "name": "Leo",
+      "role": "Baş Danışman",
+      "about": "Önemli kararlar alınırken masada mutlaka bulunur. Stratejik düşünme konusunda uzman.",
+      "image": "/cats/1752104942623-Screenshot 2025-07-10 at 02.45.42.png"
+    }
+  ]
+}

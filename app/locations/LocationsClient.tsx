@@ -10,19 +10,22 @@ const locations = [
     id: 1,
     name: "Esentepe",
     icon: <Monitor className="w-8 h-8" />,
-    images: ["/studios/1-1.jpg", "/studios/1-2.jpg", "/studios/1-3.jpg", "/studios/1-4.jpg", "/studios/1-5.jpg", "/studios/1-6.jpg"]
+    images: ["/studios/1-1.jpg", "/studios/1-2.jpg", "/studios/1-3.jpg", "/studios/1-4.jpg", "/studios/1-5.jpg", "/studios/1-6.jpg"],
+    mapsUrl: "https://maps.google.com/?q=STD5+Esentepe+Dergiler+Sokak+No:5+Şişli+İstanbul"
   },
   {
     id: 2,
     name: "Fulyalı",
     icon: <Camera className="w-8 h-8" />,
-    images: ["/studios/2-1.jpg", "/studios/2-2.jpg", "/studios/2-3.jpg", "/studios/2-4.jpg", "/studios/2-5.jpg", "/studios/2-6.jpg"]
+    images: ["/studios/2-1.jpg", "/studios/2-2.jpg", "/studios/2-3.jpg", "/studios/2-4.jpg", "/studios/2-5.jpg", "/studios/2-6.jpg"],
+    mapsUrl: "https://maps.google.com/?q=STD5+Fulyalı+Sokak+No:28+Beşiktaş+İstanbul"
   },
   {
     id: 3,
     name: "Figen",
     icon: <Mic className="w-8 h-8" />,
-    images: ["/studios/3-1.jpg", "/studios/3-2.jpg", "/studios/3-3.jpg", "/studios/3-4.jpg", "/studios/3-5.jpg", "/studios/3-6.jpg"]
+    images: ["/studios/3-1.jpg", "/studios/3-2.jpg", "/studios/3-3.jpg", "/studios/3-4.jpg", "/studios/3-5.jpg", "/studios/3-6.jpg"],
+    mapsUrl: "https://maps.google.com/?q=STD5+Figen+Sokak+No:2+Beşiktaş+İstanbul"
   }
 ];
 
@@ -127,6 +130,12 @@ export default function LocationsClient() {
                 <div className="glass rounded-3xl overflow-hidden transform transition-all duration-700 hover:scale-[1.01] hover:shadow-2xl">
                   {/* Image Slider */}
                   <div className="relative aspect-[21/9] overflow-hidden">
+                    {/* Clickable area for Google Maps */}
+                    <div
+                      onClick={() => window.open(location.mapsUrl, '_blank', 'noopener,noreferrer')}
+                      className="absolute inset-0 z-10 cursor-pointer"
+                    />
+
                     {location.images.map((image, imageIndex) => (
                       <div
                         key={image}
@@ -159,18 +168,24 @@ export default function LocationsClient() {
                     <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"></div>
 
                     {/* Slider Controls */}
-                    <div className="absolute inset-0 flex items-center justify-between p-8">
+                    <div className="absolute inset-0 flex items-center justify-between p-8 z-20 pointer-events-none">
                       <motion.button
-                        onClick={() => prevSlide(location.id)}
-                        className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          prevSlide(location.id);
+                        }}
+                        className="pointer-events-auto w-16 h-16 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-all duration-300 opacity-0 group-hover:opacity-100"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
                         <ChevronLeft className="w-7 h-7" />
                       </motion.button>
                       <motion.button
-                        onClick={() => nextSlide(location.id)}
-                        className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          nextSlide(location.id);
+                        }}
+                        className="pointer-events-auto w-16 h-16 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-all duration-300 opacity-0 group-hover:opacity-100"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -179,12 +194,15 @@ export default function LocationsClient() {
                     </div>
 
                     {/* Slide Indicators */}
-                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4">
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-20 pointer-events-none">
                       {location.images.map((_, imageIndex) => (
                         <button
                           key={imageIndex}
-                          onClick={() => setCurrentSlides(prev => ({ ...prev, [location.id]: imageIndex }))}
-                          className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentSlides(prev => ({ ...prev, [location.id]: imageIndex }));
+                          }}
+                          className={`pointer-events-auto w-4 h-4 rounded-full transition-all duration-300 ${
                             currentSlides[location.id] === imageIndex
                               ? 'bg-std5-accent scale-125 shadow-lg'
                               : 'bg-white/50 hover:bg-white/75'
@@ -194,7 +212,7 @@ export default function LocationsClient() {
                     </div>
 
                     {/* Studio Info Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="absolute bottom-0 left-0 right-0 p-8 z-10">
                       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                         <div>
                           <h2 className="text-5xl md:text-7xl font-bold text-white mb-3 leading-tight">

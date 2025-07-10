@@ -9,6 +9,7 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
   const fallbackTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [images, setImages] = useState<string[]>([...MOCK_IMAGES]);
 
   // Seeded random number generator - memoized
   const seededRandom = useCallback((seedVal: number, increment: number = 1) => {
@@ -63,7 +64,7 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
     if (!ctx) return;
 
     // Shuffle images using seeded random
-    const shuffled = [...MOCK_IMAGES];
+    const shuffled = [...images];
     // Fisher-Yates shuffle with seeded random
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(seededRandom(seed, i) * (i + 1));
@@ -81,6 +82,8 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
 
     // Create image loading promises with better error handling
     let posterIdx = 0;
+    const totalUnique = Math.min(shuffled.length, totalCells);
+    // Her hücreye farklı afiş yerleştir, fazlası için placeholder
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
         const x = col * POSTER_WIDTH + POSTER_MARGIN;
@@ -88,42 +91,49 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
         const drawWidth = POSTER_WIDTH - 2 * POSTER_MARGIN;
         const drawHeight = POSTER_HEIGHT - 2 * POSTER_MARGIN;
 
-        const imageFile = shuffled[posterIdx % shuffled.length];
+        let imagePromise: Promise<void>;
+        if (posterIdx < shuffled.length) {
+          const imageFile = shuffled[posterIdx];
+          imagePromise = new Promise<void>((resolve) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
 
-        const imagePromise = new Promise<void>((resolve) => {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
+            img.onload = () => {
+              try {
+                const { sx, sy, sw, sh } = calculateCropDimensions(
+                  img.width,
+                  img.height,
+                  drawWidth,
+                  drawHeight
+                );
 
-          img.onload = () => {
-            try {
-              const { sx, sy, sw, sh } = calculateCropDimensions(
-                img.width,
-                img.height,
-                drawWidth,
-                drawHeight
-              );
+                ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
+              } catch {
+                ctx.fillStyle = PLACEHOLDER_COLOR;
+                ctx.fillRect(x, y, drawWidth, drawHeight);
+              }
+              loadedImages++;
+              resolve();
+            };
 
-              ctx.drawImage(img, sx, sy, sw, sh, x, y, drawWidth, drawHeight);
-            } catch {
-              // Fallback: draw placeholder on error
+            img.onerror = () => {
               ctx.fillStyle = PLACEHOLDER_COLOR;
               ctx.fillRect(x, y, drawWidth, drawHeight);
-            }
-            loadedImages++;
-            resolve();
-          };
+              loadedImages++;
+              resolve();
+            };
 
-          img.onerror = () => {
-            // Fallback: draw placeholder
+            img.src = `/works/${imageFile}`;
+          });
+        } else {
+          // Fazla hücreler için placeholder
+          imagePromise = new Promise<void>((resolve) => {
             ctx.fillStyle = PLACEHOLDER_COLOR;
             ctx.fillRect(x, y, drawWidth, drawHeight);
             loadedImages++;
             resolve();
-          };
-
-          img.src = `/works/${imageFile}`;
-        });
-
+          });
+        }
         imagePromises.push(imagePromise);
         posterIdx++;
       }
@@ -158,7 +168,23 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
         clearTimeout(fallbackTimerRef.current);
       }
     }
-  }, [seed, seededRandom, calculateCropDimensions]);
+  }, [seed, seededRandom, calculateCropDimensions, images]);
+
+  // Fetch images from API on mount
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/works-images')
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        if (!cancelled && data.images && Array.isArray(data.images) && data.images.length > 0) {
+          setImages(data.images);
+        }
+      })
+      .catch(() => {
+        // fallback: MOCK_IMAGES zaten default
+      });
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -170,7 +196,7 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
         clearTimeout(fallbackTimerRef.current);
       }
     };
-  }, [generateMosaic]);
+  }, [generateMosaic, images]);
 
   return (
     <>
@@ -180,19 +206,26 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
         aria-hidden="true"
       />
       {!isLoading && imageSrc && (
-        <div
-          className={`absolute inset-0 w-full h-full bg-cover bg-center opacity-90 ${className}`}
-          style={{
-            backgroundImage: `url(${imageSrc})`,
-          }}
-          role="img"
-          aria-label="STD5 Works Mosaic Background"
-        />
+        <>
+          <div
+            className={`absolute inset-0 w-full h-full bg-cover bg-center opacity-90 ${className}`}
+            style={{
+              backgroundImage: `url(${imageSrc})`,
+            }}
+            role="img"
+            aria-label="STD5 Works Mosaic Background"
+          />
+          {/* Üstten alta doğru azalan siyah gradient overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 80%, rgba(0,0,0,0) 100%)'
+            }}
+          />
+        </>
       )}
     </>
   );
 });
-
-MosaicBackground.displayName = 'MosaicBackground';
 
 export default MosaicBackground;

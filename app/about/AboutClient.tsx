@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 import { Linkedin, Film, FileText } from 'lucide-react';
 import founders from '../../data/founders.json';
 import crew from '../../data/crew.json';
+import OfficeCats from '../components/OfficeCats';
 
 // Animation variants
 const containerVariants = {
@@ -156,15 +157,6 @@ export default function AboutClient() {
                   {/* Social links ~10% larger */}
                   <div className="flex items-center justify-center gap-3">
                     <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                      title="LinkedIn Profili"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a
                       href={member.imdb}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -190,8 +182,15 @@ export default function AboutClient() {
         </div>
       </section>
 
+      {/* Office Cats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <OfficeCats />
+        </div>
+      </section>
+
       {/* Team Members with department organization */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-std5-darker/50">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-std5-darker/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -252,9 +251,9 @@ export default function AboutClient() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110"
-                      title="LinkedIn Profili"
+                      title="IMDB Profili"
                     >
-                      <Linkedin className="w-4 h-4" />
+                      <Film className="w-4 h-4" />
                     </a>
                     <a
                       href={member.cv}

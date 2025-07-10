@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 import './admin.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -15,6 +16,7 @@ export default function AdminLayout({
 }) {
   return (
     <div className={`${inter.className} admin-layout`}>
+      <Toaster position="top-right" />
       {children}
     </div>
   );

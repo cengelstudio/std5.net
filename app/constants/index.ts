@@ -9,12 +9,12 @@ import {
 
 // UI Constants
 export const MOSAIC_CONFIG: MosaicConfig = {
-  WIDTH: 1920,
-  HEIGHT: 1080,
+  WIDTH: 2560,
+  HEIGHT: 1440,
   POSTER_RATIO: 2 / 3,
   POSTER_HEIGHT: 216,
-  ROWS: 5,
-  POSTER_MARGIN: 3,
+  ROWS: 6,
+  POSTER_MARGIN: 1.5,
   PLACEHOLDER_COLOR: '#222',
   FALLBACK_TIMEOUT: 3000
 } as const;
@@ -52,18 +52,18 @@ export const NAV_ITEMS: readonly NavItem[] = [
 // Services Data
 export const SERVICES: readonly Service[] = [
   {
-    title: 'Kurgu & Montaj',
-    description: 'Yaratıcı kurgu ve montaj hizmetleriyle hikayenizi en iyi şekilde anlatın.',
+    title: 'Kurgu',
+    description: 'Alanında uzman ekibimize projenizi teslim edebilir ya da kendi ekibiniz için kurgu odalarımızdan yararlanabilirsiniz.\nEditShare ve daha fazlası',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Ses Tasarımı',
-    description: 'Duyguyu güçlendiren profesyonel ses tasarımı ve miksaj.',
+    title: 'Ses Tasarımı ve Dublaj',
+    description: 'Türkiye\'nin en iyi Ses Mühendisleri projenize son dokunuşu yapsın.\nDolby Atmos ve daha fazlası',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Renk Düzenleme',
-    description: 'Profesyonel color grading ile projelerinize sinematik bir dokunuş katıyoruz.',
+    title: 'Renk Tasarımı',
+    description: 'En iyi Coloristleri en iyi teknolojiyle buluşturuyoruz.\nHDR Color ve daha fazlası',
     color: COLORS.PRIMARY
   },
   {
@@ -72,23 +72,13 @@ export const SERVICES: readonly Service[] = [
     color: COLORS.ACCENT
   },
   {
-    title: 'Düblaj',
-    description: 'Profesyonel dublaj ve seslendirme hizmetleriyle içeriklerinizi uyarlıyoruz.',
+    title: 'Özel Post Setleri',
+    description: 'Dizinizi yayına yetiştirmeniz gerektiğini anlıyor ve sizi en yeni Mac Studio ile desteklediğimiz Post Prodüksiyon odalarımıza bekliyoruz.',
     color: COLORS.ACCENT
   },
   {
-    title: 'Video Mapping',
-    description: 'Etkinlikleriniz için etkileyici video mapping çözümleri.',
-    color: COLORS.ACCENT
-  },
-  {
-    title: 'Title Sequence',
-    description: 'Dikkat çekici açılış ve jenerik tasarımları.',
-    color: COLORS.PRIMARY
-  },
-  {
-    title: 'İnfografik',
-    description: 'Bilgiyi görselleştiren yaratıcı infografik animasyonlar.',
+    title: 'Kafe',
+    description: 'Ekibinizin ve ekibimizin konforu bizim için çok önemli!!!\nHocam o sahne bağlanmıyorsa gelin bir kahve ikram edelim.',
     color: COLORS.ACCENT
   }
 ] as const;

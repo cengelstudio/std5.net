@@ -1,23 +1,24 @@
 "use client";
 
 import React from 'react';
-import { motion } from "framer-motion";
-import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool } from "lucide-react";
+import { motion, useScroll, useTransform, easeInOut } from "framer-motion";
+import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, Coffee } from "lucide-react";
 import Link from 'next/link';
 import { useMemo, memo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
 import { SERVICES, STATS } from './constants';
+import worksData from '../data/works.json';
+import { createSlug } from './utils';
+import Image from 'next/image';
 
 // Service icon mapping for performance
 const SERVICE_ICONS = {
-  'Renk Düzenleme': Palette,
+  'Kurgu': Film,
+  'Ses Tasarımı ve Dublaj': Music,
+  'Renk Tasarımı': Palette,
   'Görsel Efektler': Sparkles,
-  'Kurgu & Montaj': Film,
-  'Düblaj': Layers,
-  'Ses Tasarımı': Music,
-  'Video Mapping': Monitor,
-  'Title Sequence': Play,
-  'İnfografik': PenTool
+  'Özel Post Setleri': Monitor,
+  'Kafe': Coffee
 } as const;
 
 // Memoized service card component
@@ -42,9 +43,18 @@ const ServiceCard = memo(({ service, index }: { service: typeof SERVICES[number]
       <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-std5-accent transition-colors duration-300">
         {service.title}
       </h3>
-      <p className="text-gray-400 text-sm leading-relaxed">
-        {service.description}
-      </p>
+      <div className="text-sm leading-relaxed">
+        {service.description.split('\n').map((text, i) => (
+          <p key={i} className={i === 0 ? 'text-gray-300 mb-2' : 'text-gray-500 text-xs italic flex items-center'}>
+            {i === 0 ? text : (
+              <>
+                <span className="mr-2 text-gray-500">•</span>
+                {text}
+              </>
+            )}
+          </p>
+        ))}
+      </div>
     </motion.div>
   );
 });
@@ -56,6 +66,37 @@ ServiceCard.displayName = 'ServiceCard';
 export default function ClientHome() {
   // Generate a random number for mosaic background - memoized for performance
   const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
+
+  // Scroll animation setup with smoother transitions
+  const { scrollY } = useScroll();
+
+  // Calculate 6% of viewport height for scroll threshold
+  const scrollThreshold = typeof window !== 'undefined' ? window.innerHeight * 0.06 : 0;
+  const animationLength = 400;
+
+  const titleScale = useTransform(
+    scrollY,
+    [scrollThreshold, scrollThreshold + animationLength],
+    [1, 0.7],
+    { ease: easeInOut }
+  );
+
+  const titleY = useTransform(
+    scrollY,
+    [scrollThreshold, scrollThreshold + animationLength],
+    [0, 100],
+    { ease: easeInOut }
+  );
+
+  const titleOpacity = useTransform(
+    scrollY,
+    [scrollThreshold, scrollThreshold + animationLength],
+    [1, 0],
+    { ease: easeInOut }
+  );
+
+  // Öne çıkan işler: ilk 6 iş (veya rastgele 6 iş seçmek isterseniz değiştirilebilir)
+  const featuredWorks = worksData.slice(0, 6);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -73,7 +114,7 @@ export default function ClientHome() {
             <div
               className="w-full h-full"
               style={{
-                transform: 'rotateX(25deg) rotateY(10deg) rotateZ(-10deg) scale(1.4) translate(120px, 0px)',
+                transform: 'rotateX(25deg) rotateY(10deg) rotateZ(-10deg) scale(2) translate(100px, 10px)',
                 transformOrigin: 'center center',
                 transformStyle: 'preserve-3d'
               }}
@@ -88,17 +129,23 @@ export default function ClientHome() {
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.9) 100%)',
         }} />
         <div className="absolute inset-0" style={{
-          background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.7) 100%)',
+          background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%)',
         }} />
 
         {/* Content */}
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pt-20">
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto flex items-center justify-center h-full">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            style={{
+              scale: titleScale,
+              y: titleY,
+              opacity: titleOpacity
+            }}
+            className="flex flex-col items-center"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+            <h1
+              className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
+              style={{ fontSize: 'clamp(2.2rem, 7vw, 2.8rem)' }} // mobile için büyüt
+            >
               Ekranların arkasındaki<br />
               <span className="text-std5-accent">yaratıcı güç</span>
             </h1>
@@ -107,14 +154,17 @@ export default function ClientHome() {
               Sektörün en yüksek standartlarından yararlanmak, yaratıcılığımızla tanışmak istersen; Türkiye&apos;nin en büyüğü olarak buradayız
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
+            {/* Butonlar: mobilde de yanyana ve spacing optimize */}
+            <div className="flex flex-row gap-2 sm:gap-3 justify-center items-center mb-8 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="flex-1 sm:flex-none min-w-0"
               >
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-base transition-colors duration-300 w-full sm:w-auto justify-center"
+                  className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 whitespace-nowrap sm:whitespace-normal"
+                  style={{ minHeight: 48 }}
                 >
                   <Play className="w-4 h-4" />
                   Projeleri İncele
@@ -124,10 +174,12 @@ export default function ClientHome() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="flex-1 sm:flex-none min-w-0"
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-base transition-colors duration-300 w-full sm:w-auto justify-center backdrop-blur-sm"
+                  className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 backdrop-blur-sm whitespace-nowrap sm:whitespace-normal"
+                  style={{ minHeight: 48 }}
                 >
                   <Mail className="w-4 h-4" />
                   İletişime Geç
@@ -135,12 +187,12 @@ export default function ClientHome() {
               </motion.div>
             </div>
 
-            {/* Stats */}
+            {/* Stats: mobilde daha aşağıda ve spacing daha fazla */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto"
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto mt-8 sm:mt-0"
             >
               {STATS.map((stat) => {
                 const href = stat.label === 'Tamamlanan Proje' ? '/portfolio' :
@@ -169,8 +221,35 @@ export default function ClientHome() {
         </div>
       </section>
 
+      {/* Öne Çıkan İşlerimiz */}
+      <section className="relative z-20 bg-std5-darker py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Gündemde Olan Projeler</h2>
+          <br />
+          <div className="flex flex-row gap-4 w-full overflow-x-auto pb-2 scrollbar-hide sm:grid sm:grid-cols-3 md:grid-cols-6 sm:gap-4 sm:overflow-x-visible">
+            {featuredWorks.map((work) => (
+              <a
+                key={work.id}
+                href={`/work/${createSlug(work.title)}`}
+                className="relative min-w-[140px] sm:min-w-0 aspect-[2/3] w-[140px] sm:w-full h-auto block group rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300"
+                title={work.title}
+              >
+                <Image
+                  src={work.image}
+                  alt={work.title}
+                  fill
+                  className="object-cover rounded-xl group-hover:opacity-90 transition-opacity duration-300"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                  priority
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
-      <section id="services" className="py-16 px-4 sm:px-6 lg:px-8 bg-std5-darker">
+      <section id="services" className="py-7 px-4 sm:px-6 lg:px-8 bg-std5-darker">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -187,7 +266,7 @@ export default function ClientHome() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {SERVICES.map((service, index) => (
               <ServiceCard key={service.title} service={service} index={index} />
             ))}
