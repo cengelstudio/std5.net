@@ -16,6 +16,7 @@ export default function CatsClient() {
   const [cats, setCats] = useState<Cat[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCat, setEditingCat] = useState<Cat | null>(null);
+  const [originalName, setOriginalName] = useState<string>('');
   const [formData, setFormData] = useState<Cat>({
     name: '',
     role: '',
@@ -24,15 +25,35 @@ export default function CatsClient() {
   });
   const [isUploading, setIsUploading] = useState(false);
 
+  // Get auth token from localStorage
+  const getAuthToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('admin-token');
+    }
+    return null;
+  };
+
   useEffect(() => {
     fetchCats();
   }, []);
 
   const fetchCats = async () => {
     try {
-      const response = await fetch('/api/admin/cats');
+      const token = getAuthToken();
+      const response = await fetch('/api/admin/cats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        toast.error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+        window.location.href = '/admin/login';
+        return;
+      }
+
       const data = await response.json();
-      setCats(data.cats);
+      setCats(data.cats || []);
     } catch (error) {
       toast.error('Kedileri yüklerken bir hata oluştu');
     }
@@ -47,10 +68,21 @@ export default function CatsClient() {
     formData.append('file', file);
 
     try {
+      const token = getAuthToken();
       const response = await fetch('/api/admin/cats/upload', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       });
+
+      if (response.status === 401) {
+        toast.error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+        window.location.href = '/admin/login';
+        return;
+      }
+
       const data = await response.json();
 
       if (data.path) {
@@ -68,19 +100,39 @@ export default function CatsClient() {
     e.preventDefault();
 
     try {
+      const token = getAuthToken();
       const method = editingCat ? 'PUT' : 'POST';
-      const response = await fetch('/api/admin/cats', {
+
+      let url = '/api/admin/cats';
+      if (editingCat && originalName) {
+        url += `?originalName=${encodeURIComponent(originalName)}`;
+      }
+
+      const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 401) {
+        toast.error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+        window.location.href = '/admin/login';
+        return;
+      }
 
       if (response.ok) {
         toast.success(editingCat ? 'Kedi güncellendi' : 'Yeni kedi eklendi');
         setIsModalOpen(false);
         setEditingCat(null);
+        setOriginalName('');
         setFormData({ name: '', role: '', about: '', image: '' });
         fetchCats();
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.error || 'Bir hata oluştu');
       }
     } catch (error) {
       toast.error('Bir hata oluştu');
@@ -91,15 +143,28 @@ export default function CatsClient() {
     if (!confirm('Bu kediyi silmek istediğinizden emin misiniz?')) return;
 
     try {
+      const token = getAuthToken();
       const response = await fetch('/api/admin/cats', {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ name }),
       });
+
+      if (response.status === 401) {
+        toast.error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+        window.location.href = '/admin/login';
+        return;
+      }
 
       if (response.ok) {
         toast.success('Kedi silindi');
         fetchCats();
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.error || 'Silme işlemi sırasında bir hata oluştu');
       }
     } catch (error) {
       toast.error('Silme işlemi sırasında bir hata oluştu');
@@ -109,6 +174,7 @@ export default function CatsClient() {
   const openEditModal = (cat: Cat) => {
     setEditingCat(cat);
     setFormData(cat);
+    setOriginalName(cat.name); // Store original name
     setIsModalOpen(true);
   };
 
@@ -120,6 +186,7 @@ export default function CatsClient() {
           onClick={() => {
             setEditingCat(null);
             setFormData({ name: '', role: '', about: '', image: '' });
+            setOriginalName(''); // Reset original name
             setIsModalOpen(true);
           }}
           className="flex items-center gap-2 px-4 py-2 bg-std5-accent text-white rounded-lg hover:bg-std5-accent/80 transition-colors"

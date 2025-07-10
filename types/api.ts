@@ -9,6 +9,7 @@ export interface Work {
   trailer_embed_url: string;
   gallery: string[];
   image: string;
+  client?: string;
 }
 
 export interface WorksResponse {

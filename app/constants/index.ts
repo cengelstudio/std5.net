@@ -40,55 +40,55 @@ export const PAGINATION: PaginationConfig = {
   DEFAULT_PAGE: 1
 } as const;
 
-// Navigation Items
+// Navigation Items - These will be translated using the translation hook
 export const NAV_ITEMS: readonly NavItem[] = [
-  { name: 'Ana Sayfa', path: '/' },
-  { name: 'Hakkımızda', path: '/about' },
-  { name: 'Projeler', path: '/projects' },
-  { name: 'Yerleşkeler', path: '/locations' },
-  { name: 'İletişim', path: '/contact' }
+  { name: 'navigation.home', path: '/' },
+  { name: 'navigation.about', path: '/about' },
+  { name: 'navigation.projects', path: '/projects' },
+  { name: 'navigation.locations', path: '/locations' },
+  { name: 'navigation.contact', path: '/contact' }
 ] as const;
 
-// Services Data
+// Services Data - These will be translated using the translation hook
 export const SERVICES: readonly Service[] = [
   {
-    title: 'Kurgu',
-    description: 'Alanında uzman ekibimize projenizi teslim edebilir ya da kendi ekibiniz için kurgu odalarımızdan yararlanabilirsiniz.\nEditShare ve daha fazlası',
+    title: 'home.services.editing.title',
+    description: 'home.services.editing.description',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Ses Tasarımı ve Dublaj',
-    description: 'Türkiye\'nin en iyi Ses Mühendisleri projenize son dokunuşu yapsın.\nDolby Atmos ve daha fazlası',
+    title: 'home.services.soundDesign.title',
+    description: 'home.services.soundDesign.description',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Renk Tasarımı',
-    description: 'En iyi Coloristleri en iyi teknolojiyle buluşturuyoruz.\nHDR Color ve daha fazlası',
+    title: 'home.services.colorGrading.title',
+    description: 'home.services.colorGrading.description',
     color: COLORS.PRIMARY
   },
   {
-    title: 'Görsel Efektler',
-    description: 'Görsel efekt ve CGI ile hayal gücünüzü gerçeğe dönüştürüyoruz.',
+    title: 'home.services.vfx.title',
+    description: 'home.services.vfx.description',
     color: COLORS.ACCENT
   },
   {
-    title: 'Özel Post Setleri',
-    description: 'Dizinizi yayına yetiştirmeniz gerektiğini anlıyor ve sizi en yeni Mac Studio ile desteklediğimiz Post Prodüksiyon odalarımıza bekliyoruz.',
+    title: 'home.services.postProduction.title',
+    description: 'home.services.postProduction.description',
     color: COLORS.ACCENT
   },
   {
-    title: 'Kafe',
-    description: 'Ekibinizin ve ekibimizin konforu bizim için çok önemli!!!\nHocam o sahne bağlanmıyorsa gelin bir kahve ikram edelim.',
+    title: 'home.services.cafe.title',
+    description: 'home.services.cafe.description',
     color: COLORS.ACCENT
   }
 ] as const;
 
-// Stats Data
+// Stats Data - These will be translated using the translation hook
 export const STATS: readonly Stat[] = [
-  { number: "250+", label: 'Tamamlanan Proje' },
-  { number: "3+", label: 'Yerleşke' },
-  { number: "45+", label: 'Stüdyo' },
-  { number: "8+", label: 'Yıllık Deneyim' },
+  { number: "250+", label: 'home.stats.completedProjects' },
+  { number: "3+", label: 'home.stats.locations' },
+  { number: "45+", label: 'home.stats.studios' },
+  { number: "8+", label: 'home.stats.yearsExperience' },
 ] as const;
 
 // Image paths for mosaic

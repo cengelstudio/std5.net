@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 import { promises as fs } from 'fs';
-import crew from '../../../../data/crew.json';
+import crew from '@/data/crew.json';
 
 function slugify(str: string) {
   return str
@@ -19,9 +19,9 @@ function slugify(str: string) {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { name: string } }
+  { params }: { params: Promise<{ name: string }> }
 ) {
-  const { name } = params;
+  const { name } = await params;
   // Aynı isimli birden fazla kişi varsa -2, -3 gibi id eklenmiş olabilir
   const match = name.match(/^(.*?)(-(\d+))?$/);
   const baseSlug = match ? match[1] : name;

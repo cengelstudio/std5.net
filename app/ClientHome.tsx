@@ -6,64 +6,29 @@ import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, C
 import Link from 'next/link';
 import { useMemo, memo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
-import { SERVICES, STATS } from './constants';
+import { STATS } from './constants';
 import { createSlug } from './utils';
 import Image from 'next/image';
 import { Work } from '../types';
+import { useTranslation } from './hooks/useTranslation';
+import ServiceCard from './components/ServiceCard';
 
 // Service icon mapping for performance
 const SERVICE_ICONS = {
-  'Kurgu': Film,
-  'Ses Tasarımı ve Dublaj': Music,
-  'Renk Tasarımı': Palette,
-  'Görsel Efektler': Sparkles,
-  'Özel Post Setleri': Monitor,
-  'Kafe': Coffee
+  'home.services.editing.title': Film,
+  'home.services.soundDesign.title': Music,
+  'home.services.colorGrading.title': Palette,
+  'home.services.vfx.title': Sparkles,
+  'home.services.postProduction.title': Monitor,
+  'home.services.cafe.title': Coffee
 } as const;
 
 // Memoized service card component
-const ServiceCard = memo(({ service, index }: { service: typeof SERVICES[number], index: number }) => {
-  const IconComponent = SERVICE_ICONS[service.title as keyof typeof SERVICE_ICONS];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="glass rounded-2xl p-6 group hover:bg-white/5 transition-all duration-300 cursor-pointer"
-      whileHover={{ y: -5 }}
-    >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-        style={{ backgroundColor: service.color }}
-      >
-        <IconComponent className="w-6 h-6 text-white" />
-      </div>
-      <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-std5-accent transition-colors duration-300">
-        {service.title}
-      </h3>
-      <div className="text-sm leading-relaxed">
-        {service.description.split('\n').map((text, i) => (
-          <p key={i} className={i === 0 ? 'text-gray-300 mb-2' : 'text-gray-500 text-xs italic flex items-center'}>
-            {i === 0 ? text : (
-              <>
-                <span className="mr-2 text-gray-500">•</span>
-                {text}
-              </>
-            )}
-          </p>
-        ))}
-      </div>
-    </motion.div>
-  );
-});
-
-ServiceCard.displayName = 'ServiceCard';
-
+// ServiceCard tanımını ve memo'yu kaldırıyoruz
 
 
 export default function ClientHome() {
+  const { t, createLocalizedPath } = useTranslation();
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -164,12 +129,12 @@ export default function ClientHome() {
               className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
               style={{ fontSize: 'clamp(2.2rem, 7vw, 2.8rem)' }} // mobile için büyüt
             >
-              Ekranların arkasındaki<br />
-              <span className="text-std5-accent">yaratıcı güç</span>
+              {t('home.hero.title')}<br />
+              <span className="text-std5-accent">{t('home.hero.titleAccent')}</span>
             </h1>
 
             <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              Sektörün en yüksek standartlarından yararlanmak, yaratıcılığımızla tanışmak istersen; Türkiye&apos;nin en büyüğü olarak buradayız
+              {t('home.hero.subtitle')}
             </p>
 
             {/* Butonlar: mobilde de yanyana ve spacing optimize */}
@@ -180,12 +145,12 @@ export default function ClientHome() {
                 className="flex-1 sm:flex-none min-w-0"
               >
                 <Link
-                  href="/portfolio"
+                  href={createLocalizedPath('/projects')}
                   className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 whitespace-nowrap sm:whitespace-normal"
                   style={{ minHeight: 48 }}
                 >
                   <Play className="w-4 h-4" />
-                  Projeleri İncele
+                  {t('home.hero.viewProjects')}
                 </Link>
               </motion.div>
 
@@ -195,12 +160,12 @@ export default function ClientHome() {
                 className="flex-1 sm:flex-none min-w-0"
               >
                 <Link
-                  href="/contact"
+                  href={createLocalizedPath('/contact')}
                   className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 backdrop-blur-sm whitespace-nowrap sm:whitespace-normal"
                   style={{ minHeight: 48 }}
                 >
                   <Mail className="w-4 h-4" />
-                  İletişime Geç
+                  {t('home.hero.contactUs')}
                 </Link>
               </motion.div>
             </div>
@@ -213,9 +178,9 @@ export default function ClientHome() {
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto mt-8 sm:mt-0"
             >
               {STATS.map((stat) => {
-                const href = stat.label === 'Tamamlanan Proje' ? '/portfolio' :
-                           stat.label === 'Yerleşke' || stat.label === 'Stüdyo' ? '/studios' :
-                           stat.label === 'Yıllık Deneyim' ? '/about' : '/';
+                const href = stat.label === t('home.stats.completedProjects') ? createLocalizedPath('/projects') :
+                           stat.label === t('home.stats.locations') || stat.label === t('home.stats.studios') ? createLocalizedPath('/locations') :
+                           stat.label === t('home.stats.yearsExperience') ? createLocalizedPath('/about') : createLocalizedPath('/');
 
                 return (
                   <Link key={`${stat.label}-${stat.number}`} href={href}>
@@ -228,7 +193,7 @@ export default function ClientHome() {
                         {stat.number}
                       </div>
                       <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                        {stat.label}
+                        {t(stat.label)}
                       </div>
                     </motion.div>
                   </Link>
@@ -242,7 +207,7 @@ export default function ClientHome() {
       {/* Öne Çıkan İşlerimiz */}
       <section className="relative z-20 bg-std5-darker py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">Gündemde Olan Projeler</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">{t('home.featuredProjects.title')}</h2>
           <br />
           {loading ? (
             <div className="flex justify-center items-center py-8">
@@ -253,7 +218,7 @@ export default function ClientHome() {
               {featuredWorks.map((work: Work) => (
                 <a
                   key={work.id}
-                  href={`/work/${createSlug(work.title)}`}
+                  href={createLocalizedPath(`/work/${createSlug(work.title)}`)}
                   className="relative min-w-[140px] sm:min-w-0 aspect-[2/3] w-[140px] sm:w-full h-auto block group rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300"
                   title={work.title}
                 >
@@ -283,15 +248,22 @@ export default function ClientHome() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Hizmetlerimiz
+              {t('home.services.title')}
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Post prodüksiyonun tüm alanlarında yaratıcı ve yenilikçi çözümler sunuyoruz.
+              {t('home.services.subtitle')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map((service, index) => (
+            {[
+              { title: t('home.services.editing.title'), description: t('home.services.editing.description'), color: '#430086' },
+              { title: t('home.services.soundDesign.title'), description: t('home.services.soundDesign.description'), color: '#430086' },
+              { title: t('home.services.colorGrading.title'), description: t('home.services.colorGrading.description'), color: '#430086' },
+              { title: t('home.services.vfx.title'), description: t('home.services.vfx.description'), color: '#8b5cf6' },
+              { title: t('home.services.postProduction.title'), description: t('home.services.postProduction.description'), color: '#8b5cf6' },
+              { title: t('home.services.cafe.title'), description: t('home.services.cafe.description'), color: '#8b5cf6' }
+            ].map((service, index) => (
               <ServiceCard key={service.title} service={service} index={index} />
             ))}
           </div>

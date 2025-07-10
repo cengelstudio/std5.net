@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '@/config/auth';
+import { JWT_SECRET } from '../../../../../config/auth';
 
 // Helper function to verify auth token
 async function verifyAuth(request: NextRequest) {

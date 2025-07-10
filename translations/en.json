@@ -1,0 +1,248 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "update": "Update",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "submit": "Submit",
+    "upload": "Upload",
+    "download": "Download",
+    "view": "View",
+    "more": "More",
+    "less": "Less"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "services": "Services",
+    "contact": "Contact",
+    "locations": "Locations",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero": {
+      "title": "The creative power",
+      "titleAccent": "behind the screens",
+      "subtitle": "At the highest industry standards, our creative team offers post-production, editing, sound, color and VFX in 3 locations.",
+      "viewProjects": "View Projects",
+      "contactUs": "Contact Us"
+    },
+    "featuredProjects": {
+      "title": "Featured Projects"
+    },
+    "services": {
+      "title": "Our Services",
+      "subtitle": "We offer creative and innovative solutions in all areas of post-production.",
+      "editing": {
+        "title": "Editing",
+        "description": "You can entrust your project to our expert team or use our editing rooms for your own team.\n• EditShare and more"
+      },
+      "soundDesign": {
+        "title": "Sound Design & Dubbing",
+        "description": "Let Turkey's best Sound Engineers give the final touch to your project.\n• Dolby Atmos and more"
+      },
+      "colorGrading": {
+        "title": "Color Design",
+        "description": "We bring together the best Colorists with the best technology.\n• HDR Color and more"
+      },
+      "vfx": {
+        "title": "Visual Effects",
+        "description": "We take your projects to the next level with state-of-the-art CGI and VFX solutions.\n• Professional VFX team\n• Advanced CGI technology"
+      },
+      "postProduction": {
+        "title": "Special Post Production",
+        "description": "We understand you need to get your series ready for broadcast, and we welcome you to our Post Production rooms supported by the latest Mac Studio."
+      },
+      "cafe": {
+        "title": "Cafe",
+        "description": "The comfort of your team and our team is very important to us!!!\n• If that scene isn't working, let's have a coffee break."
+      }
+    },
+    "stats": {
+      "completedProjects": "Completed Projects",
+      "locations": "Locations",
+      "studios": "Studios",
+      "yearsExperience": "Years of Experience"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "We have completed over 250 projects in editing, color, sound, VFX and more. Our portfolio keeps growing every day.",
+    "searchPlaceholder": "Search projects...",
+    "allPlatforms": "All Platforms",
+    "allYears": "All Years",
+    "filterByPlatform": "Filter by Platform",
+    "filterByYear": "Filter by Year",
+    "clearFilters": "Clear Filters",
+    "noResults": "No results found",
+    "viewProject": "View Project"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Learn more about STD5",
+    "description": "Founded in 2017 in Istanbul, STD5 offers post-production, editing, sound, color, dubbing and VFX in 3 locations, with 250+ projects.",
+    "description2": "With its experienced staff and technological facilities in its studios, it creatively creates <span class=\"font-semibold text-white\">editing</span>, <span class=\"font-semibold text-white\">sound design</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">dubbing</span> and <span class=\"font-semibold text-white\">visual effects</span> and makes them ready for broadcast. Since its establishment, it has signed more than <span class=\"text-std5-accent font-bold text-xl\">250 projects</span>.",
+    "team": "Our Team",
+    "managementTeam": "Management Team",
+    "officeCats": "Our Office Cats",
+    "imdbProfile": "IMDB Profile",
+    "downloadCV": "Download CV",
+    "values": {
+      "title": "Our Values",
+      "creativity": "Creativity",
+      "quality": "Quality",
+      "innovation": "Innovation",
+      "collaboration": "Collaboration"
+    },
+    "founder": "Founder"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "We are always busy, but our guests are a priority. Contact us for editing, sound, color, dubbing, VFX; our team replies fast.",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Your full name",
+      "email": "Email",
+      "emailPlaceholder": "Your email address",
+      "phone": "Phone",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Your message",
+      "send": "Send"
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "workingHours": "Working Hours"
+    }
+  },
+  "locations": {
+    "title": "Locations",
+    "subtitle": "Discover our studios",
+    "description": "In 3 Istanbul locations, our studios have top hardware and software, offering full infrastructure for all post-production stages.",
+    "threeLocations": "3 Locations",
+    "premiumEquipment": "Premium Equipment",
+    "hdrColor": "HDR Color",
+    "dolbyAtmos": "Dolby Atmos Mix",
+    "esentepe": "Esentepe",
+    "fulyali": "Fulyalı",
+    "figen": "Figen",
+    "viewOnMap": "View on Map"
+  },
+  "work": {
+    "contentNotFound": "Content not found",
+    "backToProjects": "Back to Projects",
+    "copiedToClipboard": "Copied to clipboard",
+    "projectDetails": "Project Details",
+    "productionYear": "Production Year",
+    "category": "Category",
+    "platform": "Platform",
+    "watchTrailer": "Watch Trailer",
+    "share": "Share",
+    "gallery": "Gallery",
+    "details": "Project Details",
+    "year": "Production Year",
+    "genre": "Genre",
+    "client": "Client"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "subtitle": "Content Management System",
+    "logout": "Logout",
+    "tabs": {
+      "works": "Projects",
+      "crew": "Team Members",
+      "cats": "Office Cats",
+      "featured": "Featured Projects"
+    },
+    "works": {
+      "title": "Projects",
+      "subtitle": "Manage project content",
+      "addNew": "New Project",
+      "edit": "Edit Project",
+      "delete": "Are you sure you want to delete this project?",
+      "form": {
+        "title": "Title",
+        "description": "Description",
+        "year": "Year",
+        "genre": "Genre",
+        "platform": "Platform",
+        "trailerUrl": "Trailer URL",
+        "image": "Image"
+      }
+    },
+    "crew": {
+      "title": "Team Members",
+      "subtitle": "Manage team members",
+      "addNew": "New Member",
+      "edit": "Edit Member",
+      "delete": "Are you sure you want to delete this team member?",
+      "form": {
+        "name": "Full Name",
+        "title": "Title",
+        "department": "Department",
+        "image": "Image",
+        "linkedin": "LinkedIn",
+        "cv": "CV"
+      }
+    },
+    "cats": {
+      "title": "Office Cats",
+      "subtitle": "Manage office cats",
+      "addNew": "New Cat",
+      "edit": "Edit Cat",
+      "delete": "Are you sure you want to delete this cat?",
+      "form": {
+        "name": "Name",
+        "role": "Role",
+        "about": "About",
+        "image": "Image",
+        "uploadImage": "Upload Image",
+        "uploading": "Uploading..."
+      }
+    },
+    "featured": {
+      "title": "Featured Projects",
+      "subtitle": "Select projects to display on the homepage (Maximum 6 items)",
+      "selectedCount": "Selected Projects",
+      "selectedInfo": "Selected projects will be displayed on the homepage in this order.",
+      "maxLimit": "You can select a maximum of 6 featured projects.",
+      "updateSuccess": "Featured projects updated successfully!",
+      "updateError": "An error occurred while updating featured projects.",
+      "badge": "Featured",
+      "addToFeatured": "Add to featured",
+      "removeFromFeatured": "Remove from featured"
+    },
+    "login": {
+      "title": "Admin Login",
+      "username": "Username",
+      "password": "Password",
+      "login": "Login",
+      "error": "Invalid username or password"
+    }
+  },
+  "footer": {
+    "description": "Full-service post-production company serving local and global entertainment industry based in Istanbul.",
+    "ourLocations": "Our Locations",
+    "explore": "Explore",
+    "copyright": "© 2024 STD5. All rights reserved.",
+    "developedBy": "Developed by",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  }
+}

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, MapPin, Camera, Mic, Monitor, Volume2, Palette } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const locations = [
   {
@@ -30,6 +31,7 @@ const locations = [
 ];
 
 export default function LocationsClient() {
+  const { t } = useTranslation();
   const [currentSlides, setCurrentSlides] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function LocationsClient() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Yerleşkeler
+                {t('locations.title')}
               </motion.h1>
               <motion.div
                 className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
@@ -85,7 +87,7 @@ export default function LocationsClient() {
               />
             </div>
             <p className="text-[20px] md:text-[26px] text-gray-300 max-w-5xl mx-auto">
-              İstanbul'da 3 farklı lokasyonda, post prodüksiyon için gereken tüm altyapıyı incelikle tasarladığımız, alanındaki en iyi donanımları ve yazılımları içeren stüdyolarımızla buradayız.
+              {t('locations.description')}
             </p>
 
             <motion.div
@@ -96,19 +98,19 @@ export default function LocationsClient() {
             >
               <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md">
                 <MapPin className="w-6 h-6 text-std5-accent" />
-                <span className="text-xl font-medium text-white">3 Lokasyon</span>
+                <span className="text-xl font-medium text-white">{t('locations.threeLocations')}</span>
               </div>
               <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md">
                 <Monitor className="w-6 h-6 text-std5-accent" />
-                <span className="text-xl font-medium text-white">Premium Donanım</span>
+                <span className="text-xl font-medium text-white">{t('locations.premiumEquipment')}</span>
               </div>
               <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md">
                 <Palette className="w-6 h-6 text-std5-accent" />
-                <span className="text-xl font-medium text-white">HDR Color</span>
+                <span className="text-xl font-medium text-white">{t('locations.hdrColor')}</span>
               </div>
               <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md">
                 <Volume2 className="w-6 h-6 text-std5-accent" />
-                <span className="text-xl font-medium text-white">Dolby Atmos Mix</span>
+                <span className="text-xl font-medium text-white">{t('locations.dolbyAtmos')}</span>
               </div>
             </motion.div>
           </motion.div>

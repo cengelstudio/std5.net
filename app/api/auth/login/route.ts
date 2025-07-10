@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
       );
     }
   } catch (error) {
+    console.error('Login error:', error);
     return NextResponse.json(
       { message: 'Sunucu hatası' },
       { status: 500 }

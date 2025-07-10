@@ -7,8 +7,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { NAV_ITEMS } from '../constants';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../hooks/useTranslation';
 
 export default function Header() {
+  const { t, createLocalizedPath } = useTranslation();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,7 +51,7 @@ export default function Header() {
               whileTap={{ scale: 0.95 }}
               className="flex items-center"
             >
-              <Link href="/" className="relative">
+              <Link href={createLocalizedPath('/')} className="relative">
                 <Image
                   src="/std5-purple-cropped.png"
                   alt="STD5"
@@ -63,7 +66,8 @@ export default function Header() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {NAV_ITEMS.map((item) => {
-                const isActive = pathname === item.path;
+                const localizedPath = createLocalizedPath(item.path);
+                const isActive = pathname === localizedPath;
                 return (
                   <motion.div
                     key={item.path}
@@ -72,14 +76,14 @@ export default function Header() {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Link
-                      href={item.path}
+                      href={localizedPath}
                       className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
                         isActive
                           ? 'text-std5-accent'
                           : 'text-white hover:text-std5-accent'
                       }`}
                     >
-                      <span className="relative z-10">{item.name}</span>
+                      <span className="relative z-10">{t(item.name)}</span>
 
                       {/* Active indicator */}
                       {isActive && (
@@ -97,6 +101,11 @@ export default function Header() {
                   </motion.div>
                 );
               })}
+
+              {/* Language Switcher */}
+              <div className="ml-4">
+                <LanguageSwitcher />
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -127,7 +136,8 @@ export default function Header() {
             >
               <div className="px-4 py-6 space-y-1">
                 {NAV_ITEMS.map((item, index) => {
-                  const isActive = pathname === item.path;
+                  const localizedPath = createLocalizedPath(item.path);
+                  const isActive = pathname === localizedPath;
                   return (
                     <motion.div
                       key={item.path}
@@ -136,7 +146,7 @@ export default function Header() {
                       transition={{ delay: index * 0.1 }}
                     >
                       <Link
-                        href={item.path}
+                        href={localizedPath}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`block w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-all duration-300 ${
                           isActive
@@ -144,11 +154,21 @@ export default function Header() {
                             : 'text-white hover:text-std5-accent hover:bg-white/5'
                         }`}
                       >
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     </motion.div>
                   );
                 })}
+
+                {/* Mobile Language Switcher */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: NAV_ITEMS.length * 0.1 }}
+                  className="pt-4 border-t border-white/10"
+                >
+                  <LanguageSwitcher />
+                </motion.div>
               </div>
             </motion.div>
           )}

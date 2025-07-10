@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import Image from 'next/image';
 import { useCallback } from 'react';
 import { Linkedin, Film, FileText } from 'lucide-react';
-import founders from '../../data/founders.json';
-import crew from '../../data/crew.json';
-import OfficeCats from '../components/OfficeCats';
+import founders from '@/data/founders.json';
+import crew from '@/data/crew.json';
+import OfficeCats from '../../components/OfficeCats';
+import { useTranslation } from '../../hooks/useTranslation';
 
 // Animation variants
 const containerVariants = {
@@ -33,6 +34,8 @@ const itemVariants = {
 };
 
 export default function AboutClient() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-black to-std5-darker">
       {/* Hero Section with improved design */}
@@ -58,7 +61,7 @@ export default function AboutClient() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Hakkımızda
+                {t('about.title')}
               </motion.h1>
               <motion.div
                 className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
@@ -76,7 +79,7 @@ export default function AboutClient() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                2017 yılında İstanbul'da kurulan STD5, günümüzde 3 farklı lokasyonda, en üst standartlarda post prodüksiyon hizmeti vermektedir.
+                {t('about.description')}
               </motion.p>
 
               <motion.p
@@ -84,17 +87,8 @@ export default function AboutClient() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla{' '}
-                <span className="font-semibold text-white">kurgu</span>,{' '}
-                <span className="font-semibold text-white">ses tasarımı</span>,{' '}
-                <span className="font-semibold text-white">renk</span>,{' '}
-                <span className="font-semibold text-white">dublaj</span> ve{' '}
-                <span className="font-semibold text-white">görsel efektleri</span>{' '}
-                yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri{' '}
-                <span className="text-std5-accent font-bold text-xl">250'den fazla projeye</span>{' '}
-                imzasını atmıştır.
-              </motion.p>
+                dangerouslySetInnerHTML={{ __html: t('about.description2') }}
+              />
             </div>
           </motion.div>
         </div>
@@ -111,7 +105,7 @@ export default function AboutClient() {
             className="text-center mb-16"
           >
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Yönetim Ekibi
+              {t('about.managementTeam')}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent mx-auto rounded-full mb-8" />
           </motion.div>
@@ -152,7 +146,7 @@ export default function AboutClient() {
                     {member.name}
                   </h3>
                   <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 mb-5 text-lg">
-                    {member.title}
+                    {member.title === 'Kurucu' ? t('about.founder') : member.title}
                   </p>
                   {/* Social links ~10% larger */}
                   <div className="flex items-center justify-center gap-3">
@@ -161,7 +155,7 @@ export default function AboutClient() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                      title="IMDB Profili"
+                      title={t('about.imdbProfile')}
                     >
                       <Film className="w-5 h-5" />
                     </a>
@@ -170,7 +164,7 @@ export default function AboutClient() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                      title="CV İndir"
+                      title={t('about.downloadCV')}
                     >
                       <FileText className="w-5 h-5" />
                     </a>
@@ -200,7 +194,7 @@ export default function AboutClient() {
             className="text-center mb-16"
           >
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Ekibimiz
+              {t('about.team')}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent mx-auto rounded-full mb-8" />
           </motion.div>
@@ -251,7 +245,7 @@ export default function AboutClient() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110"
-                      title="IMDB Profili"
+                      title={t('about.imdbProfile')}
                     >
                       <Film className="w-4 h-4" />
                     </a>
@@ -260,7 +254,7 @@ export default function AboutClient() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110"
-                      title="CV İndir"
+                      title={t('about.downloadCV')}
                     >
                       <FileText className="w-4 h-4" />
                     </a>

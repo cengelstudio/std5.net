@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { useState } from 'react';
 import { Send, Phone, Mail, Instagram, Youtube } from 'lucide-react';
-import { ContactFormData, SubmitStatus } from '../../types';
+import { ContactFormData, SubmitStatus } from '../../../types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export default function ContactClient() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -35,7 +37,7 @@ export default function ContactClient() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: ContactFormData) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -56,7 +58,7 @@ export default function ContactClient() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                İletişim
+                {t('contact.title')}
               </motion.h1>
               <motion.div
                 className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 sm:w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
@@ -78,7 +80,7 @@ export default function ContactClient() {
                 {/* Name */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    Ad Soyad
+                    {t('contact.form.name')}
                   </label>
                   <input
                     type="text"
@@ -88,14 +90,14 @@ export default function ContactClient() {
                     onChange={handleChange}
                     required
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder="Adınız ve soyadınız"
+                    placeholder={t('contact.form.namePlaceholder')}
                   />
                 </div>
 
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    E-posta
+                    {t('contact.form.email')}
                   </label>
                   <input
                     type="email"
@@ -105,14 +107,14 @@ export default function ContactClient() {
                     onChange={handleChange}
                     required
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder="E-posta adresiniz"
+                    placeholder={t('contact.form.emailPlaceholder')}
                   />
                 </div>
 
                 {/* Subject */}
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    Konu
+                    {t('contact.form.subject')}
                   </label>
                   <input
                     type="text"
@@ -122,14 +124,14 @@ export default function ContactClient() {
                     onChange={handleChange}
                     required
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder="Mesajınızın konusu"
+                    placeholder={t('contact.form.subjectPlaceholder')}
                   />
                 </div>
 
                 {/* Message */}
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    Mesaj
+                    {t('contact.form.message')}
                   </label>
                   <textarea
                     id="message"
@@ -139,7 +141,7 @@ export default function ContactClient() {
                     required
                     rows={5}
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300 resize-none"
-                    placeholder="Mesajınız"
+                    placeholder={t('contact.form.messagePlaceholder')}
                   />
                 </div>
 
@@ -154,7 +156,7 @@ export default function ContactClient() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Gönder
+                      {t('contact.form.send')}
                     </>
                   )}
                 </button>
@@ -183,7 +185,7 @@ export default function ContactClient() {
             <a href="tel:+902122678094" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">Telefon</span>
+                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">{t('contact.info.phone')}</span>
                 <span className="text-std5-accent text-sm sm:text-lg font-medium">
                   +90 (212) 267 80 94
                 </span>
@@ -193,7 +195,7 @@ export default function ContactClient() {
             <a href="mailto:info@std5.net" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">E-posta</span>
+                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">{t('contact.info.email')}</span>
                 <span className="text-std5-accent text-sm sm:text-lg font-medium">
                   info@std5.net
                 </span>

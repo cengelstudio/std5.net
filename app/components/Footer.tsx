@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin, Instagram, Youtube } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslation } from '../hooks/useTranslation';
 
 const STUDIOS = [
   {
@@ -22,6 +23,8 @@ const STUDIOS = [
 ];
 
 export default function Footer() {
+  const { t, createLocalizedPath } = useTranslation();
+
   return (
     <footer className="relative bg-gradient-to-b from-std5-darker via-black to-black border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -38,7 +41,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-              İstanbul merkezli yerel ve küresel eğlence endüstrisine hizmet veren tam kapasiteli post prodüksiyon şirketi.
+              {t('footer.description')}
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-gray-400 text-sm">
@@ -74,7 +77,7 @@ export default function Footer() {
 
           {/* Studios */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-white">Yerleşkelerimiz</h3>
+            <h3 className="text-xl font-semibold text-white">{t('footer.ourLocations')}</h3>
             <div className="space-y-6">
               {STUDIOS.map((studio) => (
                 <div key={studio.id} className="group cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
@@ -94,17 +97,17 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-white">Keşfet</h3>
+            <h3 className="text-xl font-semibold text-white">{t('footer.explore')}</h3>
             <nav className="grid grid-cols-2 gap-4">
               {[
-                { name: 'Hakkımızda', path: '/about' },
-                { name: 'Projeler', path: '/projects' },
-                { name: 'Yerleşkeler', path: '/locations' },
-                { name: 'İletişim', path: '/contact' }
+                { name: t('navigation.about'), path: '/about' },
+                { name: t('navigation.projects'), path: '/projects' },
+                { name: t('navigation.locations'), path: '/locations' },
+                { name: t('navigation.contact'), path: '/contact' }
               ].map((item) => (
                 <Link
                   key={item.path}
-                  href={item.path}
+                  href={createLocalizedPath(item.path)}
                   className="text-left text-gray-400 hover:text-std5-accent hover:translate-x-1 transition-all duration-300 text-sm py-1"
                 >
                   {item.name}
@@ -118,10 +121,10 @@ export default function Footer() {
         <div className="mt-16 pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 text-sm">
-              © 2024 STD5. Tüm hakları saklıdır.
+              {t('footer.copyright')}
             </p>
                         <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-xs">Developed by</span>
+              <span className="text-gray-500 text-xs">{t('footer.developedBy')}</span>
               <Link
                 href="https://cengel.studio"
                 target="_blank"

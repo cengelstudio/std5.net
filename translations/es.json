@@ -1,0 +1,248 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "add": "Agregar",
+    "update": "Actualizar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "submit": "Enviar",
+    "upload": "Subir",
+    "download": "Descargar",
+    "view": "Ver",
+    "more": "Más",
+    "less": "Menos"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "projects": "Proyectos",
+    "services": "Servicios",
+    "contact": "Contacto",
+    "locations": "Ubicaciones",
+    "admin": "Administración"
+  },
+  "home": {
+    "hero": {
+      "title": "El poder creativo",
+      "titleAccent": "detrás de las pantallas",
+      "subtitle": "Con los más altos estándares de la industria, nuestro equipo creativo ofrece post-producción, edición, sonido, color y VFX en 3 ubicaciones.",
+      "viewProjects": "Ver Proyectos",
+      "contactUs": "Contáctanos"
+    },
+    "featuredProjects": {
+      "title": "Proyectos Destacados"
+    },
+    "services": {
+      "title": "Nuestros Servicios",
+      "subtitle": "Ofrecemos soluciones creativas e innovadoras en todas las áreas de post-producción.",
+      "editing": {
+        "title": "Edición",
+        "description": "Puedes confiar tu proyecto a nuestro equipo experto o usar nuestras salas de edición para tu propio equipo.\n• EditShare y más"
+      },
+      "soundDesign": {
+        "title": "Diseño de Sonido y Doblaje",
+        "description": "Deja que los mejores ingenieros de sonido de Turquía den el toque final a tu proyecto.\n• Dolby Atmos y más"
+      },
+      "colorGrading": {
+        "title": "Diseño de Color",
+        "description": "Reunimos a los mejores coloristas con la mejor tecnología.\n• HDR Color y más"
+      },
+      "vfx": {
+        "title": "Efectos Visuales",
+        "description": "Llevamos tus proyectos al siguiente nivel con soluciones CGI y VFX de última generación.\n• Equipo VFX profesional\n• Tecnología CGI avanzada"
+      },
+      "postProduction": {
+        "title": "Post-Producción Especial",
+        "description": "Entendemos que necesitas preparar tu serie para la transmisión, y te damos la bienvenida a nuestras salas de post-producción equipadas con los últimos Mac Studio."
+      },
+      "cafe": {
+        "title": "Café",
+        "description": "¡El confort de tu equipo y nuestro equipo es muy importante para nosotros!\n• Si esa escena no funciona, tomemos un descanso para café."
+      }
+    },
+    "stats": {
+      "completedProjects": "Proyectos Completados",
+      "locations": "Ubicaciones",
+      "studios": "Estudios",
+      "yearsExperience": "Años de Experiencia"
+    }
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Hemos completado más de 250 proyectos en edición, color, sonido, VFX y más. Nuestro portafolio sigue creciendo cada día.",
+    "searchPlaceholder": "Buscar proyectos...",
+    "allPlatforms": "Todas las Plataformas",
+    "allYears": "Todos los Años",
+    "filterByPlatform": "Filtrar por Plataforma",
+    "filterByYear": "Filtrar por Año",
+    "clearFilters": "Limpiar Filtros",
+    "noResults": "No se encontraron resultados",
+    "viewProject": "Ver Proyecto"
+  },
+  "about": {
+    "title": "Acerca de Nosotros",
+    "subtitle": "Conoce más sobre STD5",
+    "description": "Fundada en 2017 en Estambul, STD5 ofrece post-producción, edición, sonido, color, doblaje y VFX en 3 ubicaciones, con más de 250 proyectos.",
+    "description2": "Con su personal experimentado e instalaciones tecnológicas en sus estudios, crea creativamente <span class=\"font-semibold text-white\">edición</span>, <span class=\"font-semibold text-white\">diseño de sonido</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">doblaje</span> y <span class=\"font-semibold text-white\">efectos visuales</span> y los hace listos para la transmisión. Desde su fundación, ha firmado más de <span class=\"text-std5-accent font-bold text-xl\">250 proyectos</span>.",
+    "team": "Nuestro Equipo",
+    "managementTeam": "Equipo de Gestión",
+    "officeCats": "Nuestros Gatos de Oficina",
+    "imdbProfile": "Perfil IMDB",
+    "downloadCV": "Descargar CV",
+    "values": {
+      "title": "Nuestros Valores",
+      "creativity": "Creatividad",
+      "quality": "Calidad",
+      "innovation": "Innovación",
+      "collaboration": "Colaboración"
+    },
+    "founder": "Fundador"
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Siempre estamos ocupados, pero nuestros invitados son prioritarios. Contáctanos para edición, sonido, color, doblaje, VFX; nuestro equipo responde rápido.",
+    "form": {
+      "name": "Nombre Completo",
+      "namePlaceholder": "Tu nombre completo",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "Tu dirección de correo electrónico",
+      "phone": "Teléfono",
+      "subject": "Asunto",
+      "subjectPlaceholder": "Asunto de tu mensaje",
+      "message": "Mensaje",
+      "messagePlaceholder": "Tu mensaje",
+      "send": "Enviar"
+    },
+    "info": {
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Correo Electrónico",
+      "workingHours": "Horario de Trabajo"
+    }
+  },
+  "locations": {
+    "title": "Ubicaciones",
+    "subtitle": "Descubre nuestros estudios",
+    "description": "En 3 ubicaciones de Estambul, nuestros estudios tienen el mejor hardware y software, ofreciendo infraestructura completa para todas las etapas de post-producción.",
+    "threeLocations": "3 Ubicaciones",
+    "premiumEquipment": "Equipo Premium",
+    "hdrColor": "Color HDR",
+    "dolbyAtmos": "Mezcla Dolby Atmos",
+    "esentepe": "Esentepe",
+    "fulyali": "Fulyalı",
+    "figen": "Figen",
+    "viewOnMap": "Ver en el Mapa"
+  },
+  "work": {
+    "contentNotFound": "Contenido no encontrado",
+    "backToProjects": "Volver a Proyectos",
+    "copiedToClipboard": "Copiado al portapapeles",
+    "projectDetails": "Detalles del Proyecto",
+    "productionYear": "Año de Producción",
+    "category": "Categoría",
+    "platform": "Plataforma",
+    "watchTrailer": "Ver Trailer",
+    "share": "Compartir",
+    "gallery": "Galería",
+    "details": "Detalles del Proyecto",
+    "year": "Año de Producción",
+    "genre": "Género",
+    "client": "Cliente"
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "subtitle": "Sistema de Gestión de Contenido",
+    "logout": "Cerrar Sesión",
+    "tabs": {
+      "works": "Proyectos",
+      "crew": "Miembros del Equipo",
+      "cats": "Gatos de Oficina",
+      "featured": "Proyectos Destacados"
+    },
+    "works": {
+      "title": "Proyectos",
+      "subtitle": "Gestionar contenido de proyectos",
+      "addNew": "Nuevo Proyecto",
+      "edit": "Editar Proyecto",
+      "delete": "¿Estás seguro de que quieres eliminar este proyecto?",
+      "form": {
+        "title": "Título",
+        "description": "Descripción",
+        "year": "Año",
+        "genre": "Género",
+        "platform": "Plataforma",
+        "trailerUrl": "URL del Trailer",
+        "image": "Imagen"
+      }
+    },
+    "crew": {
+      "title": "Miembros del Equipo",
+      "subtitle": "Gestionar miembros del equipo",
+      "addNew": "Nuevo Miembro",
+      "edit": "Editar Miembro",
+      "delete": "¿Estás seguro de que quieres eliminar este miembro del equipo?",
+      "form": {
+        "name": "Nombre Completo",
+        "title": "Título",
+        "department": "Departamento",
+        "image": "Imagen",
+        "linkedin": "LinkedIn",
+        "cv": "CV"
+      }
+    },
+    "cats": {
+      "title": "Gatos de Oficina",
+      "subtitle": "Gestionar gatos de oficina",
+      "addNew": "Nuevo Gato",
+      "edit": "Editar Gato",
+      "delete": "¿Estás seguro de que quieres eliminar este gato?",
+      "form": {
+        "name": "Nombre",
+        "role": "Rol",
+        "about": "Acerca de",
+        "image": "Imagen",
+        "uploadImage": "Subir Imagen",
+        "uploading": "Subiendo..."
+      }
+    },
+    "featured": {
+      "title": "Proyectos Destacados",
+      "subtitle": "Selecciona proyectos para mostrar en la página de inicio (Máximo 6 elementos)",
+      "selectedCount": "Proyectos Seleccionados",
+      "selectedInfo": "Los proyectos seleccionados se mostrarán en la página de inicio en este orden.",
+      "maxLimit": "Puedes seleccionar un máximo de 6 proyectos destacados.",
+      "updateSuccess": "¡Proyectos destacados actualizados exitosamente!",
+      "updateError": "Ocurrió un error al actualizar los proyectos destacados.",
+      "badge": "Destacado",
+      "addToFeatured": "Agregar a destacados",
+      "removeFromFeatured": "Quitar de destacados"
+    },
+    "login": {
+      "title": "Inicio de Sesión de Administrador",
+      "username": "Nombre de Usuario",
+      "password": "Contraseña",
+      "login": "Iniciar Sesión",
+      "error": "Nombre de usuario o contraseña inválidos"
+    }
+  },
+  "footer": {
+    "description": "Empresa de post-producción de servicio completo que sirve a la industria del entretenimiento local y global con sede en Estambul.",
+    "ourLocations": "Nuestras Ubicaciones",
+    "explore": "Explorar",
+    "copyright": "© 2024 STD5. Todos los derechos reservados.",
+    "developedBy": "Desarrollado por",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio"
+  }
+}

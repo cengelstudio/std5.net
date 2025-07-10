@@ -1,0 +1,248 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "add": "Ekle",
+    "update": "Güncelle",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "clear": "Temizle",
+    "submit": "Gönder",
+    "upload": "Yükle",
+    "download": "İndir",
+    "view": "Görüntüle",
+    "more": "Daha Fazla",
+    "less": "Daha Az"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımızda",
+    "projects": "Projeler",
+    "services": "Hizmetler",
+    "contact": "İletişim",
+    "locations": "Yerleşkeler",
+    "admin": "Yönetim"
+  },
+  "home": {
+    "hero": {
+      "title": "Ekranların arkasındaki",
+      "titleAccent": "yaratıcı güç",
+      "subtitle": "Sektörün en yüksek standartlarında, yaratıcı ekibimizle 3 lokasyonda post prodüksiyon, kurgu, ses, renk ve VFX sunuyoruz.",
+      "viewProjects": "Projeleri İncele",
+      "contactUs": "İletişime Geç"
+    },
+    "featuredProjects": {
+      "title": "Gündemde Olan Projeler"
+    },
+    "services": {
+      "title": "Hizmetlerimiz",
+      "subtitle": "Post prodüksiyonun tüm alanlarında yaratıcı ve yenilikçi çözümler sunuyoruz.",
+      "editing": {
+        "title": "Kurgu",
+        "description": "Alanında uzman ekibimize projenizi teslim edebilir ya da kendi ekibiniz için kurgu odalarımızdan yararlanabilirsiniz.\n• EditShare ve daha fazlası"
+      },
+      "soundDesign": {
+        "title": "Ses Tasarımı ve Dublaj",
+        "description": "Türkiye'nin en iyi Ses Mühendisleri projenize son dokunuşu yapsın.\n• Dolby Atmos ve daha fazlası"
+      },
+      "colorGrading": {
+        "title": "Renk Tasarımı",
+        "description": "En iyi Coloristleri en iyi teknolojiyle buluşturuyoruz.\n• HDR Color ve daha fazlası"
+      },
+      "vfx": {
+        "title": "Görsel Efektler",
+        "description": "Son teknoloji CGI ve VFX çözümleriyle projelerinizi bir üst seviyeye taşıyoruz.\n• Profesyonel VFX ekibi\n• İleri düzey CGI teknolojisi"
+      },
+      "postProduction": {
+        "title": "Özel Post Setleri",
+        "description": "Dizinizi yayına yetiştirmeniz gerektiğini anlıyor ve sizi en yeni Mac Studio ile desteklediğimiz Post Prodüksiyon odalarımıza bekliyoruz."
+      },
+      "cafe": {
+        "title": "Kafe",
+        "description": "Ekinizin ve ekibimizin konforu bizim için çok önemli!!!\n• Hocam o sahne bağlanmıyorsa gelin bir kahve ikram edelim."
+      }
+    },
+    "stats": {
+      "completedProjects": "Tamamlanan Proje",
+      "locations": "Yerleşke",
+      "studios": "Stüdyo",
+      "yearsExperience": "Yıllık Deneyim"
+    }
+  },
+  "projects": {
+    "title": "Projeler",
+    "subtitle": "Kurgu, renk, ses, VFX ve daha fazlasında 250’den fazla projeye imza attık. Portföyümüz her geçen gün büyüyor.",
+    "searchPlaceholder": "Proje ara...",
+    "allPlatforms": "Tüm Platformlar",
+    "allYears": "Tüm Yıllar",
+    "filterByPlatform": "Platforma Göre Filtrele",
+    "filterByYear": "Yıla Göre Filtrele",
+    "clearFilters": "Filtreleri Temizle",
+    "noResults": "Sonuç bulunamadı",
+    "viewProject": "Projeyi Görüntüle"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "subtitle": "STD5 hakkında daha fazla bilgi edinin",
+    "description": "2017’de İstanbul’da kurulan STD5, 3 lokasyonda post prodüksiyon, kurgu, ses, renk, dublaj ve VFX hizmetiyle 250+ projeye imza attı.",
+    "description2": "Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla <span class=\"font-semibold text-white\">kurgu</span>, <span class=\"font-semibold text-white\">ses tasarımı</span>, <span class=\"font-semibold text-white\">renk</span>, <span class=\"font-semibold text-white\">dublaj</span> ve <span class=\"font-semibold text-white\">görsel efektleri</span> yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri <span class=\"text-std5-accent font-bold text-xl\">250'den fazla projeye</span> imzasını atmıştır.",
+    "team": "Ekibimiz",
+    "managementTeam": "Yönetim Ekibi",
+    "officeCats": "Ofis Kedilerimiz",
+    "imdbProfile": "IMDB Profili",
+    "downloadCV": "CV İndir",
+    "values": {
+      "title": "Değerlerimiz",
+      "creativity": "Yaratıcılık",
+      "quality": "Kalite",
+      "innovation": "Yenilikçilik",
+      "collaboration": "İşbirliği"
+    },
+    "founder": "Kurucu"
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Her zaman yoğunuz ama misafirlerimiz baş tacı. Kurgu, ses, renk, dublaj ve VFX için bize ulaşın, ekibimiz hızlıca döner.",
+    "form": {
+      "name": "Ad Soyad",
+      "namePlaceholder": "Adınız ve soyadınız",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta adresiniz",
+      "phone": "Telefon",
+      "subject": "Konu",
+      "subjectPlaceholder": "Mesajınızın konusu",
+      "message": "Mesaj",
+      "messagePlaceholder": "Mesajınız",
+      "send": "Gönder"
+    },
+    "info": {
+      "address": "Adres",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "workingHours": "Çalışma Saatleri"
+    }
+  },
+  "locations": {
+    "title": "Yerleşkeler",
+    "subtitle": "Stüdyolarımızı keşfedin",
+    "description": "İstanbul’da 3 lokasyonda, en iyi donanım ve yazılımla donatılmış stüdyolarımızda, post prodüksiyonun her aşaması için altyapı sunuyoruz.",
+    "threeLocations": "3 Lokasyon",
+    "premiumEquipment": "Premium Donanım",
+    "hdrColor": "HDR Color",
+    "dolbyAtmos": "Dolby Atmos Mix",
+    "esentepe": "Esentepe",
+    "fulyali": "Fulyalı",
+    "figen": "Figen",
+    "viewOnMap": "Haritada Görüntüle"
+  },
+  "work": {
+    "contentNotFound": "İçerik bulunamadı",
+    "backToProjects": "Projelere Dön",
+    "copiedToClipboard": "Panoya kopyalandı",
+    "projectDetails": "Proje Detayları",
+    "productionYear": "Yapım Yılı",
+    "category": "Kategori",
+    "platform": "Platform",
+    "watchTrailer": "Fragmanı İzle",
+    "share": "Paylaş",
+    "gallery": "Galeri",
+    "details": "Proje Detayları",
+    "year": "Yapım Yılı",
+    "genre": "Tür",
+    "client": "Müşteri"
+  },
+  "admin": {
+    "title": "Yönetim Paneli",
+    "subtitle": "İçerik Yönetim Sistemi",
+    "logout": "Çıkış Yap",
+    "tabs": {
+      "works": "Projeler",
+      "crew": "Ekip Üyeleri",
+      "cats": "Ofis Kedileri",
+      "featured": "Öne Çıkan Projeler"
+    },
+    "works": {
+      "title": "Projeler",
+      "subtitle": "Proje içeriklerini yönetin",
+      "addNew": "Yeni Proje",
+      "edit": "Proje Düzenle",
+      "delete": "Bu projeyi silmek istediğinizden emin misiniz?",
+      "form": {
+        "title": "Başlık",
+        "description": "Açıklama",
+        "year": "Yıl",
+        "genre": "Tür",
+        "platform": "Platform",
+        "trailerUrl": "Fragman URL",
+        "image": "Görsel"
+      }
+    },
+    "crew": {
+      "title": "Ekip Üyeleri",
+      "subtitle": "Ekip üyelerini yönetin",
+      "addNew": "Yeni Üye",
+      "edit": "Üye Düzenle",
+      "delete": "Bu ekip üyesini silmek istediğinizden emin misiniz?",
+      "form": {
+        "name": "Ad Soyad",
+        "title": "Ünvan",
+        "department": "Departman",
+        "image": "Görsel",
+        "linkedin": "LinkedIn",
+        "cv": "CV"
+      }
+    },
+    "cats": {
+      "title": "Ofis Kedileri",
+      "subtitle": "Ofis kedilerini yönetin",
+      "addNew": "Yeni Kedi",
+      "edit": "Kedi Düzenle",
+      "delete": "Bu kediyi silmek istediğinizden emin misiniz?",
+      "form": {
+        "name": "İsim",
+        "role": "Ünvan",
+        "about": "Hakkında",
+        "image": "Görsel",
+        "uploadImage": "Görsel Yükle",
+        "uploading": "Yükleniyor..."
+      }
+    },
+    "featured": {
+      "title": "Öne Çıkan Projeler",
+      "subtitle": "Ana sayfada gösterilecek projeleri seçin (Maksimum 6 adet)",
+      "selectedCount": "Seçili Projeler",
+      "selectedInfo": "Seçili projeler ana sayfada bu sırayla gösterilecektir.",
+      "maxLimit": "Maksimum 6 öne çıkan proje seçebilirsiniz.",
+      "updateSuccess": "Öne çıkan projeler başarıyla güncellendi!",
+      "updateError": "Öne çıkan projeler güncellenirken bir hata oluştu.",
+      "badge": "Öne Çıkan",
+      "addToFeatured": "Öne çıkan yap",
+      "removeFromFeatured": "Öne çıkanlardan çıkar"
+    },
+    "login": {
+      "title": "Yönetici Girişi",
+      "username": "Kullanıcı Adı",
+      "password": "Şifre",
+      "login": "Giriş Yap",
+      "error": "Kullanıcı adı veya şifre hatalı"
+    }
+  },
+  "footer": {
+    "description": "İstanbul merkezli yerel ve küresel eğlence endüstrisine hizmet veren tam kapasiteli post prodüksiyon şirketi.",
+    "ourLocations": "Yerleşkelerimiz",
+    "explore": "Keşfet",
+    "copyright": "© 2024 STD5. Tüm hakları saklıdır.",
+    "developedBy": "Developed by",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Şartları"
+  }
+}

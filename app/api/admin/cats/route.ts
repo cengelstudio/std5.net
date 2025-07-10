@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '@/config/auth';
+import { JWT_SECRET } from '../../../../config/auth';
 
 const CATS_FILE_PATH = path.join(process.cwd(), 'data', 'cats.json');
 
@@ -81,9 +81,28 @@ export async function PUT(request: NextRequest) {
     const updatedCat = await request.json();
     const data = await readCatsData();
 
-    const index = data.cats.findIndex((cat: any) => cat.name === updatedCat.name);
+    // Find cat by original name (before update)
+    const originalName = request.nextUrl.searchParams.get('originalName');
+    let index = -1;
+
+    console.log('PUT /api/admin/cats - originalName:', originalName);
+    console.log('PUT /api/admin/cats - updatedCat:', updatedCat);
+    console.log('PUT /api/admin/cats - current cats:', data.cats.map((cat: any) => cat.name));
+
+    if (originalName) {
+      // If original name is provided, use it to find the cat
+      index = data.cats.findIndex((cat: any) => cat.name === originalName);
+      console.log('PUT /api/admin/cats - found index by originalName:', index);
+    } else {
+      // Fallback: try to find by current name
+      index = data.cats.findIndex((cat: any) => cat.name === updatedCat.name);
+      console.log('PUT /api/admin/cats - found index by current name:', index);
+    }
+
     if (index === -1) {
-      return NextResponse.json({ error: 'Cat not found' }, { status: 404 });
+      return NextResponse.json({
+        error: `Kedi bulunamadı. Lütfen sayfayı yenileyip tekrar deneyin.`
+      }, { status: 404 });
     }
 
     data.cats[index] = updatedCat;
@@ -91,6 +110,7 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(updatedCat);
   } catch (error) {
+    console.error('PUT /api/admin/cats error:', error);
     return NextResponse.json({ error: 'Failed to update cat' }, { status: 500 });
   }
 }
