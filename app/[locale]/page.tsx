@@ -2,9 +2,9 @@ import ClientHome from '../ClientHome';
 import { Metadata } from 'next';
 
 interface HomePageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {

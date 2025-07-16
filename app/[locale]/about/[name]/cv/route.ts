@@ -28,7 +28,7 @@ export async function GET(
   const index = match && match[3] ? parseInt(match[3], 10) - 1 : 0;
 
   // Ekip üyelerini slug'a çevirip sırayla bul
-  const matches = crew.filter((member: any) => slugify(member.name) === baseSlug);
+  const matches = crew.filter((member: { name: string; cv?: string }) => slugify(member.name) === baseSlug);
   const member = matches[index];
 
   if (!member || !member.cv || member.cv === '#') {
@@ -46,7 +46,7 @@ export async function GET(
         'Content-Disposition': `inline; filename="${path.basename(member.cv)}"`
       }
     });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ message: 'CV dosyası bulunamadı' }, { status: 404 });
   }
 }

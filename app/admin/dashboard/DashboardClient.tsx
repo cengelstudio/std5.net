@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Pencil, Trash2, Plus, X, Upload } from 'lucide-react';
+import { Pencil, Trash2, X, Upload } from 'lucide-react';
 
 interface Work {
   id: string;

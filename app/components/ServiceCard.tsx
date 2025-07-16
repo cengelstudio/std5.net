@@ -1,11 +1,5 @@
 import { motion } from "framer-motion";
 import {
-  Film,
-  Music,
-  Palette,
-  Wand2,
-  MonitorPlay,
-  Coffee,
   Clapperboard,
   Mic2,
   PaintBucket,

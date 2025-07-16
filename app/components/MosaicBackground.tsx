@@ -82,7 +82,6 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
 
     // Create image loading promises with better error handling
     let posterIdx = 0;
-    const totalUnique = Math.min(shuffled.length, totalCells);
     // Her hücreye farklı afiş yerleştir, fazlası için placeholder
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
@@ -227,5 +226,7 @@ const MosaicBackground = memo(({ seed = Date.now(), className = "" }: MosaicBack
     </>
   );
 });
+
+MosaicBackground.displayName = 'MosaicBackground';
 
 export default MosaicBackground;

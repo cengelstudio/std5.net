@@ -46,7 +46,7 @@ export async function GET() {
       const worksData = fs.readFileSync(WORKS_FILE, 'utf8');
       const works: Work[] = JSON.parse(worksData);
       return NextResponse.json({ works: works.slice(0, 6) });
-    } catch (fallbackError) {
+    } catch {
       return NextResponse.json(
         { error: 'Failed to fetch featured projects' },
         { status: 500 }

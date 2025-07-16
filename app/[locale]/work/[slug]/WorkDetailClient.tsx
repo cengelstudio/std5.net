@@ -6,7 +6,6 @@ import { useState } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import { Work } from '../../../../types';
-import { createSlug } from '../../../utils';
 import { useTranslation } from '../../../hooks/useTranslation';
 
 interface WorkDetailClientProps {

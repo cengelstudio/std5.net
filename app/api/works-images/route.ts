@@ -9,7 +9,7 @@ export async function GET() {
     files = await fs.readdir(worksDir);
     // Sadece resim dosyalarını filtrele
     files = files.filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file));
-  } catch (e) {
+  } catch {
     return NextResponse.json({ images: [] }, { status: 500 });
   }
   return NextResponse.json({ images: files });

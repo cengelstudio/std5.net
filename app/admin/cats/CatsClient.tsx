@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Pencil, Trash2, Plus, X, Upload } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -33,11 +33,7 @@ export default function CatsClient() {
     return null;
   };
 
-  useEffect(() => {
-    fetchCats();
-  }, []);
-
-  const fetchCats = async () => {
+  const fetchCats = useCallback(async () => {
     try {
       const token = getAuthToken();
       const response = await fetch('/api/admin/cats', {
@@ -54,10 +50,14 @@ export default function CatsClient() {
 
       const data = await response.json();
       setCats(data.cats || []);
-    } catch (error) {
+    } catch {
       toast.error('Kedileri yüklerken bir hata oluştu');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchCats();
+  }, [fetchCats]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,7 +89,7 @@ export default function CatsClient() {
         setFormData(prev => ({ ...prev, image: data.path }));
         toast.success('Görsel başarıyla yüklendi');
       }
-    } catch (error) {
+    } catch {
       toast.error('Görsel yüklenirken bir hata oluştu');
     } finally {
       setIsUploading(false);
@@ -134,7 +134,7 @@ export default function CatsClient() {
         const errorData = await response.json();
         toast.error(errorData.error || 'Bir hata oluştu');
       }
-    } catch (error) {
+    } catch {
       toast.error('Bir hata oluştu');
     }
   };
@@ -166,7 +166,7 @@ export default function CatsClient() {
         const errorData = await response.json();
         toast.error(errorData.error || 'Silme işlemi sırasında bir hata oluştu');
       }
-    } catch (error) {
+    } catch {
       toast.error('Silme işlemi sırasında bir hata oluştu');
     }
   };

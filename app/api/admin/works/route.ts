@@ -16,17 +16,17 @@ function verifyToken(request: NextRequest) {
   const token = authHeader.substring(7);
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const data = await fs.readFile(worksFilePath, 'utf8');
     const works = JSON.parse(data);
     return NextResponse.json(works);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri okuma hatası' }, { status: 500 });
   }
 }
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     await fs.writeFile(worksFilePath, JSON.stringify(works, null, 2));
     return NextResponse.json(newWork);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri kaydetme hatası' }, { status: 500 });
   }
 }

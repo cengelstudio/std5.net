@@ -2,9 +2,9 @@ import AboutClient from './AboutClient';
 import { Metadata } from 'next';
 
 interface AboutPageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {

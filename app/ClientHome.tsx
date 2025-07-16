@@ -2,30 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, easeInOut } from "framer-motion";
-import { Play, Mail, Palette, Sparkles, Film, Layers, Music, Monitor, PenTool, Coffee } from "lucide-react";
+import { Play, Mail } from "lucide-react";
 import Link from 'next/link';
-import { useMemo, memo } from 'react';
+import { useMemo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
 import { STATS } from './constants';
-import { createSlug } from './utils';
 import Image from 'next/image';
 import { Work } from '../types';
 import { useTranslation } from './hooks/useTranslation';
 import ServiceCard from './components/ServiceCard';
-
-// Service icon mapping for performance
-const SERVICE_ICONS = {
-  'home.services.editing.title': Film,
-  'home.services.soundDesign.title': Music,
-  'home.services.colorGrading.title': Palette,
-  'home.services.vfx.title': Sparkles,
-  'home.services.postProduction.title': Monitor,
-  'home.services.cafe.title': Coffee
-} as const;
-
-// Memoized service card component
-// ServiceCard tanımını ve memo'yu kaldırıyoruz
-
+import { createSlug } from './utils';
 
 export default function ClientHome() {
   const { t, createLocalizedPath } = useTranslation();

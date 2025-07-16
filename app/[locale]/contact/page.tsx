@@ -2,9 +2,9 @@ import ContactClient from './ContactClient';
 import { Metadata } from 'next';
 
 interface ContactPageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ContactPageProps): Promise<Metadata> {

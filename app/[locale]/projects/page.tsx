@@ -2,9 +2,9 @@ import ProjectsClient from './ProjectsClient';
 import { Metadata } from 'next';
 
 interface ProjectsPageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ProjectsPageProps): Promise<Metadata> {

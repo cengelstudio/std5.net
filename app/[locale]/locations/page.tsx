@@ -2,9 +2,9 @@ import LocationsClient from './LocationsClient';
 import { Metadata } from 'next';
 
 interface LocationsPageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: LocationsPageProps): Promise<Metadata> {

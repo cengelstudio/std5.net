@@ -10,8 +10,6 @@ export async function GET(request: Request) {
     const genre = searchParams.get('genre');
     const platform = searchParams.get('platform');
     const year = searchParams.get('year');
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '12');
 
     // Read the works.json file
     const filePath = path.join(process.cwd(), 'data', 'works.json');

@@ -16,7 +16,7 @@ function verifyToken(request: NextRequest) {
   const token = authHeader.substring(7);
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -33,7 +33,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const data = await fs.readFile(crewFilePath, 'utf8');
     const crew = JSON.parse(data);
 
-    const index = crew.findIndex((member: any) => member.id === id);
+    const index = crew.findIndex((member: { id: string }) => member.id === id);
     if (index === -1) {
       return NextResponse.json({ message: 'Ekip üyesi bulunamadı' }, { status: 404 });
     }
@@ -42,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     await fs.writeFile(crewFilePath, JSON.stringify(crew, null, 2));
 
     return NextResponse.json(crew[index]);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri güncelleme hatası' }, { status: 500 });
   }
 }
@@ -58,14 +58,14 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const data = await fs.readFile(crewFilePath, 'utf8');
     const crew = JSON.parse(data);
 
-    const filteredCrew = crew.filter((member: any) => member.id !== id);
+    const filteredCrew = crew.filter((member: { id: string }) => member.id !== id);
     if (filteredCrew.length === crew.length) {
       return NextResponse.json({ message: 'Ekip üyesi bulunamadı' }, { status: 404 });
     }
 
     await fs.writeFile(crewFilePath, JSON.stringify(filteredCrew, null, 2));
     return NextResponse.json({ message: 'Ekip üyesi silindi' });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri silme hatası' }, { status: 500 });
   }
 }

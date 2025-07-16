@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from 'next/image';
-import { useCallback } from 'react';
-import { Linkedin, Film, FileText } from 'lucide-react';
+import { Film, FileText } from 'lucide-react';
 import founders from '@/data/founders.json';
 import crew from '@/data/crew.json';
 import OfficeCats from '../../components/OfficeCats';
@@ -117,7 +116,7 @@ export default function AboutClient() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-3xl mx-auto"
           >
-              {founders.map((member, index) => (
+              {founders.map((member) => (
                 <motion.div
                   key={member.name}
                 variants={itemVariants}
@@ -206,7 +205,7 @@ export default function AboutClient() {
             viewport={{ once: true }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {crew.map((member, index) => (
+            {crew.map((member) => (
               <motion.div
                 key={member.name}
                 variants={itemVariants}

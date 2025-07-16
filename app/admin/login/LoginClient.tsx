@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 export default function LoginClient() {
   const [username, setUsername] = useState('');
@@ -31,7 +30,7 @@ export default function LoginClient() {
         const error = await response.json();
         setError(error.message || 'Giriş başarısız');
       }
-    } catch (err) {
+    } catch {
       setError('Bağlantı hatası');
     } finally {
       setLoading(false);

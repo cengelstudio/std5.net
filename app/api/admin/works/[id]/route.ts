@@ -16,7 +16,7 @@ function verifyToken(request: NextRequest) {
   const token = authHeader.substring(7);
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -33,7 +33,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const data = await fs.readFile(worksFilePath, 'utf8');
     const works = JSON.parse(data);
 
-    const index = works.findIndex((work: any) => work.id === id);
+    const index = works.findIndex((work: { id: string }) => work.id === id);
     if (index === -1) {
       return NextResponse.json({ message: 'Proje bulunamadı' }, { status: 404 });
     }
@@ -42,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     await fs.writeFile(worksFilePath, JSON.stringify(works, null, 2));
 
     return NextResponse.json(works[index]);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri güncelleme hatası' }, { status: 500 });
   }
 }
@@ -58,14 +58,14 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const data = await fs.readFile(worksFilePath, 'utf8');
     const works = JSON.parse(data);
 
-    const filteredWorks = works.filter((work: any) => work.id !== id);
+    const filteredWorks = works.filter((work: { id: string }) => work.id !== id);
     if (filteredWorks.length === works.length) {
       return NextResponse.json({ message: 'Proje bulunamadı' }, { status: 404 });
     }
 
     await fs.writeFile(worksFilePath, JSON.stringify(filteredWorks, null, 2));
     return NextResponse.json({ message: 'Proje silindi' });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Veri silme hatası' }, { status: 500 });
   }
 }

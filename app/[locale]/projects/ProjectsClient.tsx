@@ -4,12 +4,7 @@ import { motion } from "framer-motion";
 import {
   Play,
   Search,
-  ChevronLeft,
-  ChevronRight,
-  Filter,
-  X,
   Calendar,
-  Tag,
   Monitor,
   RotateCcw
 } from "lucide-react";
@@ -17,8 +12,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { createSlug, handleImageError, debounce } from '../../utils';
-import { PAGINATION } from '../../constants';
+import { createSlug, handleImageError } from '../../utils';
 import { Work, WorksResponse } from '../../../types';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -59,15 +53,14 @@ export default function ProjectsClient() {
     fetchWorks();
   }, [fetchWorks]);
 
-  const debouncedSearch = useCallback(
-    debounce((term: unknown) => {
-      setSearchTerm(term as string);
-    }, 300),
-    []
-  );
-
+  // Type-safe debounce for string
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedSearch(e.target.value);
+    const value = e.target.value;
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      setSearchTerm(value);
+    }, 300);
   };
 
   const clearFilters = () => {
@@ -195,7 +188,7 @@ export default function ProjectsClient() {
                           alt={work.title}
                           fill
                           className="object-cover"
-                          onError={(e) => handleImageError(e as any, work.title)}
+                          onError={(e) => handleImageError(e, work.title)}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

@@ -37,17 +37,17 @@ export function useTranslation() {
   const t = useMemo(() => {
     return (key: string, params?: Record<string, string | number>) => {
       const keys = key.split('.');
-      let value: any = translations[locale as Locale] || translations.tr;
+      let value: unknown = translations[locale as Locale] || translations.tr;
 
       for (const k of keys) {
         if (value && typeof value === 'object' && k in value) {
-          value = value[k];
+          value = (value as Record<string, unknown>)[k];
         } else {
           // Fallback to Turkish if key not found
           value = translations.tr;
           for (const fallbackKey of keys) {
             if (value && typeof value === 'object' && fallbackKey in value) {
-              value = value[fallbackKey];
+              value = (value as Record<string, unknown>)[fallbackKey];
             } else {
               return key; // Return key if not found even in fallback
             }

@@ -1,5 +1,3 @@
-import { ImageErrorEvent } from '../../types';
-
 // String utilities
 export const createSlug = (title: string): string => {
   return title
@@ -32,12 +30,12 @@ export const generatePlaceholderSVG = (
 };
 
 export const handleImageError = (
-  e: ImageErrorEvent,
+  e: React.SyntheticEvent<HTMLImageElement, Event>,
   fallbackText: string,
   width: number = 300,
   height: number = 450
 ) => {
-  const target = e.target;
+  const target = e.target as HTMLImageElement;
   target.src = generatePlaceholderSVG(width, height, fallbackText);
 };
 

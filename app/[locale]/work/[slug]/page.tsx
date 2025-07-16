@@ -5,10 +5,10 @@ import path from 'path';
 import { createSlug } from '../../../utils';
 
 interface WorkPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: WorkPageProps): Promise<Metadata> {
