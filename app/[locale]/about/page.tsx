@@ -15,19 +15,22 @@ async function getAboutData() {
     
     const foundersFilePath = path.join(process.cwd(), 'data', 'founders.json');
     const crewFilePath = path.join(process.cwd(), 'data', 'crew.json');
+    const catsFilePath = path.join(process.cwd(), 'data', 'cats.json');
     
-    const [foundersData, crewData] = await Promise.all([
+    const [foundersData, crewData, catsData] = await Promise.all([
       fs.readFile(foundersFilePath, 'utf8'),
-      fs.readFile(crewFilePath, 'utf8')
+      fs.readFile(crewFilePath, 'utf8'),
+      fs.readFile(catsFilePath, 'utf8')
     ]);
     
     return {
       founders: JSON.parse(foundersData),
-      crew: JSON.parse(crewData)
+      crew: JSON.parse(crewData),
+      cats: JSON.parse(catsData).cats || []
     };
   } catch (error) {
     console.error('Error reading about data:', error);
-    return { founders: [], crew: [] };
+    return { founders: [], crew: [], cats: [] };
   }
 }
 
@@ -76,7 +79,7 @@ export default async function About({ params }: AboutPageProps) {
   const { locale } = await params;
   const aboutData = await getAboutData();
   
-  return <AboutClient founders={aboutData.founders} crew={aboutData.crew} locale={locale} />;
+  return <AboutClient founders={aboutData.founders} crew={aboutData.crew} cats={aboutData.cats} locale={locale} />;
 }
 
 // Cache'i devre dışı bırak - her zaman güncel veri

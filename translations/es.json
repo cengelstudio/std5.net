@@ -94,7 +94,7 @@
   "about": {
     "title": "Acerca de Nosotros",
     "subtitle": "Conoce más sobre STD5",
-    "description": "Fundada en Estambul en 2017, STD proporciona servicios de post-producción en los más altos estándares en 3 ubicaciones diferentes hoy en día. Con su personal experimentado y las instalaciones tecnológicas en sus estudios, crea creativamente edición, diseño de sonido, color, doblaje y efectos visuales para películas, series y comerciales y los prepara para la transmisión. Habiendo completado más de 250 proyectos desde su establecimiento, se ha convertido en el estudio de Post Producción más grande de Turquía.",
+    "description": "Fundada en Estambul en 2017, STD5 proporciona servicios de post-producción en los más altos estándares en tres ubicaciones diferentes hoy en día. Con su equipo experimentado y las instalaciones de tecnología avanzada en sus estudios, realiza creativamente edición, diseño de sonido, corrección de color, doblaje y efectos visuales para proyectos de películas, series y comerciales y los prepara para la transmisión. Habiendo completado más de 250 proyectos desde su establecimiento, se ha convertido en uno de los estudios de post-producción más grandes de Turquía.",
     "team": "Nuestro Equipo",
     "managementTeam": "Equipo de Gestión",
     "officeCats": "Gatos de Oficina",
@@ -107,7 +107,8 @@
       "innovation": "Innovación",
       "collaboration": "Colaboración"
     },
-    "founder": "Fundador"
+    "founder": "Fundador",
+    "moreInfo": "Más Info"
   },
   "contact": {
     "title": "Contacto",

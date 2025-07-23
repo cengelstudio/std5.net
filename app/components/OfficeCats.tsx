@@ -4,14 +4,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import cats from '@/data/cats.json';
 import { useTranslation } from '../hooks/useTranslation';
 
 interface Cat {
   id: string;
   name: string;
-  role: { [key: string]: string };
-  about: { [key: string]: string };
+  role: string | { [key: string]: string };
+  about: string | { [key: string]: string };
   image: string;
 }
 
@@ -20,11 +19,16 @@ interface CatModalProps {
   onClose: () => void;
 }
 
+interface OfficeCatsProps {
+  cats: Cat[];
+}
+
 const CatModal = ({ cat, onClose }: CatModalProps) => {
   const { locale } = useTranslation();
 
   // Get the localized text based on current locale
-  const getLocalizedText = (text: { [key: string]: string }) => {
+  const getLocalizedText = (text: string | { [key: string]: string }) => {
+    if (typeof text === 'string') return text;
     return text[locale] || text['en'] || text['tr'] || 'Text not found';
   };
 
@@ -69,7 +73,7 @@ const CatModal = ({ cat, onClose }: CatModalProps) => {
   );
 };
 
-export default function OfficeCats() {
+export default function OfficeCats({ cats }: OfficeCatsProps) {
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
   return (
@@ -81,7 +85,7 @@ export default function OfficeCats() {
         viewport={{ once: true }}
         className="flex flex-wrap md:flex-nowrap gap-4 md:gap-6 justify-center items-center max-w-7xl mx-auto px-4"
       >
-        {cats.cats.map((cat, index) => (
+        {cats.map((cat: Cat, index: number) => (
           <motion.button
             key={cat.name}
             initial={{ opacity: 0, scale: 0.8 }}

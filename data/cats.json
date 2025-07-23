@@ -4,7 +4,7 @@
       "id": "1",
       "name": "Fiko",
       "role": {
-        "tr": "Temsilci 1",
+        "tr": "Başkan",
         "en": "Representative 2",
         "es": "Representante",
         "fr": "Représentant 3",
@@ -19,7 +19,7 @@
         "ru": "Самый энергичный член нашего офиса. Любит посещать все встречи и является экспертом в поддержании высокого морального духа нашего персонала.",
         "ar": "العضو الأكثر نشاطاً في مكتبنا. يحب حضور كل اجتماع وهو خبير في الحفاظ على معنويات موظفينا مرتفعة."
       },
-      "image": "/api/uploads/1753096247015-0c5a1330-b263-45e5-abbc-59d07d28450a.JPG"
+      "image": "/api/uploads/1753306044443-IMG-20241220-WA0010.jpg"
     },
     {
       "id": "2",
@@ -40,32 +40,11 @@
         "ru": "Незаменимый член кухонного отдела. Никогда не пропускает время приема пищи и тщательно выполняет контроль качества.",
         "ar": "العضو الذي لا غنى عنه في قسم المطبخ. لا يفوت أبداً أوقات الوجبات ويقوم بمراقبة الجودة بدقة."
       },
-      "image": "/cats/1752104849808-Screenshot 2025-07-10 at 02.45.42.png"
-    },
-    {
-      "id": "3",
-      "name": "Luna",
-      "role": {
-        "tr": "Güvenlik Müdürü",
-        "en": "Security Manager",
-        "es": "Gerente de Seguridad",
-        "fr": "Directeur de Sécurité",
-        "ru": "Менеджер по безопасности",
-        "ar": "مدير الأمن"
-      },
-      "about": {
-        "tr": "Ofisimizin gece bekçisi. Özellikle gece vardiyasında üstün performans gösterir.",
-        "en": "Our office's night watchman. Shows outstanding performance especially during night shifts.",
-        "es": "El vigilante nocturno de nuestra oficina. Muestra un rendimiento excepcional especialmente durante los turnos nocturnos.",
-        "fr": "Le gardien de nuit de notre bureau. Montre une performance exceptionnelle surtout pendant les quarts de nuit.",
-        "ru": "Ночной сторож нашего офиса. Показывает выдающиеся результаты, особенно во время ночных смен.",
-        "ar": "حارس الليل في مكتبنا. يظهر أداءً استثنائياً خاصة خلال المناوبات الليلية."
-      },
-      "image": "/cats/1752104931106-Screenshot 2025-07-10 at 02.45.42.png"
+      "image": "/api/uploads/1753306916544-kedi.jpeg"
     },
     {
       "id": "4",
-      "name": "Mia",
+      "name": "herhangi bir kedi",
       "role": {
         "tr": "Halkla İlişkiler Uzmanı",
         "en": "Public Relations Specialist",
@@ -82,7 +61,7 @@
         "ru": "Номер один в приветствии наших гостей. Любимица всех и лицо нашего офиса.",
         "ar": "رقم واحد في استقبال ضيوفنا. المفضلة لدى الجميع ووجه مكتبنا."
       },
-      "image": "/cats/1752104936604-Screenshot 2025-07-10 at 02.45.42.png"
+      "image": "/api/uploads/1753311236464-kedi.jpeg"
     },
     {
       "id": "5",

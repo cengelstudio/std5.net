@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from 'next/image';
-import { Film, FileText } from 'lucide-react';
+import { Film, FileText, Info, X } from 'lucide-react';
 import OfficeCats from '../../components/OfficeCats';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -10,6 +11,7 @@ interface Member {
   id: string;
   name: string;
   title: string | { [key: string]: string };
+  about?: string | { [key: string]: string };
   image: string;
   imdb?: string;
   cv?: string | { [key: string]: string };
@@ -17,9 +19,18 @@ interface Member {
   department?: string | { [key: string]: string };
 }
 
+interface Cat {
+  id: string;
+  name: string;
+  role: string;
+  about: string | { [key: string]: string };
+  image: string;
+}
+
 interface AboutClientProps {
   founders: Member[];
   crew: Member[];
+  cats: Cat[];
   locale: string;
 }
 
@@ -47,9 +58,10 @@ const itemVariants = {
   }
 };
 
-export default function AboutClient({ founders, crew, locale: propLocale }: AboutClientProps) {
+export default function AboutClient({ founders, crew, cats, locale: propLocale }: AboutClientProps) {
   const { t } = useTranslation();
   const locale = propLocale;
+  const [selectedFounder, setSelectedFounder] = useState<Member | null>(null);
 
   // Helper fonksiyonlar
   const getLocalizedValue = (value: string | { [key: string]: string } | undefined, fallback = ''): string => {
@@ -173,15 +185,15 @@ export default function AboutClient({ founders, crew, locale: propLocale }: Abou
                     >
                       <Film className="w-4 h-4 md:w-5 md:h-5" />
                     </a>
-                    <a
-                      href={getLocalizedValue(member.cv, '#')}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 md:p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                      title={t('about.downloadCV')}
-                    >
-                      <FileText className="w-4 h-4 md:w-5 md:h-5" />
-                    </a>
+                    {member.about && (
+                      <button
+                        onClick={() => setSelectedFounder(member)}
+                        className="p-2 md:p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                        title={t('about.moreInfo')}
+                      >
+                        <Info className="w-4 h-4 md:w-5 md:h-5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -193,7 +205,7 @@ export default function AboutClient({ founders, crew, locale: propLocale }: Abou
       {/* Office Cats Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <OfficeCats />
+          <OfficeCats cats={cats} />
         </div>
       </section>
 
@@ -276,6 +288,70 @@ export default function AboutClient({ founders, crew, locale: propLocale }: Abou
           </motion.div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {selectedFounder && (
+          <FounderModal founder={selectedFounder} onClose={() => setSelectedFounder(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+interface FounderModalProps {
+  founder: Member;
+  onClose: () => void;
+}
+
+const FounderModal = ({ founder, onClose }: FounderModalProps) => {
+  const locale = useTranslation().locale;
+
+  const getLocalizedValue = (value: string | { [key: string]: string } | undefined, fallback = ''): string => {
+    if (!value) return fallback;
+    if (typeof value === 'string') return value;
+    return value[locale] || value['en'] || value['tr'] || fallback;
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-std5-darker border border-white/10 rounded-2xl p-6 max-w-md w-full relative"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors"
+        >
+          <X size={24} />
+        </button>
+
+        <div className="flex flex-col items-center">
+          <div className="relative h-128 w-128 mb-6">
+            <Image
+              src={founder.image}
+              alt={founder.name}
+              width={128}
+              height={128}
+              className="object-cover h-128 w-128 rounded-full filter grayscale"
+            />
+          </div>
+
+          <h3 className="text-2xl font-bold text-white mb-2">{founder.name}</h3>
+          <p className="text-std5-accent text-lg mb-4">{getLocalizedValue(founder.title)}</p>
+          {founder.about && (
+            <p className="text-gray-300 text-center leading-relaxed">{getLocalizedValue(founder.about)}</p>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};

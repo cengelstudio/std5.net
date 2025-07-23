@@ -46,24 +46,13 @@ interface Founder {
   cv?: string | { [key: string]: string };
 }
 
-interface Contact {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  timestamp: string;
-  status: 'new' | 'read' | 'replied';
-}
-
 export default function DashboardClient() {
-  const [activeTab, setActiveTab] = useState<'works' | 'crew' | 'founders' | 'cats' | 'featured' | 'contacts'>('works');
+  const [activeTab, setActiveTab] = useState<'works' | 'crew' | 'founders' | 'cats' | 'featured'>('works');
   const [works, setWorks] = useState<Work[]>([]);
   const [crew, setCrew] = useState<CrewMember[]>([]);
   const [founders, setFounders] = useState<Founder[]>([]);
   const [cats, setCats] = useState<Cat[]>([]);
   const [featuredProjectIds, setFeaturedProjectIds] = useState<string[]>([]);
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingWork, setEditingWork] = useState<Work | null>(null);
   const [editingCrew, setEditingCrew] = useState<CrewMember | null>(null);
@@ -94,6 +83,38 @@ export default function DashboardClient() {
       ar: ''
     },
     image: ''
+  });
+
+  const [founderFormData, setFounderFormData] = useState<Founder>({
+    id: '',
+    name: '',
+    title: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
+    about: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
+    image: '',
+    linkedin: '',
+    imdb: '',
+    cv: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    }
   });
   const router = useRouter();
 
@@ -129,7 +150,7 @@ export default function DashboardClient() {
 
   const fetchData = async () => {
     try {
-      const [worksRes, crewRes, foundersRes, catsRes, featuredRes, contactsRes] = await Promise.all([
+      const [worksRes, crewRes, foundersRes, catsRes, featuredRes] = await Promise.all([
         fetch('/api/admin/works'),
         fetch('/api/admin/crew'),
         fetch('/api/admin/founders'),
@@ -142,23 +163,20 @@ export default function DashboardClient() {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
           }
-        }),
-        fetch('/api/contact')
+        })
       ]);
 
-      if (worksRes.ok && crewRes.ok && foundersRes.ok && catsRes.ok && featuredRes.ok && contactsRes.ok) {
+      if (worksRes.ok && crewRes.ok && foundersRes.ok && catsRes.ok && featuredRes.ok) {
         const worksData = await worksRes.json();
         const crewData = await crewRes.json();
         const foundersData = await foundersRes.json();
         const catsData = await catsRes.json();
         const featuredData = await featuredRes.json();
-        const contactsData = await contactsRes.json();
         setWorks(worksData);
         setCrew(crewData);
         setFounders(foundersData);
         setCats(catsData.cats);
         setFeaturedProjectIds(featuredData.featuredProjectIds || []);
-        setContacts(contactsData);
       }
     } catch (error) {
       console.error('Veri yükleme hatası:', error);
@@ -220,25 +238,6 @@ export default function DashboardClient() {
     setShowCrewForm(true);
   };
 
-  const handleDeleteFounder = async (id: string) => {
-    if (confirm('Bu kurucuyu silmek istediğinizden emin misiniz?')) {
-      try {
-        const response = await fetch(`/api/admin/founders/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-          }
-        });
-
-        if (response.ok) {
-          setFounders(founders.filter(founder => founder.id !== id));
-        }
-      } catch (error) {
-        console.error('Silme hatası:', error);
-      }
-    }
-  };
-
   const handleEditFounder = (founder: Founder) => {
     setEditingFounder(founder);
     setShowFounderForm(true);
@@ -264,6 +263,34 @@ export default function DashboardClient() {
 
       if (data.path) {
         setCatFormData(prev => ({ ...prev, image: data.path }));
+      }
+    } catch (error) {
+      console.error('Görsel yükleme hatası:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleFounderImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/admin/founders/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.path) {
+        setFounderFormData(prev => ({ ...prev, image: data.path }));
       }
     } catch (error) {
       console.error('Görsel yükleme hatası:', error);
@@ -317,6 +344,54 @@ export default function DashboardClient() {
     }
   };
 
+  const handleFounderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const method = editingFounder ? 'PUT' : 'POST';
+
+      // For new founders, generate an ID
+      const submitData = editingFounder ? founderFormData : { ...founderFormData, id: crypto.randomUUID() };
+
+      console.log('Submitting founder data:', submitData);
+      console.log('Method:', method);
+
+      const response = await fetch('/api/admin/founders', {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        },
+        body: JSON.stringify(submitData),
+      });
+
+      console.log('Response status:', response.status);
+
+      if (response.ok) {
+        setShowFounderForm(false);
+        setEditingFounder(null);
+        setFounderFormData({
+          id: '',
+          name: '',
+          title: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+          about: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+          image: '',
+          linkedin: '',
+          imdb: '',
+          cv: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }
+        });
+        fetchData();
+      } else {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        alert(errorData.error || 'Bir hata oluştu');
+      }
+    } catch (error) {
+      console.error('Kurucu kaydetme hatası:', error);
+      alert('Bir hata oluştu');
+    }
+  };
+
   const handleDeleteCat = async (id: string) => {
     if (!confirm('Bu kediyi silmek istediğinizden emin misiniz?')) return;
 
@@ -328,6 +403,29 @@ export default function DashboardClient() {
           'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
         },
         body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || 'Silme işlemi sırasında bir hata oluştu');
+      }
+    } catch (error) {
+      console.error('Silme hatası:', error);
+      alert('Silme işlemi sırasında bir hata oluştu');
+    }
+  };
+
+  const handleDeleteFounder = async (id: string) => {
+    if (!confirm('Bu kurucuyu silmek istediğinizden emin misiniz?')) return;
+
+    try {
+      const response = await fetch(`/api/admin/founders/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+        }
       });
 
       if (response.ok) {
@@ -360,6 +458,33 @@ export default function DashboardClient() {
       image: cat.image
     });
     setShowCatForm(true);
+  };
+
+  const openEditFounderModal = (founder: Founder) => {
+    setEditingFounder(founder);
+    const aboutData = typeof founder.about === 'string'
+      ? { tr: founder.about, en: '', es: '', fr: '', ru: '', ar: '' }
+      : founder.about;
+
+    const titleData = typeof founder.title === 'string'
+      ? { tr: founder.title, en: '', es: '', fr: '', ru: '', ar: '' }
+      : founder.title;
+
+    const cvData = typeof founder.cv === 'string'
+      ? { tr: founder.cv, en: '', es: '', fr: '', ru: '', ar: '' }
+      : founder.cv;
+
+    setFounderFormData({
+      id: founder.id || '',
+      name: founder.name,
+      title: titleData,
+      about: aboutData,
+      image: founder.image,
+      linkedin: founder.linkedin || '',
+      imdb: founder.imdb || '',
+      cv: cvData
+    });
+    setShowFounderForm(true);
   };
 
   const handleFeaturedProjectsUpdate = async (selectedIds: string[]) => {
@@ -403,48 +528,6 @@ export default function DashboardClient() {
     }
 
     handleFeaturedProjectsUpdate(newFeaturedIds);
-  };
-
-  const handleContactStatusChange = async (contactId: string, newStatus: 'new' | 'read' | 'replied') => {
-    try {
-      const response = await fetch(`/api/contact/${contactId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-        },
-        body: JSON.stringify({ status: newStatus })
-      });
-
-      if (response.ok) {
-        setContacts(contacts.map(contact => 
-          contact.id === contactId ? { ...contact, status: newStatus } : contact
-        ));
-      }
-    } catch (error) {
-      console.error('Contact status update error:', error);
-    }
-  };
-
-  const handleDeleteContact = async (contactId: string) => {
-    if (!confirm('Bu iletişim formunu silmek istediğinizden emin misiniz?')) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/contact/${contactId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-        }
-      });
-
-      if (response.ok) {
-        setContacts(contacts.filter(contact => contact.id !== contactId));
-      }
-    } catch (error) {
-      console.error('Contact deletion error:', error);
-    }
   };
 
   if (loading) {
@@ -532,16 +615,6 @@ export default function DashboardClient() {
                 }`}
               >
                 Öne Çıkan Projeler ({featuredProjectIds.length}/6)
-              </button>
-              <button
-                onClick={() => setActiveTab('contacts')}
-                className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
-                  activeTab === 'contacts'
-                    ? 'border-gray-900 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                İletişim Formları ({contacts.length})
               </button>
             </nav>
           </div>
@@ -706,7 +779,20 @@ export default function DashboardClient() {
                   <p className="text-sm text-gray-500 mt-1">Kurucuları yönetin</p>
                 </div>
                 <button
-                  onClick={() => setShowFounderForm(true)}
+                  onClick={() => {
+                    setEditingFounder(null);
+                    setFounderFormData({
+                      id: '',
+                      name: '',
+                      title: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+                      about: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+                      image: '',
+                      linkedin: '',
+                      imdb: '',
+                      cv: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }
+                    });
+                    setShowFounderForm(true);
+                  }}
                   className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
                 >
                   Yeni Kurucu
@@ -742,15 +828,13 @@ export default function DashboardClient() {
                       <p className="text-xs text-gray-600 mb-1">
                         {typeof founder.title === 'string' ? founder.title : founder.title.tr}
                       </p>
-                      {founder.about && (
-                        <p className="text-xs text-gray-500 mb-1 line-clamp-2">
-                          {typeof founder.about === 'string' ? founder.about : founder.about.tr}
-                        </p>
-                      )}
+                      <p className="text-xs text-gray-500 line-clamp-2">
+                        {typeof founder.about === 'string' ? founder.about : founder.about.tr}
+                      </p>
 
                       <div className="flex space-x-2 mt-3">
                         <button
-                          onClick={() => handleEditFounder(founder)}
+                          onClick={() => openEditFounderModal(founder)}
                           className="flex-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors cursor-pointer"
                         >
                           Düzenle
@@ -1219,93 +1303,338 @@ export default function DashboardClient() {
                           <span>{work.prod_year}</span>
                           <span className="mx-1">•</span>
                           <span className="truncate">{work.platform}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                                </div>
+      </div>
+    </div>
+
+    {/* Founder Form Modal */}
+    {showFounderForm && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-medium text-gray-900">
+                {editingFounder ? 'Kurucu Düzenle' : 'Yeni Kurucu Ekle'}
+              </h3>
+              <button
+                onClick={() => setShowFounderForm(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
             </div>
-          )}
 
-          {/* Contacts Tab */}
-          {activeTab === 'contacts' && (
-            <div className="p-6">
-              <div className="mb-6">
-                <h2 className="text-lg font-medium text-gray-900">İletişim Formları</h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  Gelen iletişim formlarını görüntüleyin ve yönetin
-                </p>
+            <form onSubmit={handleFounderSubmit} className="space-y-6">
+              {/* Temel Bilgiler */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    İsim
+                  </label>
+                  <input
+                    type="text"
+                    value={founderFormData.name}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    LinkedIn
+                  </label>
+                  <input
+                    type="url"
+                    value={founderFormData.linkedin}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, linkedin: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    IMDb
+                  </label>
+                  <input
+                    type="url"
+                    value={founderFormData.imdb}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, imdb: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
               </div>
 
-              {contacts.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
+              {/* Çok Dilli Başlık */}
+              <div className="border-t pt-6 mb-6">
+                <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Başlık</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Türkçe)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.tr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, tr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Henüz iletişim formu yok</h3>
-                  <p className="text-gray-500">İletişim formları burada görüntülenecek.</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {contacts.map((contact) => (
-                    <div key={contact.id} className={`border rounded-lg p-4 ${contact.status === 'new' ? 'border-blue-200 bg-blue-50' : contact.status === 'read' ? 'border-gray-200 bg-gray-50' : 'border-green-200 bg-green-50'}`}>
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <h3 className="font-medium text-gray-900">{contact.name}</h3>
-                          <p className="text-sm text-gray-600">{contact.email}</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className={`px-2 py-1 text-xs rounded-full ${
-                            contact.status === 'new' ? 'bg-blue-100 text-blue-800' :
-                            contact.status === 'read' ? 'bg-gray-100 text-gray-800' :
-                            'bg-green-100 text-green-800'
-                          }`}>
-                            {contact.status === 'new' ? 'Yeni' : contact.status === 'read' ? 'Okundu' : 'Yanıtlandı'}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {new Date(contact.timestamp).toLocaleDateString('tr-TR', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="mb-3">
-                        <h4 className="font-medium text-gray-900 mb-1">Konu: {contact.subject}</h4>
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap">{contact.message}</p>
-                      </div>
 
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleContactStatusChange(contact.id, contact.status === 'new' ? 'read' : contact.status === 'read' ? 'replied' : 'new')}
-                          className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
-                        >
-                          {contact.status === 'new' ? 'Okundu olarak işaretle' : contact.status === 'read' ? 'Yanıtlandı olarak işaretle' : 'Yeni olarak işaretle'}
-                        </button>
-                        <a
-                          href={`mailto:${contact.email}?subject=Re: ${contact.subject}`}
-                          className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
-                        >
-                          E-posta Gönder
-                        </a>
-                        <button
-                          onClick={() => handleDeleteContact(contact.id)}
-                          className="px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
-                        >
-                          Sil
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (İngilizce)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.en}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, en: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (İspanyolca)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.es}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, es: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Fransızca)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.fr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                          : { ...founderFormData.title, fr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Rusça)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.ru}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                          : { ...founderFormData.title, ru: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Arapça)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.ar}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                          : { ...founderFormData.title, ar: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
                 </div>
-              )}
+              </div>
+
+              {/* Çok Dilli Hakkında */}
+              <div className="border-t pt-6 mb-6">
+                <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Hakkında</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Türkçe)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.tr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, tr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (İngilizce)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.en}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, en: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (İspanyolca)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.es}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, es: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Fransızca)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.fr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                          : { ...founderFormData.about, fr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Rusça)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.ru}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                          : { ...founderFormData.about, ru: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Arapça)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.ar}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                          : { ...founderFormData.about, ar: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Görsel */}
+              <div className="border-t pt-6 mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Görsel
+                </label>
+                <div className="mt-1 flex items-center gap-4">
+                  {founderFormData.image && (
+                    <div className="relative w-20 h-20 rounded overflow-hidden">
+                      <Image
+                        src={founderFormData.image}
+                        alt="Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFounderImageUpload}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                    {isUploading && (
+                      <p className="text-sm text-gray-500 mt-1">Yükleniyor...</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end space-x-3 pt-6 border-t">
+                <button
+                  type="button"
+                  onClick={() => setShowFounderForm(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 transition-colors"
+                >
+                  İptal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-md hover:bg-gray-800 transition-colors"
+                >
+                  {editingFounder ? 'Güncelle' : 'Ekle'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )}
+  );
+})}
+              </div>
             </div>
           )}
         </div>
@@ -1347,26 +1676,6 @@ export default function DashboardClient() {
           onCancel={() => {
             setEditingCrew(null);
             setShowCrewForm(false);
-          }}
-        />
-      )}
-
-      {/* Founder Form Modal */}
-      {(showFounderForm || editingFounder) && (
-        <FounderFormModal
-          founder={editingFounder}
-          onSave={(founder) => {
-            if (editingFounder) {
-              setFounders(founders.map(f => f.id === founder.id ? founder : f));
-            } else {
-              setFounders([...founders, founder]);
-            }
-            setEditingFounder(null);
-            setShowFounderForm(false);
-          }}
-          onCancel={() => {
-            setEditingFounder(null);
-            setShowFounderForm(false);
           }}
         />
       )}
@@ -2263,454 +2572,330 @@ function CrewFormModal({
   );
 }
 
-// Founder Form Modal Component
-function FounderFormModal({
-  founder,
-  onSave,
-  onCancel
-}: {
-  founder: Founder | null;
-  onSave: (founder: Founder) => void;
-  onCancel: () => void;
-}) {
-  const [formData, setFormData] = useState<Founder>({
-    id: '',
-    name: '',
-    title: {
-      tr: '',
-      en: '',
-      es: '',
-      fr: '',
-      ru: '',
-      ar: ''
-    },
-    about: {
-      tr: '',
-      en: '',
-      es: '',
-      fr: '',
-      ru: '',
-      ar: ''
-    },
-    image: '',
-    linkedin: '',
-    imdb: '',
-    cv: {
-      tr: '',
-      en: '',
-      es: '',
-      fr: '',
-      ru: '',
-      ar: ''
-    }
-  });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+    {/* Founder Form Modal */}
+    {showFounderForm && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-medium text-gray-900">
+                {editingFounder ? 'Kurucu Düzenle' : 'Yeni Kurucu Ekle'}
+              </h3>
+              <button
+                onClick={() => setShowFounderForm(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
 
-  // Initialize form data when component mounts or founder changes
-  useEffect(() => {
-    if (founder) {
-      const titleData = typeof founder.title === 'string'
-        ? { tr: founder.title, en: '', es: '', fr: '', ru: '', ar: '' }
-        : founder.title;
+            <form onSubmit={handleFounderSubmit} className="space-y-6">
+              {/* Temel Bilgiler */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    İsim
+                  </label>
+                  <input
+                    type="text"
+                    value={founderFormData.name}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    required
+                  />
+                </div>
 
-      const aboutData = typeof founder.about === 'string'
-        ? { tr: founder.about, en: '', es: '', fr: '', ru: '', ar: '' }
-        : founder.about;
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    LinkedIn
+                  </label>
+                  <input
+                    type="url"
+                    value={founderFormData.linkedin}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, linkedin: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
 
-      const cvData = typeof founder.cv === 'string'
-        ? { tr: founder.cv, en: '', es: '', fr: '', ru: '', ar: '' }
-        : founder.cv;
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    IMDb
+                  </label>
+                  <input
+                    type="url"
+                    value={founderFormData.imdb}
+                    onChange={(e) => setFounderFormData({ ...founderFormData, imdb: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+              </div>
 
-      setFormData({
-        ...founder,
-        title: titleData,
-        about: aboutData,
-        cv: cvData
-      });
-    } else {
-      setFormData({
-        id: '',
-        name: '',
-        title: {
-          tr: '',
-          en: '',
-          es: '',
-          fr: '',
-          ru: '',
-          ar: ''
-        },
-        about: {
-          tr: '',
-          en: '',
-          es: '',
-          fr: '',
-          ru: '',
-          ar: ''
-        },
-        image: '',
-        linkedin: '',
-        imdb: '',
-        cv: {
-          tr: '',
-          en: '',
-          es: '',
-          fr: '',
-          ru: '',
-          ar: ''
-        }
-      });
-    }
-  }, [founder]);
+              {/* Çok Dilli Başlık */}
+              <div className="border-t pt-6 mb-6">
+                <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Başlık</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Türkçe)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.tr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, tr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (İngilizce)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.en}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, en: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
 
-    try {
-      let imageUrl = formData.image;
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (İspanyolca)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.es}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.title, es: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
 
-      if (imageFile) {
-        const formDataUpload = new FormData();
-        formDataUpload.append('file', imageFile);
-        formDataUpload.append('type', 'founder');
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Fransızca)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.fr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                          : { ...founderFormData.title, fr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
 
-        const uploadResponse = await fetch('/api/admin/upload', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-          },
-          body: formDataUpload
-        });
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Rusça)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.ru}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                          : { ...founderFormData.title, ru: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
 
-        if (uploadResponse.ok) {
-          const uploadData = await uploadResponse.json();
-          imageUrl = uploadData.url;
-        }
-      }
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Başlık (Arapça)
+                    </label>
+                    <input
+                      type="text"
+                      value={typeof founderFormData.title === 'string' ? '' : founderFormData.title.ar}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        title: typeof founderFormData.title === 'string'
+                          ? { tr: founderFormData.title, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                          : { ...founderFormData.title, ar: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                  </div>
+                </div>
+              </div>
 
-      const method = founder ? 'PUT' : 'POST';
-      const url = founder ? `/api/admin/founders/${founder.id}` : '/api/admin/founders';
+              {/* Çok Dilli Hakkında */}
+              <div className="border-t pt-6 mb-6">
+                <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Hakkında</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Türkçe)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.tr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, tr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-        },
-        body: JSON.stringify({
-          ...formData,
-          image: imageUrl
-        })
-      });
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (İngilizce)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.en}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, en: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
 
-      if (response.ok) {
-        const savedFounder = await response.json();
-        onSave(savedFounder);
-      } else {
-        console.error('Kurucu kaydetme hatası');
-      }
-    } catch (error) {
-      console.error('Kurucu kaydetme hatası:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (İspanyolca)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.es}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                          : { ...founderFormData.about, es: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-medium text-gray-900">
-            {founder ? 'Kurucu Düzenle' : 'Yeni Kurucu'}
-          </h2>
-          <button
-            onClick={onCancel}
-            className="text-gray-400 hover:text-gray-600"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Fransızca)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.fr}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                          : { ...founderFormData.about, fr: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Rusça)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.ru}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                          : { ...founderFormData.about, ru: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hakkında (Arapça)
+                    </label>
+                    <textarea
+                      value={typeof founderFormData.about === 'string' ? '' : founderFormData.about.ar}
+                      onChange={(e) => setFounderFormData({
+                        ...founderFormData,
+                        about: typeof founderFormData.about === 'string'
+                          ? { tr: founderFormData.about, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                          : { ...founderFormData.about, ar: e.target.value }
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Görsel */}
+              <div className="border-t pt-6 mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Görsel
+                </label>
+                <div className="mt-1 flex items-center gap-4">
+                  {founderFormData.image && (
+                    <div className="relative w-20 h-20 rounded overflow-hidden">
+                      <Image
+                        src={founderFormData.image}
+                        alt="Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFounderImageUpload}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    />
+                    {isUploading && (
+                      <p className="text-sm text-gray-500 mt-1">Yükleniyor...</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end space-x-3 pt-6 border-t">
+                <button
+                  type="button"
+                  onClick={() => setShowFounderForm(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 transition-colors"
+                >
+                  İptal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-md hover:bg-gray-800 transition-colors"
+                >
+                  {editingFounder ? 'Güncelle' : 'Ekle'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              İsim
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (Türkçe)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? formData.title : formData.title.tr}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
-                  : {...formData.title, tr: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (İngilizce)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? '' : formData.title.en}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: formData.title, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
-                  : {...formData.title, en: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (İspanyolca)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? '' : formData.title.es}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: formData.title, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
-                  : {...formData.title, es: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (Fransızca)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? '' : formData.title.fr}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: formData.title, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
-                  : {...formData.title, fr: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (Rusça)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? '' : formData.title.ru}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: formData.title, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
-                  : {...formData.title, ru: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Unvan (Arapça)
-            </label>
-            <input
-              type="text"
-              value={typeof formData.title === 'string' ? '' : formData.title.ar}
-              onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
-                  ? { tr: formData.title, en: '', es: '', fr: '', ru: '', ar: e.target.value }
-                  : {...formData.title, ar: e.target.value}
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (Türkçe)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? formData.about : formData.about.tr}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
-                  : {...formData.about, tr: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (İngilizce)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? '' : formData.about.en}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: formData.about, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
-                  : {...formData.about, en: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (İspanyolca)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? '' : formData.about.es}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: formData.about, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
-                  : {...formData.about, es: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (Fransızca)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? '' : formData.about.fr}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: formData.about, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
-                  : {...formData.about, fr: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (Rusça)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? '' : formData.about.ru}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: formData.about, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
-                  : {...formData.about, ru: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hakkında (Arapça)
-            </label>
-            <textarea
-              value={typeof formData.about === 'string' ? '' : formData.about.ar}
-              onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
-                  ? { tr: formData.about, en: '', es: '', fr: '', ru: '', ar: e.target.value }
-                  : {...formData.about, ar: e.target.value}
-              })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              LinkedIn URL
-            </label>
-            <input
-              type="url"
-              value={formData.linkedin}
-              onChange={(e) => setFormData({...formData, linkedin: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              IMDb URL
-            </label>
-            <input
-              type="url"
-              value={formData.imdb}
-              onChange={(e) => setFormData({...formData, imdb: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Görsel
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-            />
-            {formData.image && (
-              <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.image.split('/').pop()}</p>
-            )}
-          </div>
-
-          <div className="flex justify-end space-x-3 mt-6">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
-            >
-              İptal
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 disabled:opacity-50 cursor-pointer"
-            >
-              {loading ? 'Kaydediliyor...' : 'Kaydet'}
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+    )}
   );
 }

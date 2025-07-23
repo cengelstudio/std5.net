@@ -94,7 +94,7 @@
   "about": {
     "title": "Hakkımızda",
     "subtitle": "STD5 hakkında daha fazla bilgi edinin",
-    "description": "2017'de İstanbul'da kurulan STD, günümüzde 3 farklı lokasyonda, en üst standartlarda post prodüksiyon hizmeti vermektedir. Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla film, dizi ve reklamların kurgu, ses tasarımı, renk, dublaj, görsel efektlerini yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri 250'den fazla projeyi tamamlayarak Türkiye'nin en büyük Post Prodüksiyon stüdyosu konumuna gelmiştir.",
+    "description": "2017 yılında İstanbul'da kurulan STD5, günümüzde üç farklı lokasyonda en yüksek standartlarda post prodüksiyon hizmeti sunmaktadır. Deneyimli ekibi ve stüdyolarında bulunan ileri teknoloji olanaklarıyla film, dizi ve reklam projelerinin kurgu, ses tasarımı, renk düzenleme, dublaj ve görsel efektlerini yaratıcı bir şekilde gerçekleştirir ve projeleri yayına hazır hale getirir. Kuruluşundan bu yana 250'den fazla projeyi tamamlayarak, Türkiye'nin en büyük post prodüksiyon stüdyolarından biri haline gelmiştir.",
     "team": "Ekibimiz",
     "managementTeam": "Yönetim Ekibi",
     "officeCats": "Ofis Kedilerimiz",
@@ -107,7 +107,8 @@
       "innovation": "Yenilikçilik",
       "collaboration": "İşbirliği"
     },
-    "founder": "Kurucu"
+    "founder": "Kurucu",
+    "moreInfo": "Daha Fazla Bilgi"
   },
   "contact": {
     "title": "İletişim",
