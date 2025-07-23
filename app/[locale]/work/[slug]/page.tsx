@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
   const { locale, slug } = await params;
 
   // Read works data to find the work
-  let works: Array<{ title: string; description: string; prod_year: number; genre: string; platform: string; image: string }> = [];
+  let works: Array<{ title: string; description: string | { [key: string]: string }; prod_year: number; genre: string; platform: string; image: string }> = [];
   try {
     const filePath = path.join(process.cwd(), 'data', 'works.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
@@ -42,11 +42,19 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
     es: `${work.title} | STD5`
   };
 
+  // Get description based on locale
+  const getDescription = (work: { description: string | { [key: string]: string } }, lang: string) => {
+    const description = typeof work.description === 'string' 
+      ? work.description 
+      : (work.description as { [key: string]: string })[lang] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || '';
+    return description.substring(0, 150);
+  };
+
   const descriptions = {
-    tr: `${work.title} - ${work.description.substring(0, 150)}... ${work.prod_year} yapımı ${work.genre} türünde ${work.platform} platformu için hazırlanmış proje.`,
-    en: `${work.title} - ${work.description.substring(0, 150)}... ${work.genre} project for ${work.platform} platform, produced in ${work.prod_year}.`,
-    fr: `${work.title} - ${work.description.substring(0, 150)}... Projet ${work.genre} pour la plateforme ${work.platform}, produit en ${work.prod_year}.`,
-    es: `${work.title} - ${work.description.substring(0, 150)}... Proyecto ${work.genre} para la plataforma ${work.platform}, producido en ${work.prod_year}.`
+    tr: `${work.title} - ${getDescription(work, 'tr')}... ${work.prod_year} yapımı ${work.genre} türünde ${work.platform} platformu için hazırlanmış proje.`,
+    en: `${work.title} - ${getDescription(work, 'en')}... ${work.genre} project for ${work.platform} platform, produced in ${work.prod_year}.`,
+    fr: `${work.title} - ${getDescription(work, 'fr')}... Projet ${work.genre} pour la plateforme ${work.platform}, produit en ${work.prod_year}.`,
+    es: `${work.title} - ${getDescription(work, 'es')}... Proyecto ${work.genre} para la plataforma ${work.platform}, producido en ${work.prod_year}.`
   };
 
     const currentTitle = titles[locale as keyof typeof titles] || titles.tr;
@@ -88,7 +96,7 @@ export default async function WorkDetail({ params }: WorkPageProps) {
   const { slug } = await params;
 
   // Read works data to find the work
-  let works: Array<{ id: string; title: string; description: string; prod_year: number; genre: string; platform: string; trailer_embed_url: string; gallery: string[]; image: string; client?: string }> = [];
+  let works: Array<{ id: string; title: string; description: string | { [key: string]: string }; prod_year: number; genre: string; platform: string; trailer_embed_url: string; gallery: string[]; image: string; client?: string }> = [];
   try {
     const filePath = path.join(process.cwd(), 'data', 'works.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');

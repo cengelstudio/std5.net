@@ -72,15 +72,17 @@ const ServiceCard = memo(({ service, index }: ServiceCardProps) => {
       className="glass rounded-2xl p-6 group hover:bg-white/5 transition-all duration-300 cursor-pointer"
       whileHover={{ y: -5 }}
     >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-        style={{ backgroundColor: service.color }}
-      >
-        {IconComponent && <IconComponent className="w-6 h-6 text-white" />}
+      <div className="flex items-center gap-3 mb-4">
+        <div
+          className="w-8 h-8 md:w-12 md:h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+          style={{ backgroundColor: service.color }}
+        >
+          {IconComponent && <IconComponent className="w-4 h-4 md:w-6 md:h-6 text-white" />}
+        </div>
+        <h3 className="text-lg md:text-xl font-semibold text-white group-hover:text-std5-accent transition-colors duration-300">
+          {service.title}
+        </h3>
       </div>
-      <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-std5-accent transition-colors duration-300">
-        {service.title}
-      </h3>
       <div className="text-sm leading-relaxed">
         {service.description.split('\n').map((text: string, i: number) => (
           <p key={i} className={i === 0 ? 'text-gray-300 mb-2' : 'text-gray-500 text-xs italic flex items-center'}>

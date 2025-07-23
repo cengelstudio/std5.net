@@ -37,11 +37,11 @@
       "title": "The creative power",
       "titleAccent": "behind the screens",
       "subtitle": "At the highest standards of the industry, our creative team offers post-production, editing, sound, color and VFX in 3 locations.",
-      "viewProjects": "Play",
+      "viewProjects": "Continue",
       "contactUs": "Contact Us"
     },
     "featuredProjects": {
-      "title": "Featured Projects"
+      "title": "Popular Projects"
     },
     "services": {
       "title": "Our Services",
@@ -72,7 +72,7 @@
       }
     },
     "stats": {
-      "completedProjects": "Completed Projects",
+      "completedProjects": "Projects",
       "locations": "Locations",
       "studios": "Studios",
       "soundStudio": "Sound Studio",
@@ -94,8 +94,7 @@
   "about": {
     "title": "About Us",
     "subtitle": "Learn more about STD5",
-    "description": "Founded in Istanbul in 2017, STD5 has signed 250+ projects with post-production, editing, sound, color, dubbing and VFX services in 3 locations.",
-    "description2": "With its experienced staff and technological facilities in its studios, it performs <span class=\"font-semibold text-white\">editing</span>, <span class=\"font-semibold text-white\">sound design</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">dubbing</span> and <span class=\"font-semibold text-white\">visual effects</span> creatively and prepares them for broadcast. Since its establishment, it has signed <span class=\"text-std5-accent font-bold text-xl\">more than 250 projects</span>.",
+    "description": "Founded in Istanbul in 2017, STD provides post-production services at the highest standards in 3 different locations today. With its experienced staff and technological facilities in its studios, it creatively creates editing, sound design, color, dubbing, and visual effects for films, series, and commercials and prepares them for broadcast. Having completed more than 250 projects since its establishment, it has become Turkey's largest Post Production studio.",
     "team": "Our Team",
     "managementTeam": "Management Team",
     "officeCats": "Office Cats",

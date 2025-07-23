@@ -3,10 +3,25 @@
 import { motion } from "framer-motion";
 import Image from 'next/image';
 import { Film, FileText } from 'lucide-react';
-import founders from '@/data/founders.json';
-import crew from '@/data/crew.json';
 import OfficeCats from '../../components/OfficeCats';
 import { useTranslation } from '../../hooks/useTranslation';
+
+interface Member {
+  id: string;
+  name: string;
+  title: string | { [key: string]: string };
+  image: string;
+  imdb?: string;
+  cv?: string | { [key: string]: string };
+  linkedin?: string;
+  department?: string | { [key: string]: string };
+}
+
+interface AboutClientProps {
+  founders: Member[];
+  crew: Member[];
+  locale: string;
+}
 
 // Animation variants
 const containerVariants = {
@@ -32,8 +47,16 @@ const itemVariants = {
   }
 };
 
-export default function AboutClient() {
-  const { t, locale } = useTranslation();
+export default function AboutClient({ founders, crew, locale: propLocale }: AboutClientProps) {
+  const { t } = useTranslation();
+  const locale = propLocale;
+
+  // Helper fonksiyonlar
+  const getLocalizedValue = (value: string | { [key: string]: string } | undefined, fallback = ''): string => {
+    if (!value) return fallback;
+    if (typeof value === 'string') return value;
+    return value[locale] || value.tr || fallback;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-black to-std5-darker">
@@ -73,21 +96,13 @@ export default function AboutClient() {
                         {/* Content with improved typography */}
             <div className="space-y-6 max-w-4xl mx-auto">
               <motion.p
-                className="text-[20px] md:text-[26px] text-gray-200 leading-relaxed font-light"
+                className="text-[18px] md:text-[22px] text-gray-200 leading-relaxed font-light"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 {t('about.description')}
               </motion.p>
-
-              <motion.p
-                className="text-[18px] md:text-[20px] text-gray-300 leading-relaxed"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                dangerouslySetInnerHTML={{ __html: t('about.description2') }}
-              />
             </div>
           </motion.div>
         </div>
@@ -114,7 +129,7 @@ export default function AboutClient() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-3xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-7 max-w-3xl mx-auto"
           >
               {founders.map((member) => (
                 <motion.div
@@ -122,9 +137,9 @@ export default function AboutClient() {
                 variants={itemVariants}
                 className="group relative"
               >
-                <div className="glass rounded-xl p-7 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
+                <div className="glass rounded-xl p-4 md:p-7 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
                   {/* Profile image ~10% larger */}
-                  <div className="relative w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
+                  <div className="relative w-20 h-20 md:w-28 md:h-28 mx-auto mb-3 md:mb-5 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-std5-primary/30 to-std5-accent/30 rounded-full" />
                       <Image
                         src={member.image}
@@ -141,31 +156,31 @@ export default function AboutClient() {
                       />
                     </div>
                   {/* Content ~10% larger */}
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-std5-accent transition-colors duration-300">
+                  <h3 className="text-base md:text-xl font-bold text-white mb-1 md:mb-2 group-hover:text-std5-accent transition-colors duration-300">
                     {member.name}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 mb-5 text-lg">
-                    {member.title === 'Kurucu' ? t('about.founder') : member.title}
+                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 mb-3 md:mb-5 text-sm md:text-lg">
+                    {getLocalizedValue(member.title) === 'Kurucu' ? t('about.founder') : getLocalizedValue(member.title)}
                   </p>
                   {/* Social links ~10% larger */}
-                  <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center justify-center gap-2 md:gap-3">
                     <a
                       href={member.imdb}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                      className="p-2 md:p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
                       title={t('about.imdbProfile')}
                     >
-                      <Film className="w-5 h-5" />
+                      <Film className="w-4 h-4 md:w-5 md:h-5" />
                     </a>
                     <a
-                      href={member.cv}
+                      href={getLocalizedValue(member.cv, '#')}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                      className="p-2 md:p-2.5 rounded-lg bg-white/5 hover:bg-std5-primary/20 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110 hover:shadow-lg"
                       title={t('about.downloadCV')}
                     >
-                      <FileText className="w-5 h-5" />
+                      <FileText className="w-4 h-4 md:w-5 md:h-5" />
                     </a>
                   </div>
                 </div>
@@ -203,7 +218,7 @@ export default function AboutClient() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
           >
             {crew.map((member) => (
               <motion.div
@@ -211,9 +226,9 @@ export default function AboutClient() {
                 variants={itemVariants}
                 className="group"
               >
-                <div className="glass rounded-xl p-6 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
+                <div className="glass rounded-xl p-4 md:p-6 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
                   {/* Profile image */}
-                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
+                  <div className="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/30" />
                     <Image
                       src={member.image}
@@ -225,15 +240,12 @@ export default function AboutClient() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
+                  <h3 className="text-sm md:text-lg font-semibold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
                     {member.name}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-2 group-hover:text-gray-300 transition-colors duration-300">
-                    {typeof member.title === 'string' ? member.title : (member.title[locale as keyof typeof member.title] || member.title.tr)}
-                  </p>
-                  <p className="text-gray-500 text-xs mb-4">
+                  <p className="text-gray-500 text-xs mb-3 md:mb-4">
                     <span className="inline-block px-2 py-1 bg-std5-primary/20 rounded-full text-std5-accent font-medium">
-                      {typeof member.department === 'string' ? member.department : (member.department[locale as keyof typeof member.department] || member.department.tr)}
+                      {getLocalizedValue(member.department)}
                     </span>
                   </p>
 
@@ -249,7 +261,7 @@ export default function AboutClient() {
                       <Film className="w-4 h-4" />
                     </a>
                     <a
-                      href={typeof member.cv === 'string' ? member.cv : (member.cv[locale as keyof typeof member.cv] || member.cv.tr)}
+                      href={getLocalizedValue(member.cv, '#')}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110"

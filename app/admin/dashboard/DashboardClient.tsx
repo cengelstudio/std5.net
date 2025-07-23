@@ -8,7 +8,7 @@ import { Pencil, Trash2, X, Upload } from 'lucide-react';
 interface Work {
   id: string;
   title: string;
-  description: string;
+  description: string | { [key: string]: string };
   prod_year: number;
   genre: string;
   platform: string;
@@ -1097,7 +1097,14 @@ function WorkFormModal({
   const [formData, setFormData] = useState<Work>({
     id: '',
     title: '',
-    description: '',
+    description: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
     prod_year: new Date().getFullYear(),
     genre: '',
     platform: '',
@@ -1111,12 +1118,26 @@ function WorkFormModal({
   // Initialize form data when component mounts or work changes
   useEffect(() => {
     if (work) {
-      setFormData(work);
+      const descriptionData = typeof work.description === 'string'
+        ? { tr: work.description, en: '', es: '', fr: '', ru: '', ar: '' }
+        : work.description;
+
+      setFormData({
+        ...work,
+        description: descriptionData
+      });
     } else {
       setFormData({
         id: '',
         title: '',
-        description: '',
+        description: {
+          tr: '',
+          en: '',
+          es: '',
+          fr: '',
+          ru: '',
+          ar: ''
+        },
         prod_year: new Date().getFullYear(),
         genre: '',
         platform: '',
@@ -1239,15 +1260,101 @@ function WorkFormModal({
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Açıklama
+                Açıklama (Çok Dilli)
               </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                required
-              />
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Türkçe</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? formData.description : formData.description.tr}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        tr: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">English</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? '' : formData.description.en}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        en: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Español</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? '' : formData.description.es}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        es: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Français</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? '' : formData.description.fr}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        fr: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Русский</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? '' : formData.description.ru}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        ru: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">العربية</label>
+                  <textarea
+                    value={typeof formData.description === 'string' ? '' : formData.description.ar}
+                    onChange={(e) => setFormData({
+                      ...formData, 
+                      description: {
+                        ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
+                        ar: e.target.value
+                      }
+                    })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="md:col-span-2">

@@ -37,11 +37,11 @@
       "title": "Ekranların arkasındaki",
       "titleAccent": "yaratıcı güç",
       "subtitle": "Sektörün en yüksek standartlarında, yaratıcı ekibimizle 3 lokasyonda post prodüksiyon, kurgu, ses, renk ve VFX sunuyoruz.",
-      "viewProjects": "Oynat",
+      "viewProjects": "İlerle",
       "contactUs": "İletişime Geç"
     },
     "featuredProjects": {
-      "title": "Gündemde Olan Projeler"
+      "title": "Popüler Projeler"
     },
     "services": {
       "title": "Hizmetlerimiz",
@@ -72,7 +72,7 @@
       }
     },
     "stats": {
-      "completedProjects": "Tamamlanmış proje",
+      "completedProjects": "Proje",
       "locations": "Yerleşke",
       "studios": "Stüdyo",
       "soundStudio": "Ses Stüdyosu",
@@ -94,8 +94,7 @@
   "about": {
     "title": "Hakkımızda",
     "subtitle": "STD5 hakkında daha fazla bilgi edinin",
-    "description": "2017'de İstanbul'da kurulan STD5, 3 lokasyonda post prodüksiyon, kurgu, ses, renk, dublaj ve VFX hizmetiyle 250+ projeye imza attı.",
-    "description2": "Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla <span class=\"font-semibold text-white\">kurgu</span>, <span class=\"font-semibold text-white\">ses tasarımı</span>, <span class=\"font-semibold text-white\">renk</span>, <span class=\"font-semibold text-white\">dublaj</span> ve <span class=\"font-semibold text-white\">görsel efektleri</span> yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri <span class=\"text-std5-accent font-bold text-xl\">250'den fazla projeye</span> imzasını atmıştır.",
+    "description": "2017'de İstanbul'da kurulan STD, günümüzde 3 farklı lokasyonda, en üst standartlarda post prodüksiyon hizmeti vermektedir. Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla film, dizi ve reklamların kurgu, ses tasarımı, renk, dublaj, görsel efektlerini yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri 250'den fazla projeyi tamamlayarak Türkiye'nin en büyük Post Prodüksiyon stüdyosu konumuna gelmiştir.",
     "team": "Ekibimiz",
     "managementTeam": "Yönetim Ekibi",
     "officeCats": "Ofis Kedilerimiz",

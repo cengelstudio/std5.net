@@ -17,13 +17,14 @@ import { Work, WorksResponse } from '../../../types';
 import { useTranslation } from '../../hooks/useTranslation';
 
 export default function ProjectsClient() {
-  const { t, createLocalizedPath } = useTranslation();
+  const { t, createLocalizedPath, locale } = useTranslation();
   const [works, setWorks] = useState<Work[]>([]);
   const [filters, setFilters] = useState<{ genres: string[]; platforms: string[]; years: number[] }>({ genres: [], platforms: [], years: [] });
   const [loading, setLoading] = useState(true);
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const fetchWorks = useCallback(async () => {
     setLoading(true);
@@ -35,10 +36,14 @@ export default function ProjectsClient() {
       const data: WorksResponse = await response.json();
       let filteredWorks = data.works;
       if (searchTerm) {
-        filteredWorks = filteredWorks.filter(work =>
-          work.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          work.description.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        filteredWorks = filteredWorks.filter(work => {
+          const description = typeof work.description === 'string' 
+            ? work.description 
+            : (work.description as { [key: string]: string })[locale] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || '';
+          
+          return work.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 description.toLowerCase().includes(searchTerm.toLowerCase());
+        });
       }
       setWorks(filteredWorks);
       setFilters(data.filters);
@@ -47,7 +52,7 @@ export default function ProjectsClient() {
     } finally {
       setLoading(false);
     }
-  }, [selectedPlatform, selectedYear, searchTerm]);
+  }, [selectedPlatform, selectedYear, searchTerm, locale]);
 
   useEffect(() => {
     fetchWorks();
@@ -71,10 +76,30 @@ export default function ProjectsClient() {
 
   const hasActiveFilters = selectedPlatform || selectedYear || searchTerm;
 
+  // Handle search input focus
+  const handleSearchFocus = () => {
+    // Scroll to specific position only on smaller screens
+    if (window.innerWidth < 1030) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 215,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  };
+
+  const handleSearchBlur = () => {
+    // Focus blur handler - currently no action needed
+  };
+
+  // Check if filters should be visible on mobile
+  // const shouldShowFiltersOnMobile = isSearchFocused || searchTerm.length > 0 || selectedPlatform || selectedYear;
+
   return (
     <div className="min-h-screen bg-std5-darker">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-7 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-std5-dark/20 to-std5-darker"></div>
 
         <div className="relative max-w-7xl mx-auto text-center">
@@ -110,63 +135,69 @@ export default function ProjectsClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col lg:flex-row gap-6 mb-6"
+            className="flex flex-col md:flex-row gap-4 mb-6"
           >
             {/* Search Input */}
             <div className="flex-1 relative group">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300" />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder={t('projects.searchPlaceholder')}
                 onChange={handleSearchChange}
+                onFocus={handleSearchFocus}
+                onBlur={handleSearchBlur}
                 className="w-full pl-12 pr-4 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300"
               />
             </div>
 
-            {/* Platform Filter */}
-            <div className="relative group">
-              <select
-                value={selectedPlatform}
-                onChange={(e) => setSelectedPlatform(e.target.value)}
-                className="appearance-none w-full lg:w-48 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
-              >
-                <option value="">{t('projects.allPlatforms')}</option>
-                {filters.platforms?.map((platform) => (
-                  <option key={platform} value={platform} className="bg-std5-darker text-white">
-                    {platform}
-                  </option>
-                ))}
-              </select>
-              <Monitor className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
-            </div>
+            {/* Filters Row - Mobile: side by side, Desktop: inline with search */}
+            <div className="flex flex-row md:flex-row gap-4">
+              {/* Platform Filter */}
+              <div className="relative group flex-1 md:flex-none">
+                <select
+                  value={selectedPlatform}
+                  onChange={(e) => setSelectedPlatform(e.target.value)}
+                  className="appearance-none w-full md:w-48 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
+                >
+                  <option value="">{t('projects.allPlatforms')}</option>
+                  {filters.platforms?.map((platform) => (
+                    <option key={platform} value={platform} className="bg-std5-darker text-white">
+                      {platform}
+                    </option>
+                  ))}
+                </select>
+                <Monitor className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
+              </div>
 
-            {/* Year Filter */}
-            <div className="relative group">
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className="appearance-none w-full lg:w-40 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
-              >
-                <option value="">{t('projects.allYears')}</option>
-                {filters.years?.map((year) => (
-                  <option key={year} value={year} className="bg-std5-darker text-white">
-                    {year}
-                  </option>
-                ))}
-              </select>
-              <Calendar className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
-            </div>
+              {/* Year Filter */}
+              <div className="relative group flex-1 md:flex-none">
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  className="appearance-none w-full md:w-40 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
+                >
+                  <option value="">{t('projects.allYears')}</option>
+                  {filters.years?.map((year) => (
+                    <option key={year} value={year} className="bg-std5-darker text-white">
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                <Calendar className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
+              </div>
 
-            {/* Clear Filters Button */}
-            {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="flex items-center justify-center gap-2 px-6 py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-2xl transition-all duration-300 hover:scale-105"
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span className="hidden sm:inline font-medium">{t('projects.clearFilters')}</span>
-              </button>
-            )}
+              {/* Clear Filters Button */}
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center justify-center gap-2 px-6 py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-2xl transition-all duration-300 hover:scale-105"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                  <span className="hidden sm:inline font-medium">{t('projects.clearFilters')}</span>
+                </button>
+              )}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -184,7 +215,7 @@ export default function ProjectsClient() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
               >
                 {works.map((work, index) => (
                   <motion.div
@@ -213,7 +244,9 @@ export default function ProjectsClient() {
                           {work.title}
                         </h3>
                         <p className="text-gray-400 text-sm line-clamp-2">
-                          {work.description}
+                          {typeof work.description === 'string' 
+                            ? work.description 
+                            : (work.description as { [key: string]: string })[locale] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || ''}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
                           <span>{work.prod_year}</span>

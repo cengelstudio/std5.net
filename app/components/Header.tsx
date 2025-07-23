@@ -15,15 +15,32 @@ export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      
+      // Background effect
+      setIsScrolled(currentScrollY > 20);
+      
+      // Hide/show header based on scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down and past 100px - hide header
+        setIsHeaderHidden(true);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show header
+        setIsHeaderHidden(false);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -34,8 +51,8 @@ export default function Header() {
     <>
       <motion.nav
         initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        animate={{ y: isHeaderHidden ? -100 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`fixed top-0 w-full z-50 transition-all duration-500 ${
           isScrolled
             ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-2xl'
@@ -43,7 +60,7 @@ export default function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16 md:h-20">
 
             {/* Logo */}
             <motion.div
@@ -57,7 +74,7 @@ export default function Header() {
                   alt="STD5"
                   width={140}
                   height={46}
-                  className="h-12 w-auto filter drop-shadow-lg"
+                  className="h-10 md:h-12 w-auto filter drop-shadow-lg"
                   priority
                 />
               </Link>
@@ -118,7 +135,7 @@ export default function Header() {
                 animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
               </motion.div>
             </motion.button>
           </div>

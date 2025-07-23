@@ -97,7 +97,7 @@ export default function ClientHome() {
             <div
               className="w-full h-full"
               style={{
-                transform: 'rotateX(25deg) rotateY(10deg) rotateZ(-10deg) scale(2) translate(100px, 10px)',
+                transform: 'rotateX(25deg) rotateY(10deg) rotateZ(-10deg) scale(2) translate(70px, 10px)',
                 transformOrigin: 'center center',
                 transformStyle: 'preserve-3d'
               }}
@@ -147,11 +147,11 @@ export default function ClientHome() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="flex flex-col items-center gap-6"
+                className="flex flex-col items-center gap-8 md:gap-10"
               >
                 {/* İstatistikler */}
-                <div className="grid grid-cols-3 gap-2 md:gap-4 justify-items-center w-full max-w-xl">
-                  {STATS.slice(0, 3).map((stat) => {
+                <div className="grid grid-cols-3 gap-3 md:gap-8 justify-items-center w-full max-w-xl md:max-w-2xl">
+                  {STATS.slice(0, 3).map((stat, index) => {
                     const href = stat.label === t('home.stats.completedProjects') ? createLocalizedPath('/projects') :
                               stat.label === t('home.stats.locations') || stat.label === t('home.stats.studios') ? createLocalizedPath('/locations') : createLocalizedPath('/');
 
@@ -159,14 +159,21 @@ export default function ClientHome() {
                       <Link key={`${stat.label}-${stat.number}`} href={href}>
                         <motion.div
                           className="text-center cursor-pointer group"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <div className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
-                            {stat.number}
-                          </div>
-                          <div className="text-xs text-gray-300 group-hover:text-white transition-colors duration-300">
-                            {t(stat.label)}
+                          <div className="relative">
+                            <div className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 group-hover:text-std5-accent transition-all duration-300">
+                              {stat.number}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-300 group-hover:text-white transition-colors duration-300 font-medium">
+                              {t(stat.label)}
+                            </div>
+                            {/* Hover effect line */}
+                            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-std5-primary to-std5-accent group-hover:w-full transition-all duration-300"></div>
                           </div>
                         </motion.div>
                       </Link>
@@ -175,27 +182,33 @@ export default function ClientHome() {
                 </div>
 
                 {/* Dolby Atmos ve HDR Color badges */}
-                <div className="flex justify-center items-center gap-6">
+                <div className="flex justify-center items-center gap-3 md:gap-6">
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    className="flex items-center gap-3 px-8 py-4 rounded-full bg-std5-accent/10 backdrop-blur-sm"
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-full bg-gradient-to-r from-std5-primary/20 to-std5-accent/20 backdrop-blur-md border border-white/10 hover:border-std5-accent/30 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    <Volume2 className="w-6 h-6 text-std5-accent" />
-                    <span className="text-base font-medium text-white">
+                    <div className="p-1.5 md:p-2 rounded-full bg-std5-accent/20">
+                      <Volume2 className="w-4 h-4 md:w-6 md:h-6 text-std5-accent" />
+                    </div>
+                    <span className="text-xs md:text-base font-semibold text-white">
                       Dolby Atmos
                     </span>
                   </motion.div>
 
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    className="flex items-center gap-3 px-8 py-4 rounded-full bg-std5-accent/10 backdrop-blur-sm"
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-full bg-gradient-to-r from-std5-primary/20 to-std5-accent/20 backdrop-blur-md border border-white/10 hover:border-std5-accent/30 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    <Palette className="w-6 h-6 text-std5-accent" />
-                    <span className="text-base font-medium text-white">
+                    <div className="p-1.5 md:p-2 rounded-full bg-std5-accent/20">
+                      <Palette className="w-4 h-4 md:w-6 md:h-6 text-std5-accent" />
+                    </div>
+                    <span className="text-xs md:text-base font-semibold text-white">
                       HDR Color
                     </span>
                   </motion.div>
@@ -216,10 +229,10 @@ export default function ClientHome() {
                   >
                     <button
                       onClick={scrollToProjects}
-                      className="flex items-center gap-3 px-12 py-3.5 bg-std5-accent rounded-lg min-w-[250px] justify-center"
+                      className="flex items-center gap-2 md:gap-3 px-8 md:px-12 py-3 md:py-3.5 bg-std5-accent rounded-lg min-w-[200px] md:min-w-[250px] justify-center shadow-lg shadow-[#8b5cf6]/30 hover:shadow-xl hover:shadow-[#8b5cf6]/40 transition-shadow duration-300"
                     >
-                      <Play className="w-5 h-5 text-white" />
-                      <span className="text-lg font-medium text-white">
+                      <Play className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                      <span className="text-base md:text-lg font-medium text-white">
                         {t('home.hero.viewProjects')}
                       </span>
                     </button>

@@ -37,11 +37,11 @@
       "title": "La puissance créative",
       "titleAccent": "derrière les écrans",
       "subtitle": "Aux plus hauts standards, notre équipe créative propose post-production, montage, son, couleur et VFX dans 3 emplacements.",
-      "viewProjects": "Jouer",
+      "viewProjects": "Continuer",
       "contactUs": "Nous Contacter"
     },
     "featuredProjects": {
-      "title": "Projets en Vedette"
+      "title": "Projets Populaires"
     },
     "services": {
       "title": "Nos Services",
@@ -72,7 +72,7 @@
       }
     },
     "stats": {
-      "completedProjects": "Projets Terminés",
+      "completedProjects": "Projets",
       "locations": "Emplacements",
       "studios": "Studios",
       "soundStudio": "Studio Son",
@@ -94,8 +94,7 @@
   "about": {
     "title": "À Propos",
     "subtitle": "En savoir plus sur STD5",
-    "description": "Fondée à Istanbul en 2017, STD5 a signé plus de 250 projets avec des services de post-production, montage, son, couleur, doublage et VFX dans 3 emplacements.",
-    "description2": "Avec son personnel expérimenté et ses installations technologiques dans ses studios, elle effectue le <span class=\"font-semibold text-white\">montage</span>, la <span class=\"font-semibold text-white\">conception sonore</span>, la <span class=\"font-semibold text-white\">couleur</span>, le <span class=\"font-semibold text-white\">doublage</span> et les <span class=\"font-semibold text-white\">effets visuels</span> de manière créative et les prépare pour la diffusion. Depuis sa création, elle a signé <span class=\"text-std5-accent font-bold text-xl\">plus de 250 projets</span>.",
+    "description": "Fondée à Istanbul en 2017, STD fournit aujourd'hui des services de post-production aux plus hauts standards dans 3 emplacements différents. Avec son personnel expérimenté et ses installations technologiques dans ses studios, elle crée de manière créative le montage, la conception sonore, la couleur, le doublage et les effets visuels pour les films, séries et publicités et les prépare pour la diffusion. Ayant complété plus de 250 projets depuis sa création, elle est devenue le plus grand studio de Post Production de Turquie.",
     "team": "Notre Équipe",
     "managementTeam": "Équipe de Direction",
     "officeCats": "Chats de Bureau",

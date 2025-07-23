@@ -73,49 +73,40 @@ export default function ContactClient() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-2xl mx-auto px-3 sm:px-0"
+            className="max-w-2xl mx-auto px-0 sm:px-0"
           >
-            <form onSubmit={handleSubmit} className="glass rounded-xl sm:rounded-2xl p-5 sm:p-8 mb-6 sm:mb-10">
-              <div className="space-y-4 sm:space-y-6">
-                {/* Name */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    {t('contact.form.name')}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder={t('contact.form.namePlaceholder')}
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    {t('contact.form.email')}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                    placeholder={t('contact.form.emailPlaceholder')}
-                  />
+            <form onSubmit={handleSubmit} className="glass rounded-2xl p-4 sm:p-6 mb-8">
+              <div className="space-y-5">
+                {/* Name & Email Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
+                      placeholder={t('contact.form.namePlaceholder')}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
+                      placeholder={t('contact.form.emailPlaceholder')}
+                    />
+                  </div>
                 </div>
 
                 {/* Subject */}
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    {t('contact.form.subject')}
-                  </label>
                   <input
                     type="text"
                     id="subject"
@@ -123,24 +114,21 @@ export default function ContactClient() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
                     placeholder={t('contact.form.subjectPlaceholder')}
                   />
                 </div>
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
-                    {t('contact.form.message')}
-                  </label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300 resize-none"
+                    rows={3}
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300 resize-none"
                     placeholder={t('contact.form.messagePlaceholder')}
                   />
                 </div>
@@ -149,13 +137,13 @@ export default function ContactClient() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 sm:py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-lg sm:rounded-xl font-medium flex items-center justify-center gap-2 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-gradient-to-r from-std5-primary to-std5-accent hover:from-std5-primary/90 hover:to-std5-accent/90 text-white rounded-xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                 >
                   {isSubmitting ? (
                     <div className="spinner-small"></div>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
+                      <Send className="w-5 h-5" />
                       {t('contact.form.send')}
                     </>
                   )}
@@ -163,14 +151,14 @@ export default function ContactClient() {
 
                 {/* Status Messages */}
                 {submitStatus === 'success' && (
-                  <p className="text-sm sm:text-base text-green-400 text-center">
-                    Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.
-                  </p>
+                  <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-center">
+                    <p className="text-sm font-medium">Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.</p>
+                  </div>
                 )}
                 {submitStatus === 'error' && (
-                  <p className="text-sm sm:text-base text-red-400 text-center">
-                    Bir hata oluştu. Lütfen daha sonra tekrar deneyin.
-                  </p>
+                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-center">
+                    <p className="text-sm font-medium">Bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                  </div>
                 )}
               </div>
             </form>

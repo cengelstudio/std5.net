@@ -7,6 +7,30 @@ interface AboutPageProps {
   }>;
 }
 
+// Veri çekme fonksiyonu - doğrudan dosya sisteminden okuma
+async function getAboutData() {
+  try {
+    const { promises: fs } = await import('fs');
+    const path = await import('path');
+    
+    const foundersFilePath = path.join(process.cwd(), 'data', 'founders.json');
+    const crewFilePath = path.join(process.cwd(), 'data', 'crew.json');
+    
+    const [foundersData, crewData] = await Promise.all([
+      fs.readFile(foundersFilePath, 'utf8'),
+      fs.readFile(crewFilePath, 'utf8')
+    ]);
+    
+    return {
+      founders: JSON.parse(foundersData),
+      crew: JSON.parse(crewData)
+    };
+  } catch (error) {
+    console.error('Error reading about data:', error);
+    return { founders: [], crew: [] };
+  }
+}
+
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
   const { locale } = await params;
 
@@ -48,6 +72,13 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
   };
 }
 
-export default function About() {
-  return <AboutClient />;
+export default async function About({ params }: AboutPageProps) {
+  const { locale } = await params;
+  const aboutData = await getAboutData();
+  
+  return <AboutClient founders={aboutData.founders} crew={aboutData.crew} locale={locale} />;
 }
+
+// Cache'i devre dışı bırak - her zaman güncel veri
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;

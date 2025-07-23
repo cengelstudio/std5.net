@@ -13,9 +13,35 @@ interface WorkDetailClientProps {
 }
 
 export default function WorkDetailClient({ work }: WorkDetailClientProps) {
-  const { t, createLocalizedPath } = useTranslation();
+  const { t, createLocalizedPath, locale } = useTranslation();
   const [showTrailer, setShowTrailer] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+
+  const shareContent = async () => {
+    const url = window.location.href;
+    const title = work?.title || 'STD5 Project';
+    const description = typeof work?.description === 'string' 
+      ? work.description 
+      : (work?.description as { [key: string]: string })?.[locale] || (work?.description as { [key: string]: string })?.tr || (work?.description as { [key: string]: string })?.en || 'Check out this amazing project from STD5';
+    const text = description;
+
+    // Check if Web Share API is available (mobile devices)
+    if (navigator.share && window.innerWidth < 768) {
+      try {
+        await navigator.share({
+          title: title,
+          text: text,
+          url: url,
+        });
+      } catch {
+        // User cancelled or share failed, fallback to clipboard
+        await copyToClipboard();
+      }
+    } else {
+      // Fallback to clipboard for desktop or unsupported devices
+      await copyToClipboard();
+    }
+  };
 
   const copyToClipboard = async () => {
     try {
@@ -120,13 +146,15 @@ export default function WorkDetailClient({ work }: WorkDetailClientProps) {
                     {work.title}
                   </h1>
                   <p className="text-gray-300 text-lg leading-relaxed">
-                    {work.description}
+                    {typeof work.description === 'string' 
+                      ? work.description 
+                      : (work.description as { [key: string]: string })[locale] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || ''}
                   </p>
                 </div>
 
                 <div className="glass rounded-2xl p-6 space-y-4">
                   <h2 className="text-xl font-semibold text-white mb-4">{t('work.details')}</h2>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 text-gray-300">
                         <Calendar className="w-5 h-5 text-std5-accent" />
@@ -168,18 +196,18 @@ export default function WorkDetailClient({ work }: WorkDetailClientProps) {
                   {work.trailer_embed_url && (
                     <button
                       onClick={() => setShowTrailer(true)}
-                      className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-xl transition-all duration-300 hover:scale-105"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 md:px-6 py-3 md:py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-xl transition-all duration-300 hover:scale-105"
                     >
-                      <Play className="w-5 h-5" />
-                      <span className="font-medium">{t('work.watchTrailer')}</span>
+                      <Play className="w-4 h-4 md:w-5 md:h-5" />
+                      <span className="text-sm md:text-base font-medium">{t('work.watchTrailer')}</span>
                     </button>
                   )}
                   <button
-                    onClick={copyToClipboard}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-4 glass hover:bg-white/20 text-white rounded-xl transition-all duration-300 hover:scale-105"
+                    onClick={shareContent}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 md:px-6 py-3 md:py-4 glass hover:bg-white/20 text-white rounded-xl transition-all duration-300 hover:scale-105"
                   >
-                    <Share2 className="w-5 h-5" />
-                    <span className="font-medium">{t('work.share')}</span>
+                    <Share2 className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="text-sm md:text-base font-medium">{t('work.share')}</span>
                   </button>
                 </div>
               </div>

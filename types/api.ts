@@ -2,7 +2,7 @@
 export interface Work {
   id: string;
   title: string;
-  description: string;
+  description: string | { [key: string]: string };
   prod_year: number;
   genre: string;
   platform: string;
