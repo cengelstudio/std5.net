@@ -37,13 +37,13 @@ export async function POST(request: NextRequest) {
     // Create a unique filename
     const timestamp = Date.now();
     const filename = `${timestamp}-${file.name}`;
-    const path = join(process.cwd(), 'public', 'cats', filename);
+    const pathToSave = join(process.cwd(), 'uploads', filename);
 
-    // Write the file
-    await writeFile(path, buffer);
+    // Dosyayı yaz
+    await writeFile(pathToSave, buffer);
 
-    // Return the path that will be used in the frontend
-    return NextResponse.json({ path: `/cats/${filename}` });
+    // Yeni API route'u ile path döndür
+    return NextResponse.json({ path: `/api/uploads/${filename}` });
   } catch (error) {
     console.error('Error uploading file:', error);
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });

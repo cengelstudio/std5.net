@@ -11,23 +11,44 @@ import React, { memo } from "react";
 
 // Service icon mapping for performance
 const SERVICE_ICONS = {
-  'Montage': Clapperboard,
-  'Editing': Clapperboard,
-  'Design Sonore et Doublage': Mic2,
-  'Sound Design & Dubbing': Mic2,
-  'Ses Tasarımı ve Seslendirme': Mic2,
-  'Design Couleur': PaintBucket,
-  'Color Design': PaintBucket,
+  // Turkish
+  'Kurgu': Clapperboard,
+  'Ses Tasarımı ve Dublaj': Mic2,
   'Renk Tasarımı': PaintBucket,
-  'Effets Visuels': Sparkles,
-  'Visual Effects': Sparkles,
   'Görsel Efektler': Sparkles,
-  'Post-Production Spéciale': Computer,
-  'Special Post Production': Computer,
-  'Özel Post Prodüksiyon': Computer,
-  'Café': UtensilsCrossed,
-  'Cafe': UtensilsCrossed,
+  'Özel Post Setleri': Computer,
   'Kafe': UtensilsCrossed,
+
+  // English
+  'Editing': Clapperboard,
+  'Sound Design & Dubbing': Mic2,
+  'Color Design': PaintBucket,
+  'Visual Effects': Sparkles,
+  'Special Post Production': Computer,
+  'Cafe': UtensilsCrossed,
+
+  // French
+  'Montage': Clapperboard,
+  'Design Sonore et Doublage': Mic2,
+  'Design Couleur': PaintBucket,
+  'Effets Visuels': Sparkles,
+  'Post-Production Spéciale': Computer,
+  'Café': UtensilsCrossed,
+
+  // Spanish
+  'Edición': Clapperboard,
+  'Diseño de Sonido y Doblaje': Mic2,
+  'Diseño de Color': PaintBucket,
+  'Efectos Visuales': Sparkles,
+  'Post-Producción Especial': Computer,
+
+  // Arabic
+  'التحرير': Clapperboard,
+  'تصميم الصوت والدبلجة': Mic2,
+  'تصحيح الألوان': PaintBucket,
+  'المؤثرات البصرية': Sparkles,
+  'مجموعات ما بعد الإنتاج الخاصة': Computer,
+  'المقهى': UtensilsCrossed,
 };
 
 export interface ServiceCardProps {

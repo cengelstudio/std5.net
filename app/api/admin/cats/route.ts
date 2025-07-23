@@ -31,7 +31,7 @@ async function readCatsData() {
 }
 
 // Helper function to write cats data
-async function writeCatsData(data: { cats: Array<{ name: string; role: string; about: string; image: string }> }) {
+async function writeCatsData(data: { cats: Array<{ id: string; name: string; role: string; about: string | { [key: string]: string }; image: string }> }) {
   await fs.writeFile(CATS_FILE_PATH, JSON.stringify(data, null, 2));
 }
 
@@ -81,36 +81,29 @@ export async function PUT(request: NextRequest) {
     const updatedCat = await request.json();
     const data = await readCatsData();
 
-    // Find cat by original name (before update)
-    const originalName = request.nextUrl.searchParams.get('originalName');
-    let index = -1;
-
-    console.log('PUT /api/admin/cats - originalName:', originalName);
     console.log('PUT /api/admin/cats - updatedCat:', updatedCat);
-    console.log('PUT /api/admin/cats - current cats:', data.cats.map((cat: { name: string }) => cat.name));
+    console.log('PUT /api/admin/cats - current cats:', data.cats);
+    console.log('PUT /api/admin/cats - looking for ID:', updatedCat.id);
 
-    if (originalName) {
-      // If original name is provided, use it to find the cat
-      index = data.cats.findIndex((cat: { name: string }) => cat.name === originalName);
-      console.log('PUT /api/admin/cats - found index by originalName:', index);
-    } else {
-      // Fallback: try to find by current name
-      index = data.cats.findIndex((cat: { name: string }) => cat.name === updatedCat.name);
-      console.log('PUT /api/admin/cats - found index by current name:', index);
-    }
+    // Find cat by ID (convert both to string for comparison)
+    const index = data.cats.findIndex((cat: { id: string }) => String(cat.id) === String(updatedCat.id));
+
+    console.log('PUT /api/admin/cats - found index:', index);
 
     if (index === -1) {
       return NextResponse.json({
-        error: `Kedi bulunamadı. Lütfen sayfayı yenileyip tekrar deneyin.`
+        error: `Kedi bulunamadı. ID: ${updatedCat.id}. Lütfen sayfayı yenileyip tekrar deneyin.`
       }, { status: 404 });
     }
 
     data.cats[index] = updatedCat;
     await writeCatsData(data);
 
+    console.log('PUT /api/admin/cats - cat updated successfully');
+
     return NextResponse.json(updatedCat);
-  } catch {
-    console.error('PUT /api/admin/cats error:');
+  } catch (error) {
+    console.error('PUT /api/admin/cats error:', error);
     return NextResponse.json({ error: 'Failed to update cat' }, { status: 500 });
   }
 }
@@ -123,10 +116,10 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { name } = await request.json();
+    const { id } = await request.json();
     const data = await readCatsData();
 
-    const index = data.cats.findIndex((cat: { name: string }) => cat.name === name);
+    const index = data.cats.findIndex((cat: { id: string }) => String(cat.id) === String(id));
     if (index === -1) {
       return NextResponse.json({ error: 'Cat not found' }, { status: 404 });
     }

@@ -42,22 +42,22 @@ export async function POST(request: NextRequest) {
     const extension = path.extname(file.name);
     const filename = `${timestamp}${extension}`;
 
-    const uploadDir = type === 'work' ? 'works' : (type === 'team-cv' ? 'team' : 'team');
     if (type === 'team-cv' && extension.toLowerCase() !== '.pdf') {
       return NextResponse.json({ message: 'Sadece PDF dosyası yükleyebilirsiniz.' }, { status: 400 });
     }
 
-    const filePath = path.join(process.cwd(), 'public', uploadDir, filename);
+    // uploads dizinine kaydet
+    const filePath = path.join(process.cwd(), 'uploads', filename);
 
-    // Create directory if it doesn't exist
+    // Klasör yoksa oluştur
     const dir = path.dirname(filePath);
     await fs.mkdir(dir, { recursive: true });
 
-    // Write file
+    // Dosyayı yaz
     await fs.writeFile(filePath, buffer);
 
-    // Return the URL path
-    const url = `/${uploadDir}/${filename}`;
+    // Yeni API route'u ile URL döndür
+    const url = `/api/uploads/${filename}`;
     return NextResponse.json({ url });
   } catch (error) {
     console.error('Upload error:', error);

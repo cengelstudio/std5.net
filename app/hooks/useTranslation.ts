@@ -1,36 +1,40 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import { useMemo, useCallback } from 'react';
 
 // Import translation files
 import trTranslations from '../../translations/tr.json';
 import enTranslations from '../../translations/en.json';
 import frTranslations from '../../translations/fr.json';
 import esTranslations from '../../translations/es.json';
+import arTranslations from '../../translations/ar.json';
+import ruTranslations from '../../translations/ru.json';
 
 const translations = {
   tr: trTranslations,
   en: enTranslations,
   fr: frTranslations,
   es: esTranslations,
+  ar: arTranslations,
+  ru: ruTranslations,
 };
 
-export type Locale = 'tr' | 'en' | 'fr' | 'es';
+export type Locale = 'tr' | 'en' | 'fr' | 'es' | 'ar' | 'ru';
 
 export function useTranslation() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Extract locale from pathname
   const locale = useMemo(() => {
     const pathSegments = pathname.split('/').filter(Boolean);
     const firstSegment = pathSegments[0];
 
-    if (['tr', 'en', 'fr', 'es'].includes(firstSegment)) {
+    if (['tr', 'en', 'fr', 'es', 'ar', 'ru'].includes(firstSegment)) {
       return firstSegment as Locale;
     }
 
+    // If no locale in path, default to Turkish
     return 'tr' as Locale;
   }, [pathname]);
 
@@ -71,69 +75,49 @@ export function useTranslation() {
     };
   }, [locale]);
 
-  const changeLanguage = (newLocale: Locale) => {
-    console.log('changeLanguage debug:', {
-      pathname,
-      newLocale
-    });
-
+  const changeLanguage = useCallback((newLocale: Locale) => {
     let newPath: string;
 
     // Handle root path specially
-    if (pathname === '/') {
-      newPath = newLocale === 'tr' ? '/' : `/${newLocale}`;
+    if (pathname === '/' || pathname === '') {
+      newPath = `/${newLocale}`;
     } else {
       // Split path and remove empty segments
       const segments = pathname.split('/').filter(Boolean);
 
       // Check if first segment is a locale
-      const isFirstSegmentLocale = ['tr', 'en', 'fr', 'es'].includes(segments[0]);
+      const isFirstSegmentLocale = ['tr', 'en', 'fr', 'es', 'ar', 'ru'].includes(segments[0]);
 
       if (isFirstSegmentLocale) {
         // Current path has a locale prefix, replace it
         const remainingSegments = segments.slice(1);
-        if (newLocale === 'tr') {
-          // For Turkish, don't add locale prefix
-          newPath = remainingSegments.length > 0 ? `/${remainingSegments.join('/')}` : '/';
-        } else {
-          // For other locales, add locale prefix
-          newPath = `/${newLocale}${remainingSegments.length > 0 ? '/' + remainingSegments.join('/') : ''}`;
-        }
+        newPath = `/${newLocale}${remainingSegments.length > 0 ? '/' + remainingSegments.join('/') : ''}`;
       } else {
         // Current path has no locale prefix, add it
-        if (newLocale === 'tr') {
-          // For Turkish, don't add locale prefix
-          newPath = segments.length > 0 ? `/${segments.join('/')}` : '/';
-        } else {
-          // For other locales, add locale prefix
-          newPath = `/${newLocale}${segments.length > 0 ? '/' + segments.join('/') : ''}`;
-        }
+        newPath = `/${newLocale}${segments.length > 0 ? '/' + segments.join('/') : ''}`;
       }
     }
 
-    // Preserve search params
-    const searchString = searchParams.toString();
-    if (searchString) {
-      newPath += '?' + searchString;
-    }
+    // Preserve search params using window.location
+    if (typeof window !== 'undefined') {
+      const searchString = window.location.search;
+      if (searchString) {
+        newPath += searchString;
+      }
 
-    console.log('Final newPath:', newPath);
-    window.location.href = newPath;
-  };
+      // Use window.location for navigation instead of router
+      window.location.href = newPath;
+    }
+  }, [pathname]);
 
   // Create localized path that preserves current locale
-  const createLocalizedPath = (path: string) => {
+  const createLocalizedPath = useCallback((path: string) => {
     // Remove leading slash if present
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
 
-    // For Turkish (default), don't add locale prefix
-    if (locale === 'tr') {
-      return `/${cleanPath}`;
-    }
-
-    // For other locales, add locale prefix
+    // Always add locale prefix
     return `/${locale}/${cleanPath}`;
-  };
+  }, [locale]);
 
   const currentLocale = locale as Locale;
 
@@ -142,6 +126,6 @@ export function useTranslation() {
     locale: currentLocale,
     changeLanguage,
     createLocalizedPath,
-    locales: ['tr', 'en', 'fr', 'es'] as const,
+    locales: ['tr', 'en', 'fr', 'es', 'ar', 'ru'] as const,
   };
 }

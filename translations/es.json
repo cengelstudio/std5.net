@@ -36,8 +36,8 @@
     "hero": {
       "title": "El poder creativo",
       "titleAccent": "detrás de las pantallas",
-      "subtitle": "Con los más altos estándares de la industria, nuestro equipo creativo ofrece post-producción, edición, sonido, color y VFX en 3 ubicaciones.",
-      "viewProjects": "Ver Proyectos",
+      "subtitle": "A los más altos estándares de la industria, nuestro equipo creativo ofrece post-producción, edición, sonido, color y VFX en 3 ubicaciones.",
+      "viewProjects": "Reproducir",
       "contactUs": "Contáctanos"
     },
     "featuredProjects": {
@@ -75,12 +75,13 @@
       "completedProjects": "Proyectos Completados",
       "locations": "Ubicaciones",
       "studios": "Estudios",
-      "yearsExperience": "Años de Experiencia"
+      "soundStudio": "Estudio de Sonido",
+      "colorStudio": "Estudio de Color"
     }
   },
   "projects": {
     "title": "Proyectos",
-    "subtitle": "Hemos completado más de 250 proyectos en edición, color, sonido, VFX y más. Nuestro portafolio sigue creciendo cada día.",
+    "subtitle": "Hemos completado más de 250 proyectos en edición, diseño de sonido, color, efectos visuales y más.",
     "searchPlaceholder": "Buscar proyectos...",
     "allPlatforms": "Todas las Plataformas",
     "allYears": "Todos los Años",
@@ -93,11 +94,11 @@
   "about": {
     "title": "Acerca de Nosotros",
     "subtitle": "Conoce más sobre STD5",
-    "description": "Fundada en 2017 en Estambul, STD5 ofrece post-producción, edición, sonido, color, doblaje y VFX en 3 ubicaciones, con más de 250 proyectos.",
-    "description2": "Con su personal experimentado e instalaciones tecnológicas en sus estudios, crea creativamente <span class=\"font-semibold text-white\">edición</span>, <span class=\"font-semibold text-white\">diseño de sonido</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">doblaje</span> y <span class=\"font-semibold text-white\">efectos visuales</span> y los hace listos para la transmisión. Desde su fundación, ha firmado más de <span class=\"text-std5-accent font-bold text-xl\">250 proyectos</span>.",
+    "description": "Fundada en Estambul en 2017, STD5 ha firmado más de 250 proyectos con servicios de post-producción, edición, sonido, color, doblaje y VFX en 3 ubicaciones.",
+    "description2": "Con su personal experimentado y las instalaciones tecnológicas en sus estudios, realiza <span class=\"font-semibold text-white\">edición</span>, <span class=\"font-semibold text-white\">diseño de sonido</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">doblaje</span> y <span class=\"font-semibold text-white\">efectos visuales</span> de manera creativa y los prepara para la transmisión. Desde su fundación, ha firmado <span class=\"text-std5-accent font-bold text-xl\">más de 250 proyectos</span>.",
     "team": "Nuestro Equipo",
     "managementTeam": "Equipo de Gestión",
-    "officeCats": "Nuestros Gatos de Oficina",
+    "officeCats": "Gatos de Oficina",
     "imdbProfile": "Perfil IMDB",
     "downloadCV": "Descargar CV",
     "values": {
@@ -111,10 +112,10 @@
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "Siempre estamos ocupados, pero nuestros invitados son prioritarios. Contáctanos para edición, sonido, color, doblaje, VFX; nuestro equipo responde rápido.",
+    "subtitle": "Siempre estamos ocupados pero nuestros invitados son nuestra prioridad. Contáctanos para edición, sonido, color, doblaje y VFX, nuestro equipo responderá rápidamente.",
     "form": {
       "name": "Nombre Completo",
-      "namePlaceholder": "Tu nombre completo",
+      "namePlaceholder": "Tu nombre y apellido",
       "email": "Correo Electrónico",
       "emailPlaceholder": "Tu dirección de correo electrónico",
       "phone": "Teléfono",
@@ -128,17 +129,17 @@
       "address": "Dirección",
       "phone": "Teléfono",
       "email": "Correo Electrónico",
-      "workingHours": "Horario de Trabajo"
+      "workingHours": "Horas de Trabajo"
     }
   },
   "locations": {
     "title": "Ubicaciones",
     "subtitle": "Descubre nuestros estudios",
-    "description": "En 3 ubicaciones de Estambul, nuestros estudios tienen el mejor hardware y software, ofreciendo infraestructura completa para todas las etapas de post-producción.",
+    "description": "En 3 ubicaciones en Estambul, proporcionamos infraestructura para cada etapa de post-producción en nuestros estudios equipados con la mejor tecnología.",
     "threeLocations": "3 Ubicaciones",
-    "premiumEquipment": "Equipo Premium",
-    "hdrColor": "Color HDR",
-    "dolbyAtmos": "Mezcla Dolby Atmos",
+    "premiumEquipment": "Equipamiento Premium",
+    "hdrColor": "HDR Color",
+    "dolbyAtmos": "Dolby Atmos Mix",
     "esentepe": "Esentepe",
     "fulyali": "Fulyalı",
     "figen": "Figen",
@@ -152,7 +153,7 @@
     "productionYear": "Año de Producción",
     "category": "Categoría",
     "platform": "Plataforma",
-    "watchTrailer": "Ver Trailer",
+    "watchTrailer": "Ver Tráiler",
     "share": "Compartir",
     "gallery": "Galería",
     "details": "Detalles del Proyecto",
@@ -182,7 +183,7 @@
         "year": "Año",
         "genre": "Género",
         "platform": "Plataforma",
-        "trailerUrl": "URL del Trailer",
+        "trailerUrl": "URL del Tráiler",
         "image": "Imagen"
       }
     },
@@ -209,8 +210,14 @@
       "delete": "¿Estás seguro de que quieres eliminar este gato?",
       "form": {
         "name": "Nombre",
-        "role": "Rol",
-        "about": "Acerca de",
+        "role": "Título",
+        "about": "Descripciones (Multi-idioma)",
+        "turkish": "Türkçe",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "russian": "Русский",
+        "arabic": "العربية",
         "image": "Imagen",
         "uploadImage": "Subir Imagen",
         "uploading": "Subiendo..."
@@ -218,31 +225,31 @@
     },
     "featured": {
       "title": "Proyectos Destacados",
-      "subtitle": "Selecciona proyectos para mostrar en la página de inicio (Máximo 6 elementos)",
+      "subtitle": "Selecciona los proyectos que se mostrarán en la página de inicio (Máximo 6)",
       "selectedCount": "Proyectos Seleccionados",
       "selectedInfo": "Los proyectos seleccionados se mostrarán en la página de inicio en este orden.",
       "maxLimit": "Puedes seleccionar un máximo de 6 proyectos destacados.",
       "updateSuccess": "¡Proyectos destacados actualizados exitosamente!",
       "updateError": "Ocurrió un error al actualizar los proyectos destacados.",
       "badge": "Destacado",
-      "addToFeatured": "Agregar a destacados",
-      "removeFromFeatured": "Quitar de destacados"
+      "addToFeatured": "Agregar a Destacados",
+      "removeFromFeatured": "Quitar de Destacados"
     },
     "login": {
       "title": "Inicio de Sesión de Administrador",
       "username": "Nombre de Usuario",
       "password": "Contraseña",
       "login": "Iniciar Sesión",
-      "error": "Nombre de usuario o contraseña inválidos"
+      "error": "Nombre de usuario o contraseña incorrectos"
     }
   },
   "footer": {
-    "description": "Empresa de post-producción de servicio completo que sirve a la industria del entretenimiento local y global con sede en Estambul.",
+    "description": "Empresa de post-producción de capacidad completa que sirve a la industria del entretenimiento local y global desde Estambul.",
     "ourLocations": "Nuestras Ubicaciones",
     "explore": "Explorar",
     "copyright": "© 2024 STD5. Todos los derechos reservados.",
     "developedBy": "Desarrollado por",
     "privacy": "Política de Privacidad",
-    "terms": "Términos de Servicio"
+    "terms": "Términos de Uso"
   }
 }

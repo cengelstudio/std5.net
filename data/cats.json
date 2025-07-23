@@ -1,33 +1,108 @@
 {
   "cats": [
     {
+      "id": "1",
       "name": "Fiko",
-      "role": "Temsilcijj",
-      "about": "Ofisimizin en enerjik üyesi. Her toplantıya katılmayı sever ve çalışanlarımızın moralini yüksek tutmakta uzman.",
-      "image": "/cats/1752104790305-Screenshot 2025-07-10 at 02.45.42.png"
+      "role": {
+        "tr": "Temsilci 1",
+        "en": "Representative 2",
+        "es": "Representante",
+        "fr": "Représentant 3",
+        "ru": "Представитель",
+        "ar": "ممثل"
+      },
+      "about": {
+        "tr": "Ofisimizin en enerjik üyesi. Her toplantıya katılmayı sever ve çalışanlarımızın moralini yüksek tutmakta uzman.",
+        "en": "The most energetic member of our office. Loves to attend every meeting and is an expert at keeping our staff's morale high.",
+        "es": "El miembro más enérgico de nuestra oficina. Le encanta asistir a todas las reuniones y es experto en mantener alta la moral de nuestro personal.",
+        "fr": "Le membre le plus énergique de notre bureau. Aime assister à toutes les réunions et est expert pour maintenir le moral de notre personnel élevé.",
+        "ru": "Самый энергичный член нашего офиса. Любит посещать все встречи и является экспертом в поддержании высокого морального духа нашего персонала.",
+        "ar": "العضو الأكثر نشاطاً في مكتبنا. يحب حضور كل اجتماع وهو خبير في الحفاظ على معنويات موظفينا مرتفعة."
+      },
+      "image": "/api/uploads/1753096247015-0c5a1330-b263-45e5-abbc-59d07d28450a.JPG"
     },
     {
+      "id": "2",
       "name": "Barbo",
-      "role": "Şef",
-      "about": "Mutfak bölümünün vazgeçilmez üyesi. Yemek saatlerini asla kaçırmaz ve kalite kontrolünü titizlikle yapar.",
+      "role": {
+        "tr": "Şef",
+        "en": "Chef",
+        "es": "Jefe",
+        "fr": "Chef",
+        "ru": "Шеф",
+        "ar": "شيف"
+      },
+      "about": {
+        "tr": "Mutfak bölümünün vazgeçilmez üyesi. Yemek saatlerini asla kaçırmaz ve kalite kontrolünü titizlikle yapar.",
+        "en": "The indispensable member of the kitchen department. Never misses meal times and performs quality control meticulously.",
+        "es": "El miembro indispensable del departamento de cocina. Nunca se pierde las horas de comida y realiza el control de calidad meticulosamente.",
+        "fr": "Le membre indispensable du département cuisine. Ne manque jamais les heures de repas et effectue le contrôle qualité méticuleusement.",
+        "ru": "Незаменимый член кухонного отдела. Никогда не пропускает время приема пищи и тщательно выполняет контроль качества.",
+        "ar": "العضو الذي لا غنى عنه في قسم المطبخ. لا يفوت أبداً أوقات الوجبات ويقوم بمراقبة الجودة بدقة."
+      },
       "image": "/cats/1752104849808-Screenshot 2025-07-10 at 02.45.42.png"
     },
     {
+      "id": "3",
       "name": "Luna",
-      "role": "Güvenlik Müdürü",
-      "about": "Ofisimizin gece bekçisi. Özellikle gece vardiyasında üstün performans gösterir.",
+      "role": {
+        "tr": "Güvenlik Müdürü",
+        "en": "Security Manager",
+        "es": "Gerente de Seguridad",
+        "fr": "Directeur de Sécurité",
+        "ru": "Менеджер по безопасности",
+        "ar": "مدير الأمن"
+      },
+      "about": {
+        "tr": "Ofisimizin gece bekçisi. Özellikle gece vardiyasında üstün performans gösterir.",
+        "en": "Our office's night watchman. Shows outstanding performance especially during night shifts.",
+        "es": "El vigilante nocturno de nuestra oficina. Muestra un rendimiento excepcional especialmente durante los turnos nocturnos.",
+        "fr": "Le gardien de nuit de notre bureau. Montre une performance exceptionnelle surtout pendant les quarts de nuit.",
+        "ru": "Ночной сторож нашего офиса. Показывает выдающиеся результаты, особенно во время ночных смен.",
+        "ar": "حارس الليل في مكتبنا. يظهر أداءً استثنائياً خاصة خلال المناوبات الليلية."
+      },
       "image": "/cats/1752104931106-Screenshot 2025-07-10 at 02.45.42.png"
     },
     {
+      "id": "4",
       "name": "Mia",
-      "role": "Halkla İlişkiler Uzmanı",
-      "about": "Misafirlerimizi karşılama konusunda bir numara. Herkesin sevgilisi ve ofisimizin yüzü.",
+      "role": {
+        "tr": "Halkla İlişkiler Uzmanı",
+        "en": "Public Relations Specialist",
+        "es": "Especialista en Relaciones Públicas",
+        "fr": "Spécialiste des Relations Publiques",
+        "ru": "Специалист по связям с общественностью",
+        "ar": "متخصص العلاقات العامة"
+      },
+      "about": {
+        "tr": "Misafirlerimizi karşılama konusunda bir numara. Herkesin sevgilisi ve ofisimizin yüzü.",
+        "en": "Number one in welcoming our guests. Everyone's favorite and the face of our office.",
+        "es": "Número uno en dar la bienvenida a nuestros invitados. La favorita de todos y la cara de nuestra oficina.",
+        "fr": "Numéro un pour accueillir nos invités. La préférée de tous et le visage de notre bureau.",
+        "ru": "Номер один в приветствии наших гостей. Любимица всех и лицо нашего офиса.",
+        "ar": "رقم واحد في استقبال ضيوفنا. المفضلة لدى الجميع ووجه مكتبنا."
+      },
       "image": "/cats/1752104936604-Screenshot 2025-07-10 at 02.45.42.png"
     },
     {
+      "id": "5",
       "name": "Leo",
-      "role": "Baş Danışman",
-      "about": "Önemli kararlar alınırken masada mutlaka bulunur. Stratejik düşünme konusunda uzman.",
+      "role": {
+        "tr": "Baş Danışman",
+        "en": "Senior Consultant",
+        "es": "Consultor Senior",
+        "fr": "Consultant Senior",
+        "ru": "Старший консультант",
+        "ar": "مستشار أول"
+      },
+      "about": {
+        "tr": "Önemli kararlar alınırken masada mutlaka bulunur. Stratejik düşünme konusunda uzman.",
+        "en": "Always present at the table when important decisions are made. Expert in strategic thinking.",
+        "es": "Siempre presente en la mesa cuando se toman decisiones importantes. Experto en pensamiento estratégico.",
+        "fr": "Toujours présent à la table lors de la prise de décisions importantes. Expert en pensée stratégique.",
+        "ru": "Всегда присутствует за столом при принятии важных решений. Эксперт в стратегическом мышлении.",
+        "ar": "دائماً حاضر على الطاولة عند اتخاذ القرارات المهمة. خبير في التفكير الاستراتيجي."
+      },
       "image": "/cats/1752104942623-Screenshot 2025-07-10 at 02.45.42.png"
     }
   ]

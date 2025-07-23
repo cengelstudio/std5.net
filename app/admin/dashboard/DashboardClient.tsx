@@ -20,17 +20,18 @@ interface Work {
 interface CrewMember {
   id?: string;
   name: string;
-  title: string;
-  department: string;
+  title: string | { [key: string]: string };
+  department: string | { [key: string]: string };
   image: string;
   linkedin: string;
-  cv: string;
+  cv: string | { [key: string]: string };
 }
 
 interface Cat {
+  id: string;
   name: string;
-  role: string;
-  about: string;
+  role: string | { [key: string]: string };
+  about: string | { [key: string]: string };
   image: string;
 }
 
@@ -49,9 +50,24 @@ export default function DashboardClient() {
   const [showCatForm, setShowCatForm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [catFormData, setCatFormData] = useState<Cat>({
+    id: '',
     name: '',
-    role: '',
-    about: '',
+    role: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
+    about: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
     image: ''
   });
   const router = useRouter();
@@ -66,12 +82,21 @@ export default function DashboardClient() {
     fetchData();
   }, [router]);
 
-  useEffect(() => {
+    useEffect(() => {
     if (editingCat) {
+      const aboutData = typeof editingCat.about === 'string'
+        ? { tr: editingCat.about, en: '', es: '', fr: '', ru: '', ar: '' }
+        : editingCat.about;
+
+      const roleData = typeof editingCat.role === 'string'
+        ? { tr: editingCat.role, en: '', es: '', fr: '', ru: '', ar: '' }
+        : editingCat.role;
+
       setCatFormData({
+        id: editingCat.id || '',
         name: editingCat.name || '',
-        role: editingCat.role || '',
-        about: editingCat.about || '',
+        role: roleData,
+        about: aboutData,
         image: editingCat.image || ''
       });
     }
@@ -197,27 +222,47 @@ export default function DashboardClient() {
 
     try {
       const method = editingCat ? 'PUT' : 'POST';
+
+      // For new cats, generate an ID
+      const submitData = editingCat ? catFormData : { ...catFormData, id: Date.now().toString() };
+
+      console.log('Submitting cat data:', submitData);
+      console.log('Method:', method);
+
       const response = await fetch('/api/admin/cats', {
         method,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
         },
-        body: JSON.stringify(catFormData),
+        body: JSON.stringify(submitData),
       });
+
+      console.log('Response status:', response.status);
 
       if (response.ok) {
         setShowCatForm(false);
         setEditingCat(null);
-        setCatFormData({ name: '', role: '', about: '', image: '' });
+                setCatFormData({
+          id: '',
+          name: '',
+          role: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+          about: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+          image: ''
+        });
         fetchData();
+      } else {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        alert(errorData.error || 'Bir hata oluştu');
       }
     } catch (error) {
       console.error('Kedi kaydetme hatası:', error);
+      alert('Bir hata oluştu');
     }
   };
 
-  const handleDeleteCat = async (name: string) => {
+  const handleDeleteCat = async (id: string) => {
     if (!confirm('Bu kediyi silmek istediğinizden emin misiniz?')) return;
 
     try {
@@ -227,23 +272,36 @@ export default function DashboardClient() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ id }),
       });
 
       if (response.ok) {
         fetchData();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || 'Silme işlemi sırasında bir hata oluştu');
       }
     } catch (error) {
       console.error('Silme hatası:', error);
+      alert('Silme işlemi sırasında bir hata oluştu');
     }
   };
 
-  const openEditCatModal = (cat: Cat) => {
+    const openEditCatModal = (cat: Cat) => {
     setEditingCat(cat);
+    const aboutData = typeof cat.about === 'string'
+      ? { tr: cat.about, en: '', es: '', fr: '', ru: '', ar: '' }
+      : cat.about;
+
+    const roleData = typeof cat.role === 'string'
+      ? { tr: cat.role, en: '', es: '', fr: '', ru: '', ar: '' }
+      : cat.role;
+
     setCatFormData({
+      id: cat.id,
       name: cat.name,
-      role: cat.role,
-      about: cat.about,
+      role: roleData,
+      about: aboutData,
       image: cat.image
     });
     setShowCatForm(true);
@@ -397,10 +455,11 @@ export default function DashboardClient() {
                       {/* 2:3 Aspect Ratio Container */}
                       <div className="aspect-[2/3] relative">
                         {work.image ? (
-                          <img
+                          <Image
                             src={work.image.startsWith('http') ? work.image : work.image.startsWith('/') ? work.image : `/works/${work.image}`}
                             alt={work.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik03NSA5MEwxMjUgMTQwTDE3NSA5MFYyMTBIODVWMTMwTDc1IDkwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
@@ -473,9 +532,11 @@ export default function DashboardClient() {
                     <div className="text-center">
                       <div className="w-16 h-16 mx-auto mb-3 rounded-full overflow-hidden bg-gray-200">
                         {member.image ? (
-                          <img
+                          <Image
                             src={member.image.startsWith('http') || member.image.startsWith('/') ? member.image : `/team/${member.image}`}
                             alt={member.name}
+                            width={64}
+                            height={64}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -491,8 +552,12 @@ export default function DashboardClient() {
                         )}
                       </div>
                       <h3 className="font-medium text-gray-900 text-sm mb-1">{member.name}</h3>
-                      <p className="text-xs text-gray-600 mb-1">{member.title}</p>
-                      <p className="text-xs text-gray-500">{member.department}</p>
+                      <p className="text-xs text-gray-600 mb-1">
+                        {typeof member.title === 'string' ? member.title : member.title.tr}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {typeof member.department === 'string' ? member.department : member.department.tr}
+                      </p>
 
                       <div className="flex space-x-2 mt-3">
                         <button
@@ -523,10 +588,16 @@ export default function DashboardClient() {
                   <h2 className="text-lg font-medium text-gray-900">Ofis Kedileri</h2>
                   <p className="text-sm text-gray-500 mt-1">Ofis kedilerini yönetin</p>
                 </div>
-                <button
+                                <button
                   onClick={() => {
                     setEditingCat(null);
-                    setCatFormData({ name: '', role: '', about: '', image: '' });
+                    setCatFormData({
+                      id: '',
+                      name: '',
+                      role: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+                      about: { tr: '', en: '', es: '', fr: '', ru: '', ar: '' },
+                      image: ''
+                    });
                     setShowCatForm(true);
                   }}
                   className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
@@ -537,7 +608,7 @@ export default function DashboardClient() {
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
                 {cats.map((cat) => (
-                  <div key={cat.name} className="group">
+                  <div key={cat.id} className="group">
                     <div className="relative bg-gray-200 rounded-md overflow-hidden border border-gray-200">
                       <div className="aspect-square relative">
                         <Image
@@ -550,7 +621,9 @@ export default function DashboardClient() {
                     </div>
                     <div className="mt-2">
                       <h3 className="font-medium text-gray-900 text-sm truncate">{cat.name}</h3>
-                      <p className="text-gray-500 text-xs mt-1">{cat.role}</p>
+                      <p className="text-gray-500 text-xs mt-1">
+                        {typeof cat.role === 'string' ? cat.role : cat.role.tr}
+                      </p>
                       <div className="flex gap-2 mt-2">
                         <button
                           onClick={() => openEditCatModal(cat)}
@@ -560,7 +633,7 @@ export default function DashboardClient() {
                           Düzenle
                         </button>
                         <button
-                          onClick={() => handleDeleteCat(cat.name)}
+                          onClick={() => handleDeleteCat(cat.id)}
                           className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded text-xs hover:bg-red-200"
                         >
                           <Trash2 size={12} />
@@ -575,7 +648,7 @@ export default function DashboardClient() {
               {/* Cat Form Modal */}
               {showCatForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                  <div className="relative top-20 mx-auto p-6 border w-full max-w-2xl shadow-lg rounded-lg bg-white">
+                  <div className="relative top-10 mx-auto p-6 border w-full max-w-4xl shadow-lg rounded-lg bg-white max-h-[90vh] overflow-y-auto">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-lg font-medium text-gray-900">
                         {editingCat ? 'Kedi Düzenle' : 'Yeni Kedi'}
@@ -589,7 +662,7 @@ export default function DashboardClient() {
                     </div>
 
                     <form onSubmit={handleCatSubmit}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             İsim
@@ -602,59 +675,251 @@ export default function DashboardClient() {
                             required
                           />
                         </div>
+                      </div>
 
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Ünvan
-                          </label>
-                          <input
-                            type="text"
-                            value={catFormData.role}
-                            onChange={(e) => setCatFormData({ ...catFormData, role: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                            required
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Hakkında
-                          </label>
-                          <textarea
-                            value={catFormData.about}
-                            onChange={(e) => setCatFormData({ ...catFormData, about: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                            rows={3}
-                            required
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Görsel
-                          </label>
-                          <div className="mt-1 flex items-center gap-4">
-                            {catFormData.image && (
-                              <div className="relative w-20 h-20 rounded overflow-hidden">
-                                <Image
-                                  src={catFormData.image}
-                                  alt="Preview"
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            )}
-                            <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
-                              <Upload size={16} />
-                              {isUploading ? 'Yükleniyor...' : 'Görsel Yükle'}
-                              <input
-                                type="file"
-                                onChange={handleCatImageUpload}
-                                accept="image/*"
-                                className="hidden"
-                              />
+                      {/* Çok Dilli Ünvan Bölümü */}
+                      <div className="border-t pt-6 mb-6">
+                        <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Ünvanlar</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (Türkçe) *
                             </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? catFormData.role : catFormData.role.tr}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? e.target.value
+                                  : { ...catFormData.role, tr: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              required
+                            />
                           </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (İngilizce)
+                            </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? '' : catFormData.role.en}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? { tr: catFormData.role, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                                  : { ...catFormData.role, en: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (İspanyolca)
+                            </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? '' : catFormData.role.es}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? { tr: catFormData.role, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                                  : { ...catFormData.role, es: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (Fransızca)
+                            </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? '' : catFormData.role.fr}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? { tr: catFormData.role, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                                  : { ...catFormData.role, fr: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (Rusça)
+                            </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? '' : catFormData.role.ru}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? { tr: catFormData.role, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                                  : { ...catFormData.role, ru: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Ünvan (Arapça)
+                            </label>
+                            <input
+                              type="text"
+                              value={typeof catFormData.role === 'string' ? '' : catFormData.role.ar}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                role: typeof catFormData.role === 'string'
+                                  ? { tr: catFormData.role, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                                  : { ...catFormData.role, ar: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Çok Dilli Hakkında Bölümü */}
+                      <div className="border-t pt-6 mb-6">
+                        <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Açıklamalar</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (Türkçe) *
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? catFormData.about : catFormData.about.tr}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? e.target.value
+                                  : { ...catFormData.about, tr: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                              required
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (İngilizce)
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? '' : catFormData.about.en}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? { tr: catFormData.about, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                                  : { ...catFormData.about, en: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (İspanyolca)
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? '' : catFormData.about.es}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? { tr: catFormData.about, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                                  : { ...catFormData.about, es: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (Fransızca)
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? '' : catFormData.about.fr}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? { tr: catFormData.about, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                                  : { ...catFormData.about, fr: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (Rusça)
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? '' : catFormData.about.ru}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? { tr: catFormData.about, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                                  : { ...catFormData.about, ru: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Hakkında (Arapça)
+                            </label>
+                            <textarea
+                              value={typeof catFormData.about === 'string' ? '' : catFormData.about.ar}
+                              onChange={(e) => setCatFormData({
+                                ...catFormData,
+                                about: typeof catFormData.about === 'string'
+                                  ? { tr: catFormData.about, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                                  : { ...catFormData.about, ar: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                              rows={3}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t pt-6 mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Görsel
+                        </label>
+                        <div className="mt-1 flex items-center gap-4">
+                          {catFormData.image && (
+                            <div className="relative w-20 h-20 rounded overflow-hidden">
+                              <Image
+                                src={catFormData.image}
+                                alt="Preview"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
+                            <Upload size={16} />
+                            {isUploading ? 'Yükleniyor...' : 'Görsel Yükle'}
+                            <input
+                              type="file"
+                              onChange={handleCatImageUpload}
+                              accept="image/*"
+                              className="hidden"
+                            />
+                          </label>
                         </div>
                       </div>
 
@@ -710,10 +975,11 @@ export default function DashboardClient() {
                         {/* 2:3 Aspect Ratio Container */}
                         <div className="aspect-[2/3] relative">
                           {work.image ? (
-                            <img
+                            <Image
                               src={work.image.startsWith('http') ? work.image : work.image.startsWith('/') ? work.image : `/works/${work.image}`}
                               alt={work.title}
-                              className="w-full h-full object-cover"
+                              fill
+                              className="object-cover"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik03NSA5MEwxMjUgMTQwTDE3NSA5MFYyMTBIODVWMTMwTDc1IDkwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
@@ -1046,28 +1312,94 @@ function CrewFormModal({
 }) {
   const [formData, setFormData] = useState<CrewMember>({
     name: '',
-    title: '',
-    department: '',
+    title: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
+    department: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    },
     image: '',
     linkedin: '',
-    cv: '#'
+    cv: {
+      tr: '',
+      en: '',
+      es: '',
+      fr: '',
+      ru: '',
+      ar: ''
+    }
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [cvFiles, setCvFiles] = useState<{ [key: string]: File | null }>({
+    tr: null,
+    en: null,
+    es: null,
+    fr: null,
+    ru: null,
+    ar: null
+  });
   const [loading, setLoading] = useState(false);
 
   // Initialize form data when component mounts or member changes
   useEffect(() => {
     if (member) {
-      setFormData(member);
+      const titleData = typeof member.title === 'string'
+        ? { tr: member.title, en: '', es: '', fr: '', ru: '', ar: '' }
+        : member.title;
+
+      const departmentData = typeof member.department === 'string'
+        ? { tr: member.department, en: '', es: '', fr: '', ru: '', ar: '' }
+        : member.department;
+
+      const cvData = typeof member.cv === 'string'
+        ? { tr: member.cv, en: '', es: '', fr: '', ru: '', ar: '' }
+        : member.cv;
+
+      setFormData({
+        ...member,
+        title: titleData,
+        department: departmentData,
+        cv: cvData
+      });
     } else {
       setFormData({
         name: '',
-        title: '',
-        department: '',
+        title: {
+          tr: '',
+          en: '',
+          es: '',
+          fr: '',
+          ru: '',
+          ar: ''
+        },
+        department: {
+          tr: '',
+          en: '',
+          es: '',
+          fr: '',
+          ru: '',
+          ar: ''
+        },
         image: '',
         linkedin: '',
-        cv: '#'
+        cv: {
+          tr: '',
+          en: '',
+          es: '',
+          fr: '',
+          ru: '',
+          ar: ''
+        }
       });
     }
   }, [member]);
@@ -1078,8 +1410,9 @@ function CrewFormModal({
 
     try {
       let imageUrl = formData.image;
-      let cvUrl = formData.cv;
+      const cvData = typeof formData.cv === 'string' ? { tr: formData.cv, en: '', es: '', fr: '', ru: '', ar: '' } : formData.cv;
 
+      // Upload image if provided
       if (imageFile) {
         const formDataUpload = new FormData();
         formDataUpload.append('file', imageFile);
@@ -1099,22 +1432,25 @@ function CrewFormModal({
         }
       }
 
-      if (cvFile) {
-        const formDataUpload = new FormData();
-        formDataUpload.append('file', cvFile);
-        formDataUpload.append('type', 'team-cv');
+      // Upload CV files for each language
+      for (const [lang, file] of Object.entries(cvFiles)) {
+        if (file) {
+          const formDataUpload = new FormData();
+          formDataUpload.append('file', file);
+          formDataUpload.append('type', 'team-cv');
 
-        const uploadResponse = await fetch('/api/admin/upload', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
-          },
-          body: formDataUpload
-        });
+          const uploadResponse = await fetch('/api/admin/upload', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
+            },
+            body: formDataUpload
+          });
 
-        if (uploadResponse.ok) {
-          const uploadData = await uploadResponse.json();
-          cvUrl = uploadData.url;
+          if (uploadResponse.ok) {
+            const uploadData = await uploadResponse.json();
+            cvData[lang as keyof typeof cvData] = uploadData.url;
+          }
         }
       }
 
@@ -1127,7 +1463,7 @@ function CrewFormModal({
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('admin-token')}`
         },
-        body: JSON.stringify({ ...formData, image: imageUrl, cv: cvUrl })
+        body: JSON.stringify({ ...formData, image: imageUrl, cv: cvData })
       });
 
       if (response.ok) {
@@ -1143,13 +1479,13 @@ function CrewFormModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-20 mx-auto p-6 border w-full max-w-2xl shadow-lg rounded-lg bg-white">
+      <div className="relative top-10 mx-auto p-6 border w-full max-w-4xl shadow-lg rounded-lg bg-white max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <h3 className="text-lg font-medium text-gray-900 mb-6">
             {member ? 'Ekip Üyesi Düzenle' : 'Yeni Ekip Üyesi Ekle'}
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 İsim
@@ -1158,32 +1494,6 @@ function CrewFormModal({
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pozisyon
-              </label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Departman
-              </label>
-              <input
-                type="text"
-                value={formData.department}
-                onChange={(e) => setFormData({...formData, department: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
                 required
               />
@@ -1200,36 +1510,338 @@ function CrewFormModal({
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
               />
             </div>
+          </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Görsel
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-              />
-              {formData.image && (
-                <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.image.split('/').pop()}</p>
-              )}
-            </div>
+          {/* Çok Dilli Pozisyon Bölümü */}
+          <div className="border-t pt-6 mb-6">
+            <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Pozisyon</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (Türkçe) *
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? formData.title : formData.title.tr}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? e.target.value
+                      : { ...formData.title, tr: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  required
+                />
+              </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                CV (PDF)
-              </label>
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setCvFile(e.target.files?.[0] || null)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-              />
-              {formData.cv && formData.cv !== '#' && (
-                <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.split('/').pop()}</p>
-              )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (İngilizce)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? '' : formData.title.en}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? { tr: formData.title, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                      : { ...formData.title, en: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (İspanyolca)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? '' : formData.title.es}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? { tr: formData.title, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                      : { ...formData.title, es: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (Fransızca)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? '' : formData.title.fr}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? { tr: formData.title, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                      : { ...formData.title, fr: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (Rusça)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? '' : formData.title.ru}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? { tr: formData.title, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                      : { ...formData.title, ru: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pozisyon (Arapça)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.title === 'string' ? '' : formData.title.ar}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    title: typeof formData.title === 'string'
+                      ? { tr: formData.title, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                      : { ...formData.title, ar: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
             </div>
+          </div>
+
+          {/* Çok Dilli Departman Bölümü */}
+          <div className="border-t pt-6 mb-6">
+            <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli Departman</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (Türkçe) *
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? formData.department : formData.department.tr}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? e.target.value
+                      : { ...formData.department, tr: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (İngilizce)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? '' : formData.department.en}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? { tr: formData.department, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
+                      : { ...formData.department, en: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (İspanyolca)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? '' : formData.department.es}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? { tr: formData.department, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
+                      : { ...formData.department, es: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (Fransızca)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? '' : formData.department.fr}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? { tr: formData.department, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
+                      : { ...formData.department, fr: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (Rusça)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? '' : formData.department.ru}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? { tr: formData.department, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
+                      : { ...formData.department, ru: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Departman (Arapça)
+                </label>
+                <input
+                  type="text"
+                  value={typeof formData.department === 'string' ? '' : formData.department.ar}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    department: typeof formData.department === 'string'
+                      ? { tr: formData.department, en: '', es: '', fr: '', ru: '', ar: e.target.value }
+                      : { ...formData.department, ar: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Çok Dilli CV Bölümü */}
+          <div className="border-t pt-6 mb-6">
+            <h4 className="text-md font-medium text-gray-900 mb-4">Çok Dilli CV</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (Türkçe)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, tr: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'string' && formData.cv !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.split('/').pop()}</p>
+                )}
+                {typeof formData.cv === 'object' && formData.cv.tr && formData.cv.tr !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.tr.split('/').pop()}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (İngilizce)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, en: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'object' && formData.cv.en && formData.cv.en !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.en.split('/').pop()}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (İspanyolca)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, es: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'object' && formData.cv.es && formData.cv.es !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.es.split('/').pop()}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (Fransızca)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, fr: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'object' && formData.cv.fr && formData.cv.fr !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.fr.split('/').pop()}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (Rusça)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, ru: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'object' && formData.cv.ru && formData.cv.ru !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.ru.split('/').pop()}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CV (Arapça)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setCvFiles({...cvFiles, ar: e.target.files?.[0] || null})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+                />
+                {typeof formData.cv === 'object' && formData.cv.ar && formData.cv.ar !== '#' && (
+                  <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.cv.ar.split('/').pop()}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t pt-6 mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Görsel
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
+            />
+            {formData.image && (
+              <p className="text-sm text-gray-500 mt-1">Mevcut: {formData.image.split('/').pop()}</p>
+            )}
           </div>
 
           <div className="flex justify-end space-x-3 mt-6">

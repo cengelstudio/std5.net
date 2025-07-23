@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, easeInOut } from "framer-motion";
-import { Play, Mail } from "lucide-react";
+import { Play, Volume2, Palette } from "lucide-react";
 import Link from 'next/link';
 import { useMemo } from 'react';
 import MosaicBackground from './components/MosaicBackground';
@@ -17,6 +17,20 @@ export default function ClientHome() {
   const { t, createLocalizedPath } = useTranslation();
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Smooth scroll function
+  const scrollToProjects = () => {
+    const element = document.getElementById('featured-projects');
+    if (element) {
+      const headerHeight = 80; // Header yüksekliği
+      const elementPosition = element.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Generate a random number for mosaic background - memoized for performance
   const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
@@ -111,89 +125,124 @@ export default function ClientHome() {
             }}
             className="flex flex-col items-center"
           >
-            <h1
-              className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
-              style={{ fontSize: 'clamp(2.2rem, 7vw, 2.8rem)' }} // mobile için büyüt
-            >
-              {t('home.hero.title')}<br />
-              <span className="text-std5-accent">{t('home.hero.titleAccent')}</span>
-            </h1>
-
-            <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
-              {t('home.hero.subtitle')}
-            </p>
-
-            {/* Butonlar: mobilde de yanyana ve spacing optimize */}
-            <div className="flex flex-row gap-2 sm:gap-3 justify-center items-center mb-8 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 sm:flex-none min-w-0"
-              >
-                <Link
-                  href={createLocalizedPath('/projects')}
-                  className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 whitespace-nowrap sm:whitespace-normal"
-                  style={{ minHeight: 48 }}
-                >
-                  <Play className="w-4 h-4" />
-                  {t('home.hero.viewProjects')}
-                </Link>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 sm:flex-none min-w-0"
-              >
-                <Link
-                  href={createLocalizedPath('/contact')}
-                  className="flex flex-row items-center justify-center gap-2 px-3 py-3 sm:px-8 sm:py-4 h-12 bg-transparent border border-white/40 hover:border-white text-white rounded-md font-semibold text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto min-w-0 backdrop-blur-sm whitespace-nowrap sm:whitespace-normal"
-                  style={{ minHeight: 48 }}
-                >
-                  <Mail className="w-4 h-4" />
-                  {t('home.hero.contactUs')}
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Stats: mobilde daha aşağıda ve spacing daha fazla */}
-            <motion.div
+                        <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-xl mx-auto mt-8 sm:mt-0"
+              transition={{ duration: 0.8 }}
+              className="relative flex flex-col items-center gap-12 md:gap-16"
             >
-              {STATS.map((stat) => {
-                const href = stat.label === t('home.stats.completedProjects') ? createLocalizedPath('/projects') :
-                           stat.label === t('home.stats.locations') || stat.label === t('home.stats.studios') ? createLocalizedPath('/locations') :
-                           stat.label === t('home.stats.yearsExperience') ? createLocalizedPath('/about') : createLocalizedPath('/');
+              {/* Başlık */}
+              <div className="relative text-center max-w-4xl">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                  {t('home.hero.title')}
+                  <br />
+                  <span className="text-std5-accent">
+                    {t('home.hero.titleAccent')}
+                  </span>
+                </h1>
+              </div>
 
-                return (
-                  <Link key={`${stat.label}-${stat.number}`} href={href}>
-                    <motion.div
-                      className="text-center cursor-pointer group"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+              {/* İstatistikler ve Badges */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="flex flex-col items-center gap-6"
+              >
+                {/* İstatistikler */}
+                <div className="grid grid-cols-3 gap-2 md:gap-4 justify-items-center w-full max-w-xl">
+                  {STATS.slice(0, 3).map((stat) => {
+                    const href = stat.label === t('home.stats.completedProjects') ? createLocalizedPath('/projects') :
+                              stat.label === t('home.stats.locations') || stat.label === t('home.stats.studios') ? createLocalizedPath('/locations') : createLocalizedPath('/');
+
+                    return (
+                      <Link key={`${stat.label}-${stat.number}`} href={href}>
+                        <motion.div
+                          className="text-center cursor-pointer group"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <div className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
+                            {stat.number}
+                          </div>
+                          <div className="text-xs text-gray-300 group-hover:text-white transition-colors duration-300">
+                            {t(stat.label)}
+                          </div>
+                        </motion.div>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                {/* Dolby Atmos ve HDR Color badges */}
+                <div className="flex justify-center items-center gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="flex items-center gap-3 px-8 py-4 rounded-full bg-std5-accent/10 backdrop-blur-sm"
+                  >
+                    <Volume2 className="w-6 h-6 text-std5-accent" />
+                    <span className="text-base font-medium text-white">
+                      Dolby Atmos
+                    </span>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="flex items-center gap-3 px-8 py-4 rounded-full bg-std5-accent/10 backdrop-blur-sm"
+                  >
+                    <Palette className="w-6 h-6 text-std5-accent" />
+                    <span className="text-base font-medium text-white">
+                      HDR Color
+                    </span>
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Buton */}
+              <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="flex justify-center"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative"
+                  >
+                    <button
+                      onClick={scrollToProjects}
+                      className="flex items-center gap-3 px-12 py-3.5 bg-std5-accent rounded-lg min-w-[250px] justify-center"
                     >
-                      <div className="text-xl md:text-2xl font-bold text-white mb-1 group-hover:text-std5-accent transition-colors duration-300">
-                        {stat.number}
-                      </div>
-                      <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                        {t(stat.label)}
-                      </div>
-                    </motion.div>
-                  </Link>
-                );
-              })}
+                      <Play className="w-5 h-5 text-white" />
+                      <span className="text-lg font-medium text-white">
+                        {t('home.hero.viewProjects')}
+                      </span>
+                    </button>
+                  </motion.div>
+                </motion.div>
             </motion.div>
+
           </motion.div>
         </div>
       </section>
 
       {/* Öne Çıkan İşlerimiz */}
-      <section className="relative z-20 bg-std5-darker py-12 px-4 sm:px-6 lg:px-8">
+      <section id="featured-projects" className="relative z-20 bg-std5-darker py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">{t('home.featuredProjects.title')}</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="w-full text-center"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('home.featuredProjects.title')}</h2>
+          </motion.div>
           <br />
           {loading ? (
             <div className="flex justify-center items-center py-8">
@@ -223,6 +272,8 @@ export default function ClientHome() {
         </div>
       </section>
 
+
+
       {/* Services Section */}
       <section id="services" className="py-7 px-4 sm:px-6 lg:px-8 bg-std5-darker">
         <div className="max-w-7xl mx-auto">
@@ -236,12 +287,9 @@ export default function ClientHome() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               {t('home.services.title')}
             </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              {t('home.services.subtitle')}
-            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             {[
               { title: t('home.services.editing.title'), description: t('home.services.editing.description'), color: '#430086' },
               { title: t('home.services.soundDesign.title'), description: t('home.services.soundDesign.description'), color: '#430086' },

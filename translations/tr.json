@@ -37,7 +37,7 @@
       "title": "Ekranların arkasındaki",
       "titleAccent": "yaratıcı güç",
       "subtitle": "Sektörün en yüksek standartlarında, yaratıcı ekibimizle 3 lokasyonda post prodüksiyon, kurgu, ses, renk ve VFX sunuyoruz.",
-      "viewProjects": "Projeleri İncele",
+      "viewProjects": "Oynat",
       "contactUs": "İletişime Geç"
     },
     "featuredProjects": {
@@ -72,15 +72,16 @@
       }
     },
     "stats": {
-      "completedProjects": "Tamamlanan Proje",
+      "completedProjects": "Tamamlanmış proje",
       "locations": "Yerleşke",
       "studios": "Stüdyo",
-      "yearsExperience": "Yıllık Deneyim"
+      "soundStudio": "Ses Stüdyosu",
+      "colorStudio": "Renk Stüdyosu"
     }
   },
   "projects": {
     "title": "Projeler",
-    "subtitle": "Kurgu, renk, ses, VFX ve daha fazlasında 250’den fazla projeye imza attık. Portföyümüz her geçen gün büyüyor.",
+    "subtitle": "Kurgu, ses tasarımı, renk, görsel efektler ve daha fazlasıyla 250'den fazla projeyi tamamladık.",
     "searchPlaceholder": "Proje ara...",
     "allPlatforms": "Tüm Platformlar",
     "allYears": "Tüm Yıllar",
@@ -93,7 +94,7 @@
   "about": {
     "title": "Hakkımızda",
     "subtitle": "STD5 hakkında daha fazla bilgi edinin",
-    "description": "2017’de İstanbul’da kurulan STD5, 3 lokasyonda post prodüksiyon, kurgu, ses, renk, dublaj ve VFX hizmetiyle 250+ projeye imza attı.",
+    "description": "2017'de İstanbul'da kurulan STD5, 3 lokasyonda post prodüksiyon, kurgu, ses, renk, dublaj ve VFX hizmetiyle 250+ projeye imza attı.",
     "description2": "Deneyimli kadrosu ve stüdyolarında barındırdığı teknolojik imkanlarla <span class=\"font-semibold text-white\">kurgu</span>, <span class=\"font-semibold text-white\">ses tasarımı</span>, <span class=\"font-semibold text-white\">renk</span>, <span class=\"font-semibold text-white\">dublaj</span> ve <span class=\"font-semibold text-white\">görsel efektleri</span> yaratıcı bir şekilde yapar ve yayına hazır hale getirir. Kurulduğu günden beri <span class=\"text-std5-accent font-bold text-xl\">250'den fazla projeye</span> imzasını atmıştır.",
     "team": "Ekibimiz",
     "managementTeam": "Yönetim Ekibi",
@@ -134,7 +135,7 @@
   "locations": {
     "title": "Yerleşkeler",
     "subtitle": "Stüdyolarımızı keşfedin",
-    "description": "İstanbul’da 3 lokasyonda, en iyi donanım ve yazılımla donatılmış stüdyolarımızda, post prodüksiyonun her aşaması için altyapı sunuyoruz.",
+    "description": "İstanbul'da 3 lokasyonda, en iyi teknolojiyle donatılmış stüdyolarımızda, post prodüksiyonun her aşaması için altyapı sunuyoruz.",
     "threeLocations": "3 Lokasyon",
     "premiumEquipment": "Premium Donanım",
     "hdrColor": "HDR Color",
@@ -210,7 +211,13 @@
       "form": {
         "name": "İsim",
         "role": "Ünvan",
-        "about": "Hakkında",
+        "about": "Açıklamalar (Çok Dilli)",
+        "turkish": "Türkçe",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "russian": "Русский",
+        "arabic": "العربية",
         "image": "Görsel",
         "uploadImage": "Görsel Yükle",
         "uploading": "Yükleniyor..."

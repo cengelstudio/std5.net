@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const locales = ['tr', 'en', 'fr', 'es'];
+const locales = ['tr', 'en', 'fr', 'es', 'ar', 'ru'];
 const defaultLocale = 'tr';
 
 // Get the preferred locale from request headers
@@ -17,10 +17,12 @@ function getLocale(request: NextRequest): string {
 
     if (preferredLocale) {
       const shortLocale = preferredLocale.substring(0, 2).toLowerCase();
-      if (shortLocale === 'en') return 'en';
-      if (shortLocale === 'fr') return 'fr';
-      if (shortLocale === 'es') return 'es';
-      if (shortLocale === 'tr') return 'tr';
+          if (shortLocale === 'en') return 'en';
+    if (shortLocale === 'fr') return 'fr';
+    if (shortLocale === 'es') return 'es';
+    if (shortLocale === 'ar') return 'ar';
+    if (shortLocale === 'ru') return 'ru';
+    if (shortLocale === 'tr') return 'tr';
     }
   }
 

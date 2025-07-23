@@ -14,14 +14,16 @@ export async function generateMetadata({ params }: LocationsPageProps): Promise<
     tr: 'Yerleşkeler | STD5',
     en: 'Locations | STD5',
     fr: 'Emplacements | STD5',
-    es: 'Ubicaciones | STD5'
+    es: 'Ubicaciones | STD5',
+    ru: 'Локации | STD5'
   };
 
   const descriptions = {
-    tr: 'İstanbul\'da 3 lokasyonda, en iyi donanım ve yazılımla donatılmış stüdyolarımızda post prodüksiyonun her aşaması için altyapı sunuyoruz.',
-    en: 'In 3 Istanbul locations, we offer infrastructure for every stage of post-production in our studios equipped with the best hardware and software.',
-    fr: 'Dans 3 emplacements d\'Istanbul, nous offrons une infrastructure pour chaque étape de la post-production dans nos studios équipés des meilleurs matériels et logiciels.',
-    es: 'En 3 ubicaciones de Estambul, ofrecemos infraestructura para cada etapa de post-producción en nuestros estudios equipados con el mejor hardware y software.'
+    tr: 'İstanbul\'da 3 lokasyonda, en iyi teknolojiyle donatılmış stüdyolarımızda post prodüksiyonun her aşaması için altyapı sunuyoruz.',
+    en: 'In 3 Istanbul locations, we offer infrastructure for every stage of post-production in our studios equipped with the best technology.',
+    fr: 'Dans 3 emplacements d\'Istanbul, nous offrons une infrastructure pour chaque étape de la post-production dans nos studios équipés de la meilleure technologie.',
+    es: 'En 3 ubicaciones de Estambul, ofrecemos infraestructura para cada etapa de post-producción en nuestros estudios equipados con la mejor tecnología.',
+    ru: 'В 3 локациях Стамбула мы предоставляем инфраструктуру для каждого этапа постпродакшна в наших студиях, оснащенных лучшими технологиями.'
   };
 
   const currentTitle = titles[locale as keyof typeof titles] || titles.tr;

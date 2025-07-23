@@ -185,8 +185,8 @@ export default function ContactClient() {
             <a href="tel:+902122678094" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">{t('contact.info.phone')}</span>
-                <span className="text-std5-accent text-sm sm:text-lg font-medium">
+                <span className="text-base sm:text-xl font-bold text-std5-accent mb-0.5 sm:mb-1">{t('contact.info.phone')}</span>
+                <span className="text-white text-sm sm:text-lg font-medium">
                   +90 (212) 267 80 94
                 </span>
               </div>
@@ -195,8 +195,8 @@ export default function ContactClient() {
             <a href="mailto:info@std5.net" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">{t('contact.info.email')}</span>
-                <span className="text-std5-accent text-sm sm:text-lg font-medium">
+                <span className="text-base sm:text-xl font-bold text-std5-accent mb-0.5 sm:mb-1">{t('contact.info.email')}</span>
+                <span className="text-white text-sm sm:text-lg font-medium">
                   info@std5.net
                 </span>
               </div>
@@ -205,8 +205,8 @@ export default function ContactClient() {
             <a href="https://instagram.com/std5_postproduction" target="_blank" rel="noopener noreferrer" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Instagram className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">Instagram</span>
-                <span className="text-std5-accent text-sm sm:text-lg font-medium break-all">
+                <span className="text-base sm:text-xl font-bold text-std5-accent mb-0.5 sm:mb-1">Instagram</span>
+                <span className="text-white text-sm sm:text-lg font-medium break-all">
                   @std5_postproduction
                 </span>
               </div>
@@ -215,8 +215,8 @@ export default function ContactClient() {
             <a href="https://youtube.com/@std5_postproduction" target="_blank" rel="noopener noreferrer" className="block">
               <div className="glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center flex flex-col items-center h-full hover:bg-white/5 transition-all duration-300">
                 <Youtube className="w-5 h-5 sm:w-6 sm:h-6 text-std5-accent mb-1.5 sm:mb-2" />
-                <span className="text-base sm:text-xl font-bold text-white mb-0.5 sm:mb-1">YouTube</span>
-                <span className="text-std5-accent text-sm sm:text-lg font-medium break-all">
+                <span className="text-base sm:text-xl font-bold text-std5-accent mb-0.5 sm:mb-1">YouTube</span>
+                <span className="text-white text-sm sm:text-lg font-medium break-all">
                   @std5_postproduction
                 </span>
               </div>

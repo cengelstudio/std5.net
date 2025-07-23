@@ -13,6 +13,17 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
+export async function generateStaticParams() {
+  return [
+    { locale: 'tr' },
+    { locale: 'en' },
+    { locale: 'fr' },
+    { locale: 'es' },
+    { locale: 'ar' },
+    { locale: 'ru' },
+  ];
+}
+
 interface LocaleLayoutProps {
   children: ReactNode;
   params: {
@@ -27,21 +38,27 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
     tr: 'STD5',
     en: 'STD5',
     fr: 'STD5',
-    es: 'STD5'
+    es: 'STD5',
+    ar: 'STD5',
+    ru: 'STD5'
   };
 
   const descriptions = {
     tr: 'İstanbul merkezli post prodüksiyon şirketi. Kurgu, ses tasarımı, renk düzenleme, dublaj ve VFX hizmetleri. 250+ proje deneyimi.',
     en: 'Istanbul-based post-production company. Editing, sound design, color grading, dubbing and VFX services. 250+ project experience.',
     fr: 'Société de post-production basée à Istanbul. Services de montage, conception sonore, étalonnage couleur, doublage et VFX. Plus de 250 projets d\'expérience.',
-    es: 'Empresa de post-producción con sede en Estambul. Servicios de edición, diseño de sonido, gradación de color, doblaje y VFX. Más de 250 proyectos de experiencia.'
+    es: 'Empresa de post-producción con sede en Estambul. Servicios de edición, diseño de sonido, gradación de color, doblaje y VFX. Más de 250 proyectos de experiencia.',
+    ar: 'شركة ما بعد الإنتاج في إسطنبول. خدمات التحرير، تصميم الصوت، تصحيح الألوان، الدبلجة والمؤثرات البصرية. خبرة في أكثر من 250 مشروع.',
+    ru: 'Стамбульская компания постпродакшна. Услуги монтажа, звукового дизайна, цветокоррекции, дубляжа и VFX. Опыт более 250 проектов.'
   };
 
   const keywords = {
     tr: 'post prodüksiyon, kurgu, ses tasarımı, renk düzenleme, VFX, dublaj, İstanbul, film, dizi, reklam',
     en: 'post production, editing, sound design, color grading, VFX, dubbing, Istanbul, film, series, commercial',
     fr: 'post-production, montage, conception sonore, étalonnage couleur, VFX, doublage, Istanbul, film, série, publicité',
-    es: 'post-producción, edición, diseño de sonido, gradación de color, VFX, doblaje, Estambul, película, serie, comercial'
+    es: 'post-producción, edición, diseño de sonido, gradación de color, VFX, doblaje, Estambul, película, serie, comercial',
+    ar: 'ما بعد الإنتاج، تحرير، تصميم صوت، تصحيح ألوان، مؤثرات بصرية، دبلجة، إسطنبول، فيلم، مسلسل، إعلان',
+    ru: 'постпродакшн, монтаж, звуковой дизайн, цветокоррекция, VFX, дубляж, Стамбул, фильм, сериал, реклама'
   };
 
   const currentTitle = titles[locale as keyof typeof titles] || titles.tr;
@@ -73,10 +90,12 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
     },
     alternates: {
       languages: {
-        'tr': 'https://std5.net',
+        'tr': 'https://std5.net/tr',
         'en': 'https://std5.net/en',
         'fr': 'https://std5.net/fr',
         'es': 'https://std5.net/es',
+        'ar': 'https://std5.net/ar',
+        'ru': 'https://std5.net/ru',
       },
     },
     icons: {
@@ -92,7 +111,7 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
     openGraph: {
       type: 'website',
       locale: locale,
-      url: locale === 'tr' ? 'https://std5.net' : `https://std5.net/${locale}`,
+      url: `https://std5.net/${locale}`,
       title: currentTitle,
       description: currentDescription,
       siteName: 'STD5',
@@ -127,13 +146,16 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const { locale } = await params;
 
   // Validate locale
-  const validLocales = ['tr', 'en', 'fr', 'es'];
+  const validLocales = ['tr', 'en', 'fr', 'es', 'ar', 'ru'];
   if (!validLocales.includes(locale)) {
     return <div>Invalid locale</div>;
   }
 
+  // Set text direction for Arabic
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
   return (
-    <html lang={locale} dir="ltr">
+    <html lang={locale} dir={dir}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

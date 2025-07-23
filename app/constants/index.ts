@@ -86,9 +86,10 @@ export const SERVICES: readonly Service[] = [
 // Stats Data - These will be translated using the translation hook
 export const STATS: readonly Stat[] = [
   { number: "250+", label: 'home.stats.completedProjects' },
-  { number: "3+", label: 'home.stats.locations' },
   { number: "45+", label: 'home.stats.studios' },
-  { number: "8+", label: 'home.stats.yearsExperience' },
+  { number: "3", label: 'home.stats.locations' },
+  { number: "Dolby Atmos", label: 'home.stats.soundStudio' },
+  { number: "HDR Color", label: 'home.stats.colorStudio' },
 ] as const;
 
 // Image paths for mosaic

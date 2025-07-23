@@ -36,8 +36,8 @@
     "hero": {
       "title": "The creative power",
       "titleAccent": "behind the screens",
-      "subtitle": "At the highest industry standards, our creative team offers post-production, editing, sound, color and VFX in 3 locations.",
-      "viewProjects": "View Projects",
+      "subtitle": "At the highest standards of the industry, our creative team offers post-production, editing, sound, color and VFX in 3 locations.",
+      "viewProjects": "Play",
       "contactUs": "Contact Us"
     },
     "featuredProjects": {
@@ -75,12 +75,13 @@
       "completedProjects": "Completed Projects",
       "locations": "Locations",
       "studios": "Studios",
-      "yearsExperience": "Years of Experience"
+      "soundStudio": "Sound Studio",
+      "colorStudio": "Color Studio"
     }
   },
   "projects": {
     "title": "Projects",
-    "subtitle": "We have completed over 250 projects in editing, color, sound, VFX and more. Our portfolio keeps growing every day.",
+    "subtitle": "We have completed more than 250 projects in editing, sound design, color, visual effects and more.",
     "searchPlaceholder": "Search projects...",
     "allPlatforms": "All Platforms",
     "allYears": "All Years",
@@ -93,11 +94,11 @@
   "about": {
     "title": "About Us",
     "subtitle": "Learn more about STD5",
-    "description": "Founded in 2017 in Istanbul, STD5 offers post-production, editing, sound, color, dubbing and VFX in 3 locations, with 250+ projects.",
-    "description2": "With its experienced staff and technological facilities in its studios, it creatively creates <span class=\"font-semibold text-white\">editing</span>, <span class=\"font-semibold text-white\">sound design</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">dubbing</span> and <span class=\"font-semibold text-white\">visual effects</span> and makes them ready for broadcast. Since its establishment, it has signed more than <span class=\"text-std5-accent font-bold text-xl\">250 projects</span>.",
+    "description": "Founded in Istanbul in 2017, STD5 has signed 250+ projects with post-production, editing, sound, color, dubbing and VFX services in 3 locations.",
+    "description2": "With its experienced staff and technological facilities in its studios, it performs <span class=\"font-semibold text-white\">editing</span>, <span class=\"font-semibold text-white\">sound design</span>, <span class=\"font-semibold text-white\">color</span>, <span class=\"font-semibold text-white\">dubbing</span> and <span class=\"font-semibold text-white\">visual effects</span> creatively and prepares them for broadcast. Since its establishment, it has signed <span class=\"text-std5-accent font-bold text-xl\">more than 250 projects</span>.",
     "team": "Our Team",
     "managementTeam": "Management Team",
-    "officeCats": "Our Office Cats",
+    "officeCats": "Office Cats",
     "imdbProfile": "IMDB Profile",
     "downloadCV": "Download CV",
     "values": {
@@ -111,10 +112,10 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "We are always busy, but our guests are a priority. Contact us for editing, sound, color, dubbing, VFX; our team replies fast.",
+    "subtitle": "We are always busy but our guests are our priority. Contact us for editing, sound, color, dubbing and VFX, our team will respond quickly.",
     "form": {
       "name": "Full Name",
-      "namePlaceholder": "Your full name",
+      "namePlaceholder": "Your name and surname",
       "email": "Email",
       "emailPlaceholder": "Your email address",
       "phone": "Phone",
@@ -134,7 +135,7 @@
   "locations": {
     "title": "Locations",
     "subtitle": "Discover our studios",
-    "description": "In 3 Istanbul locations, our studios have top hardware and software, offering full infrastructure for all post-production stages.",
+    "description": "In 3 locations in Istanbul, we provide infrastructure for every stage of post-production in our studios equipped with the best technology.",
     "threeLocations": "3 Locations",
     "premiumEquipment": "Premium Equipment",
     "hdrColor": "HDR Color",
@@ -209,8 +210,14 @@
       "delete": "Are you sure you want to delete this cat?",
       "form": {
         "name": "Name",
-        "role": "Role",
-        "about": "About",
+        "role": "Title",
+        "about": "Descriptions (Multi-language)",
+        "turkish": "Türkçe",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "russian": "Русский",
+        "arabic": "العربية",
         "image": "Image",
         "uploadImage": "Upload Image",
         "uploading": "Uploading..."
@@ -218,15 +225,15 @@
     },
     "featured": {
       "title": "Featured Projects",
-      "subtitle": "Select projects to display on the homepage (Maximum 6 items)",
+      "subtitle": "Select projects to be displayed on the homepage (Maximum 6)",
       "selectedCount": "Selected Projects",
       "selectedInfo": "Selected projects will be displayed on the homepage in this order.",
       "maxLimit": "You can select a maximum of 6 featured projects.",
       "updateSuccess": "Featured projects updated successfully!",
       "updateError": "An error occurred while updating featured projects.",
       "badge": "Featured",
-      "addToFeatured": "Add to featured",
-      "removeFromFeatured": "Remove from featured"
+      "addToFeatured": "Add to Featured",
+      "removeFromFeatured": "Remove from Featured"
     },
     "login": {
       "title": "Admin Login",
@@ -237,12 +244,12 @@
     }
   },
   "footer": {
-    "description": "Full-service post-production company serving local and global entertainment industry based in Istanbul.",
+    "description": "Full-capacity post-production company serving the local and global entertainment industry from Istanbul.",
     "ourLocations": "Our Locations",
     "explore": "Explore",
     "copyright": "© 2024 STD5. All rights reserved.",
     "developedBy": "Developed by",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Use"
   }
 }

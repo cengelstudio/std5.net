@@ -5,7 +5,7 @@ import { createSlug } from './utils'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://std5.net'
-  const locales = ['tr', 'en', 'fr', 'es']
+  const locales = ['tr', 'en', 'fr', 'es', 'ar', 'ru']
 
   // Read works data
   let works: Array<{ title: string; prod_year: number; genre: string; platform: string }> = []
@@ -30,14 +30,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
-              alternates: {
-          languages: {
-            'tr': `${baseUrl}`,
-            'en': `${baseUrl}/en`,
-            'fr': `${baseUrl}/fr`,
-            'es': `${baseUrl}/es`,
-          },
+      alternates: {
+        languages: {
+          'tr': `${baseUrl}`,
+          'en': `${baseUrl}/en`,
+          'fr': `${baseUrl}/fr`,
+          'es': `${baseUrl}/es`,
+          'ar': `${baseUrl}/ar`,
+          'ru': `${baseUrl}/ru`,
         },
+      },
     })
 
     // About page
@@ -51,6 +53,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
           'tr': `${baseUrl}/about`,
           'en': `${baseUrl}/en/about`,
           'fr': `${baseUrl}/fr/about`,
+          'es': `${baseUrl}/es/about`,
+          'ar': `${baseUrl}/ar/about`,
+          'ru': `${baseUrl}/ru/about`,
         },
       },
     })
@@ -66,6 +71,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
           'tr': `${baseUrl}/projects`,
           'en': `${baseUrl}/en/projects`,
           'fr': `${baseUrl}/fr/projects`,
+          'es': `${baseUrl}/es/projects`,
+          'ar': `${baseUrl}/ar/projects`,
+          'ru': `${baseUrl}/ru/projects`,
         },
       },
     })
@@ -81,6 +89,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
           'tr': `${baseUrl}/locations`,
           'en': `${baseUrl}/en/locations`,
           'fr': `${baseUrl}/fr/locations`,
+          'es': `${baseUrl}/es/locations`,
+          'ar': `${baseUrl}/ar/locations`,
+          'ru': `${baseUrl}/ru/locations`,
         },
       },
     })
@@ -96,6 +107,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
           'tr': `${baseUrl}/contact`,
           'en': `${baseUrl}/en/contact`,
           'fr': `${baseUrl}/fr/contact`,
+          'es': `${baseUrl}/es/contact`,
+          'ar': `${baseUrl}/ar/contact`,
+          'ru': `${baseUrl}/ru/contact`,
         },
       },
     })
@@ -112,6 +126,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
             'tr': `${baseUrl}/work/${createSlug(work.title)}`,
             'en': `${baseUrl}/en/work/${createSlug(work.title)}`,
             'fr': `${baseUrl}/fr/work/${createSlug(work.title)}`,
+            'es': `${baseUrl}/es/work/${createSlug(work.title)}`,
+            'ar': `${baseUrl}/ar/work/${createSlug(work.title)}`,
+            'ru': `${baseUrl}/ru/work/${createSlug(work.title)}`,
           },
         },
       })

@@ -14,14 +14,16 @@ export async function generateMetadata({ params }: ProjectsPageProps): Promise<M
     tr: 'Projeler | STD5',
     en: 'Projects | STD5',
     fr: 'Projets | STD5',
-    es: 'Proyectos | STD5'
+    es: 'Proyectos | STD5',
+    ru: 'Проекты | STD5'
   };
 
   const descriptions = {
     tr: 'STD5\'in 250+ proje portföyünü keşfedin. Film, dizi, reklam ve daha fazlası için kurgu, ses, renk ve VFX çalışmalarımız.',
     en: 'Explore STD5\'s portfolio of 250+ projects. Our editing, sound, color and VFX work for films, series, commercials and more.',
     fr: 'Découvrez le portfolio de STD5 avec plus de 250 projets. Nos travaux de montage, son, couleur et VFX pour films, séries, publicités et plus.',
-    es: 'Explora el portafolio de STD5 con más de 250 proyectos. Nuestro trabajo de edición, sonido, color y VFX para películas, series, comerciales y más.'
+    es: 'Explora el portafolio de STD5 con más de 250 proyectos. Nuestro trabajo de edición, sonido, color y VFX para películas, series, comerciales y más.',
+    ru: 'Изучите портфолио STD5 с более чем 250 проектами. Наши работы по монтажу, звуку, цвету и VFX для фильмов, сериалов, рекламы и многого другого.'
   };
 
   const currentTitle = titles[locale as keyof typeof titles] || titles.tr;

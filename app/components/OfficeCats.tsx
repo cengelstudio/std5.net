@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import cats from '@/data/cats.json';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface Cat {
+  id: string;
   name: string;
-  role: string;
-  about: string;
+  role: { [key: string]: string };
+  about: { [key: string]: string };
   image: string;
 }
 
@@ -19,6 +21,13 @@ interface CatModalProps {
 }
 
 const CatModal = ({ cat, onClose }: CatModalProps) => {
+  const { locale } = useTranslation();
+
+  // Get the localized text based on current locale
+  const getLocalizedText = (text: { [key: string]: string }) => {
+    return text[locale] || text['en'] || text['tr'] || 'Text not found';
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,8 +61,8 @@ const CatModal = ({ cat, onClose }: CatModalProps) => {
           </div>
 
           <h3 className="text-2xl font-bold text-white mb-2">{cat.name}</h3>
-          <p className="text-std5-accent text-lg mb-4">{cat.role}</p>
-          <p className="text-gray-300 text-center">{cat.about}</p>
+          <p className="text-std5-accent text-lg mb-4">{getLocalizedText(cat.role)}</p>
+          <p className="text-gray-300 text-center">{getLocalizedText(cat.about)}</p>
         </div>
       </motion.div>
     </motion.div>

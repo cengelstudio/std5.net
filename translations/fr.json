@@ -37,7 +37,7 @@
       "title": "La puissance créative",
       "titleAccent": "derrière les écrans",
       "subtitle": "Aux plus hauts standards, notre équipe créative propose post-production, montage, son, couleur et VFX dans 3 emplacements.",
-      "viewProjects": "Voir les Projets",
+      "viewProjects": "Jouer",
       "contactUs": "Nous Contacter"
     },
     "featuredProjects": {
@@ -75,12 +75,13 @@
       "completedProjects": "Projets Terminés",
       "locations": "Emplacements",
       "studios": "Studios",
-      "yearsExperience": "Années d'Expérience"
+      "soundStudio": "Studio Son",
+      "colorStudio": "Studio Couleur"
     }
   },
   "projects": {
     "title": "Projets",
-    "subtitle": "Plus de 250 projets réalisés en montage, couleur, son, VFX et plus. Notre portfolio s’agrandit chaque jour.",
+    "subtitle": "Nous avons complété plus de 250 projets en montage, conception sonore, couleur, effets visuels et plus encore.",
     "searchPlaceholder": "Rechercher des projets...",
     "allPlatforms": "Toutes les Plateformes",
     "allYears": "Toutes les Années",
@@ -93,11 +94,11 @@
   "about": {
     "title": "À Propos",
     "subtitle": "En savoir plus sur STD5",
-    "description": "Fondée en 2017 à Istanbul, STD5 propose post-production, montage, son, couleur, doublage et VFX sur 3 sites, avec 250+ projets.",
-    "description2": "Avec son personnel expérimenté et ses installations technologiques dans ses studios, elle crée de manière créative le <span class=\"font-semibold text-white\">montage</span>, la <span class=\"font-semibold text-white\">conception sonore</span>, la <span class=\"font-semibold text-white\">couleur</span>, le <span class=\"font-semibold text-white\">doublage</span> et les <span class=\"font-semibold text-white\">effets visuels</span> et les rend prêts pour la diffusion. Depuis sa création, elle a signé plus de <span class=\"text-std5-accent font-bold text-xl\">250 projets</span>.",
+    "description": "Fondée à Istanbul en 2017, STD5 a signé plus de 250 projets avec des services de post-production, montage, son, couleur, doublage et VFX dans 3 emplacements.",
+    "description2": "Avec son personnel expérimenté et ses installations technologiques dans ses studios, elle effectue le <span class=\"font-semibold text-white\">montage</span>, la <span class=\"font-semibold text-white\">conception sonore</span>, la <span class=\"font-semibold text-white\">couleur</span>, le <span class=\"font-semibold text-white\">doublage</span> et les <span class=\"font-semibold text-white\">effets visuels</span> de manière créative et les prépare pour la diffusion. Depuis sa création, elle a signé <span class=\"text-std5-accent font-bold text-xl\">plus de 250 projets</span>.",
     "team": "Notre Équipe",
     "managementTeam": "Équipe de Direction",
-    "officeCats": "Nos Chats de Bureau",
+    "officeCats": "Chats de Bureau",
     "imdbProfile": "Profil IMDB",
     "downloadCV": "Télécharger CV",
     "values": {
@@ -111,10 +112,10 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Toujours occupés, mais nos invités sont prioritaires. Contactez-nous pour montage, son, couleur, doublage, VFX; réponse rapide.",
+    "subtitle": "Nous sommes toujours occupés mais nos invités sont notre priorité. Contactez-nous pour le montage, le son, la couleur, le doublage et les VFX, notre équipe répondra rapidement.",
     "form": {
       "name": "Nom Complet",
-      "namePlaceholder": "Votre nom complet",
+      "namePlaceholder": "Votre nom et prénom",
       "email": "E-mail",
       "emailPlaceholder": "Votre adresse e-mail",
       "phone": "Téléphone",
@@ -134,11 +135,11 @@
   "locations": {
     "title": "Emplacements",
     "subtitle": "Découvrez nos studios",
-    "description": "À Istanbul, dans 3 sites, nos studios offrent la meilleure infrastructure et équipement pour toutes les étapes de post-production.",
+    "description": "Dans 3 emplacements à Istanbul, nous fournissons l'infrastructure pour chaque étape de la post-production dans nos studios équipés de la meilleure technologie.",
     "threeLocations": "3 Emplacements",
     "premiumEquipment": "Équipement Premium",
-    "hdrColor": "Couleur HDR",
-    "dolbyAtmos": "Mix Dolby Atmos",
+    "hdrColor": "HDR Color",
+    "dolbyAtmos": "Dolby Atmos Mix",
     "esentepe": "Esentepe",
     "fulyali": "Fulyalı",
     "figen": "Figen",
@@ -146,17 +147,17 @@
   },
   "work": {
     "contentNotFound": "Contenu non trouvé",
-    "backToProjects": "Retour aux projets",
+    "backToProjects": "Retour aux Projets",
     "copiedToClipboard": "Copié dans le presse-papiers",
-    "projectDetails": "Détails du projet",
-    "productionYear": "Année de production",
+    "projectDetails": "Détails du Projet",
+    "productionYear": "Année de Production",
     "category": "Catégorie",
     "platform": "Plateforme",
-    "watchTrailer": "Regarder la bande-annonce",
+    "watchTrailer": "Regarder la Bande-annonce",
     "share": "Partager",
     "gallery": "Galerie",
-    "details": "Détails du projet",
-    "year": "Année de production",
+    "details": "Détails du Projet",
+    "year": "Année de Production",
     "genre": "Genre",
     "client": "Client"
   },
@@ -209,8 +210,14 @@
       "delete": "Êtes-vous sûr de vouloir supprimer ce chat ?",
       "form": {
         "name": "Nom",
-        "role": "Rôle",
-        "about": "À propos",
+        "role": "Titre",
+        "about": "Descriptions (Multi-langue)",
+        "turkish": "Türkçe",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "russian": "Русский",
+        "arabic": "العربية",
         "image": "Image",
         "uploadImage": "Télécharger l'Image",
         "uploading": "Téléchargement..."
@@ -218,26 +225,26 @@
     },
     "featured": {
       "title": "Projets en Vedette",
-      "subtitle": "Sélectionnez les projets à afficher sur la page d'accueil (Maximum 6 éléments)",
+      "subtitle": "Sélectionnez les projets à afficher sur la page d'accueil (Maximum 6)",
       "selectedCount": "Projets Sélectionnés",
       "selectedInfo": "Les projets sélectionnés seront affichés sur la page d'accueil dans cet ordre.",
       "maxLimit": "Vous pouvez sélectionner un maximum de 6 projets en vedette.",
       "updateSuccess": "Projets en vedette mis à jour avec succès !",
       "updateError": "Une erreur s'est produite lors de la mise à jour des projets en vedette.",
       "badge": "En Vedette",
-      "addToFeatured": "Ajouter aux vedettes",
-      "removeFromFeatured": "Retirer des vedettes"
+      "addToFeatured": "Ajouter aux Vedettes",
+      "removeFromFeatured": "Retirer des Vedettes"
     },
     "login": {
-      "title": "Connexion Admin",
+      "title": "Connexion Administrateur",
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "login": "Se Connecter",
-      "error": "Nom d'utilisateur ou mot de passe invalide"
+      "error": "Nom d'utilisateur ou mot de passe incorrect"
     }
   },
   "footer": {
-    "description": "Entreprise de post-production à service complet servant l'industrie du divertissement locale et mondiale basée à Istanbul.",
+    "description": "Société de post-production à pleine capacité servant l'industrie du divertissement locale et mondiale depuis Istanbul.",
     "ourLocations": "Nos Emplacements",
     "explore": "Explorer",
     "copyright": "© 2024 STD5. Tous droits réservés.",

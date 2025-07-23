@@ -10,6 +10,8 @@ const languageNames = {
   en: 'English',
   fr: 'Français',
   es: 'Español',
+  ar: 'العربية',
+  ru: 'Русский',
 };
 
 const languageFlags = {
@@ -17,6 +19,8 @@ const languageFlags = {
   en: '🇺🇸',
   fr: '🇫🇷',
   es: '🇪🇸',
+  ar: '🇸🇦',
+  ru: '🇷🇺',
 };
 
 export default function LanguageSwitcher() {
@@ -24,7 +28,7 @@ export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLanguageChange = (newLocale: string) => {
-    changeLanguage(newLocale as 'tr' | 'en' | 'fr' | 'es');
+    changeLanguage(newLocale as 'tr' | 'en' | 'fr' | 'es' | 'ar' | 'ru');
     setIsOpen(false);
   };
 

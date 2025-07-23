@@ -14,14 +14,16 @@ export async function generateMetadata({ params }: ContactPageProps): Promise<Me
     tr: 'İletişim | STD5',
     en: 'Contact | STD5',
     fr: 'Contact | STD5',
-    es: 'Contacto | STD5'
+    es: 'Contacto | STD5',
+    ru: 'Контакты | STD5'
   };
 
   const descriptions = {
     tr: 'STD5 ile iletişime geçin. Kurgu, ses, renk, dublaj ve VFX hizmetlerimiz için bize ulaşın. İstanbul\'da 3 lokasyonda hizmetinizdeyiz.',
     en: 'Contact STD5. Reach out to us for our editing, sound, color, dubbing and VFX services. We serve you in 3 Istanbul locations.',
     fr: 'Contactez STD5. Contactez-nous pour nos services de montage, son, couleur, doublage et VFX. Nous vous servons dans 3 emplacements d\'Istanbul.',
-    es: 'Contacta a STD5. Acércate a nosotros para nuestros servicios de edición, sonido, color, doblaje y VFX. Te servimos en 3 ubicaciones de Estambul.'
+    es: 'Contacta a STD5. Acércate a nosotros para nuestros servicios de edición, sonido, color, doblaje y VFX. Te servimos en 3 ubicaciones de Estambul.',
+    ru: 'Свяжитесь с STD5. Обратитесь к нам за услугами монтажа, звука, цвета, дубляжа и VFX. Мы обслуживаем вас в 3 локациях Стамбула.'
   };
 
   const currentTitle = titles[locale as keyof typeof titles] || titles.tr;

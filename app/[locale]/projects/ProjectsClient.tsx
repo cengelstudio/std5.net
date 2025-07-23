@@ -74,18 +74,33 @@ export default function ProjectsClient() {
   return (
     <div className="min-h-screen bg-std5-darker">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative pt-24 pb-7 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-std5-dark/20 to-std5-darker"></div>
+
+        <div className="relative max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+            className="mb-12"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {t('projects.title')}
-            </h1>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+            <div className="relative mb-8">
+              <motion.h1
+                className="text-[28px] md:text-[52px] font-bold text-white mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                {t('projects.title')}
+              </motion.h1>
+              <motion.div
+                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-std5-primary to-std5-accent rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              />
+            </div>
+            <p className="text-[20px] md:text-[26px] text-gray-300 max-w-5xl mx-auto">
               {t('projects.subtitle')}
             </p>
           </motion.div>
@@ -95,65 +110,63 @@ export default function ProjectsClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="glass rounded-2xl p-6 mb-8"
+            className="flex flex-col lg:flex-row gap-6 mb-6"
           >
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search Input */}
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder={t('projects.searchPlaceholder')}
-                  onChange={handleSearchChange}
-                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent transition-colors duration-300"
-                />
-              </div>
-
-              {/* Platform Filter */}
-              <div className="relative">
-                <select
-                  value={selectedPlatform}
-                  onChange={(e) => setSelectedPlatform(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-std5-accent transition-colors duration-300 cursor-pointer"
-                >
-                  <option value="">{t('projects.allPlatforms')}</option>
-                  {filters.platforms?.map((platform) => (
-                    <option key={platform} value={platform} className="bg-std5-darker text-white">
-                      {platform}
-                    </option>
-                  ))}
-                </select>
-                <Monitor className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-              </div>
-
-              {/* Year Filter */}
-              <div className="relative">
-                <select
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-std5-accent transition-colors duration-300 cursor-pointer"
-                >
-                  <option value="">{t('projects.allYears')}</option>
-                  {filters.years?.map((year) => (
-                    <option key={year} value={year} className="bg-std5-darker text-white">
-                      {year}
-                    </option>
-                  ))}
-                </select>
-                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-              </div>
-
-              {/* Clear Filters Button */}
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="flex items-center gap-2 px-4 py-3 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-xl transition-colors duration-300"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t('projects.clearFilters')}</span>
-                </button>
-              )}
+            {/* Search Input */}
+            <div className="flex-1 relative group">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300" />
+              <input
+                type="text"
+                placeholder={t('projects.searchPlaceholder')}
+                onChange={handleSearchChange}
+                className="w-full pl-12 pr-4 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300"
+              />
             </div>
+
+            {/* Platform Filter */}
+            <div className="relative group">
+              <select
+                value={selectedPlatform}
+                onChange={(e) => setSelectedPlatform(e.target.value)}
+                className="appearance-none w-full lg:w-48 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
+              >
+                <option value="">{t('projects.allPlatforms')}</option>
+                {filters.platforms?.map((platform) => (
+                  <option key={platform} value={platform} className="bg-std5-darker text-white">
+                    {platform}
+                  </option>
+                ))}
+              </select>
+              <Monitor className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
+            </div>
+
+            {/* Year Filter */}
+            <div className="relative group">
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="appearance-none w-full lg:w-40 pl-4 pr-12 py-4 bg-black/20 border-2 border-white/10 rounded-2xl text-white focus:outline-none focus:border-std5-accent hover:border-white/20 transition-all duration-300 cursor-pointer"
+              >
+                <option value="">{t('projects.allYears')}</option>
+                {filters.years?.map((year) => (
+                  <option key={year} value={year} className="bg-std5-darker text-white">
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <Calendar className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-std5-accent transition-colors duration-300 pointer-events-none" />
+            </div>
+
+            {/* Clear Filters Button */}
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center justify-center gap-2 px-6 py-4 bg-std5-accent hover:bg-std5-accent/90 text-white rounded-2xl transition-all duration-300 hover:scale-105"
+              >
+                <RotateCcw className="w-5 h-5" />
+                <span className="hidden sm:inline font-medium">{t('projects.clearFilters')}</span>
+              </button>
+            )}
           </motion.div>
         </div>
       </section>
@@ -162,7 +175,7 @@ export default function ProjectsClient() {
       <section className="px-4 sm:px-6 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
+            <div className="flex justify-center items-center py-8">
               <LoadingSpinner size="lg" />
             </div>
           ) : (
@@ -171,7 +184,7 @@ export default function ProjectsClient() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {works.map((work, index) => (
                   <motion.div

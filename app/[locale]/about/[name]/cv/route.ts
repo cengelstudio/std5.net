@@ -28,22 +28,22 @@ export async function GET(
   const index = match && match[3] ? parseInt(match[3], 10) - 1 : 0;
 
   // Ekip üyelerini slug'a çevirip sırayla bul
-  const matches = crew.filter((member: { name: string; cv?: string }) => slugify(member.name) === baseSlug);
+  const matches = crew.filter((member: { name: string; cv: { [key: string]: string } }) => slugify(member.name) === baseSlug);
   const member = matches[index];
 
-  if (!member || !member.cv || member.cv === '#') {
+  if (!member || !member.cv || !member.cv.tr || member.cv.tr === '#') {
     return NextResponse.json({ message: 'CV bulunamadı' }, { status: 404 });
   }
 
   // Dosya yolu
-  const filePath = path.join(process.cwd(), 'public', 'team', path.basename(member.cv));
+  const filePath = path.join(process.cwd(), 'public', 'team', path.basename(member.cv.tr));
   try {
     const fileBuffer = await fs.readFile(filePath);
     return new NextResponse(fileBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="${path.basename(member.cv)}"`
+        'Content-Disposition': `inline; filename="${path.basename(member.cv.tr)}"`
       }
     });
   } catch {

@@ -33,7 +33,7 @@ const itemVariants = {
 };
 
 export default function AboutClient() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-std5-darker via-black to-std5-darker">
@@ -229,11 +229,11 @@ export default function AboutClient() {
                     {member.name}
                   </h3>
                   <p className="text-gray-400 text-sm mb-2 group-hover:text-gray-300 transition-colors duration-300">
-                    {member.title}
+                    {typeof member.title === 'string' ? member.title : (member.title[locale as keyof typeof member.title] || member.title.tr)}
                   </p>
                   <p className="text-gray-500 text-xs mb-4">
                     <span className="inline-block px-2 py-1 bg-std5-primary/20 rounded-full text-std5-accent font-medium">
-                      {member.department}
+                      {typeof member.department === 'string' ? member.department : (member.department[locale as keyof typeof member.department] || member.department.tr)}
                     </span>
                   </p>
 
@@ -249,7 +249,7 @@ export default function AboutClient() {
                       <Film className="w-4 h-4" />
                     </a>
                     <a
-                      href={member.cv}
+                      href={typeof member.cv === 'string' ? member.cv : (member.cv[locale as keyof typeof member.cv] || member.cv.tr)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-std5-accent transition-all duration-300 hover:scale-110"
