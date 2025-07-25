@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../../../../config/auth';
@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
     // Create a unique filename
     const timestamp = Date.now();
     const filename = `${timestamp}-${file.name}`;
-    const pathToSave = join(process.cwd(), 'uploads', filename);
+    const uploadDir = join(process.cwd(), 'uploads', 'cats');
+    const pathToSave = join(uploadDir, filename);
+
+    // Klasör yoksa oluştur
+    await mkdir(uploadDir, { recursive: true });
 
     // Dosyayı yaz
     await writeFile(pathToSave, buffer);

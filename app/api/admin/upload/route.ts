@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const type = formData.get('type') as string; // 'work' or 'team' or 'team-cv'
+    const type = formData.get('type') as string; // 'work' or 'team' or 'team-cv' or 'founder'
 
     if (!file) {
       return NextResponse.json({ message: 'Dosya bulunamadı' }, { status: 400 });
@@ -46,8 +46,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Sadece PDF dosyası yükleyebilirsiniz.' }, { status: 400 });
     }
 
-    // uploads dizinine kaydet
-    const filePath = path.join(process.cwd(), 'uploads', filename);
+    // Type'a göre farklı dizinler kullan
+    let uploadDir = 'uploads';
+    if (type === 'work') {
+      uploadDir = 'uploads/projects';
+    } else if (type === 'team' || type === 'founder') {
+      uploadDir = 'uploads/team';
+    } else if (type === 'team-cv') {
+      uploadDir = 'uploads/cv';
+    }
+
+    // Dosya yolunu oluştur
+    const filePath = path.join(process.cwd(), uploadDir, filename);
 
     // Klasör yoksa oluştur
     const dir = path.dirname(filePath);
