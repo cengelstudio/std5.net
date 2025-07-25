@@ -12,6 +12,7 @@ interface Cat {
   role: string | { [key: string]: string };
   about: string | { [key: string]: string };
   image: string;
+  order?: number;
 }
 
 interface CatModalProps {
@@ -57,10 +58,14 @@ const CatModal = ({ cat, onClose }: CatModalProps) => {
         <div className="flex flex-col items-center">
           <div className="relative w-32 h-32 mb-6">
             <Image
-              src={cat.image}
+              src={cat.image || '/og-image.png'}
               alt={cat.name}
               fill
-              className="object-cover rounded-full filter grayscale"
+              className="object-cover rounded-full"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/og-image.png';
+              }}
             />
           </div>
 
@@ -85,7 +90,7 @@ export default function OfficeCats({ cats }: OfficeCatsProps) {
         viewport={{ once: true }}
         className="flex flex-wrap md:flex-nowrap gap-4 md:gap-6 justify-center items-center max-w-7xl mx-auto px-4"
       >
-        {cats.map((cat: Cat, index: number) => (
+        {cats.sort((a, b) => (a.order || 0) - (b.order || 0)).map((cat: Cat, index: number) => (
           <motion.button
             key={cat.name}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -97,10 +102,14 @@ export default function OfficeCats({ cats }: OfficeCatsProps) {
             className="w-[calc(33.333%-1rem)] md:w-32 aspect-square relative overflow-hidden rounded-full border-2 border-white/10 hover:border-std5-accent/50 transition-colors flex-shrink-0"
           >
             <Image
-              src={cat.image}
+              src={cat.image || '/og-image.png'}
               alt="Office Cat"
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110 filter grayscale"
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/og-image.png';
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </motion.button>

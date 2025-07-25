@@ -17,6 +17,7 @@ interface Member {
   cv?: string | { [key: string]: string };
   linkedin?: string;
   department?: string | { [key: string]: string };
+  order?: number;
 }
 
 interface Cat {
@@ -143,30 +144,27 @@ export default function AboutClient({ founders, crew, cats, locale: propLocale }
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-7 max-w-3xl mx-auto"
           >
-              {founders.map((member) => (
+              {founders.sort((a, b) => (a.order || 0) - (b.order || 0)).map((member) => (
                 <motion.div
                   key={member.name}
                 variants={itemVariants}
                 className="group relative"
               >
-                <div className="glass rounded-xl p-4 md:p-7 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
+                <div className="glass rounded-xl p-4 md:p-7 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full" style={{ backdropFilter: 'none' }}>
                   {/* Profile image ~10% larger */}
                   <div className="relative w-20 h-20 md:w-28 md:h-28 mx-auto mb-3 md:mb-5 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-std5-primary/30 to-std5-accent/30 rounded-full" />
-                      <Image
-                        src={member.image}
-                        alt={member.name}
+                    <Image
+                      src={member.image || '/og-image.png'}
+                      alt={member.name}
                       width={110}
                       height={110}
-                      className="w-full h-full object-cover filter grayscale group-hover:scale-110 transition-transform duration-300"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = `data:image/svg+xml,${encodeURIComponent(
-                          `<svg viewBox=\"0 0 110 110\" xmlns=\"http://www.w3.org/2000/svg\">\n                            <rect width=\"110\" height=\"110\" fill=\"#430086\"/>\n                            <text x=\"55\" y=\"55\" text-anchor=\"middle\" fill=\"white\" font-size=\"14\">${member.name}</text>\n                          </svg>`
-                          )}`;
-                        }}
-                      />
-                    </div>
+                      className="w-full h-full object-cover transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/og-image.png';
+                      }}
+                    />
+                  </div>
                   {/* Content ~10% larger */}
                   <h3 className="text-base md:text-xl font-bold text-white mb-1 md:mb-2 group-hover:text-std5-accent transition-colors duration-300">
                     {member.name}
@@ -232,22 +230,25 @@ export default function AboutClient({ founders, crew, cats, locale: propLocale }
             viewport={{ once: true }}
             className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
           >
-            {crew.map((member) => (
+            {crew.sort((a, b) => (a.order || 0) - (b.order || 0)).map((member) => (
               <motion.div
                 key={member.name}
                 variants={itemVariants}
                 className="group"
               >
-                <div className="glass rounded-xl p-4 md:p-6 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full">
+                <div className="glass rounded-xl p-4 md:p-6 text-center hover:bg-white/10 transition-all duration-300 bg-white/5 border border-white/10 hover:border-std5-accent/30 hover:shadow-xl hover:shadow-std5-accent/10 h-full" style={{ backdropFilter: 'none' }}>
                   {/* Profile image */}
                   <div className="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 rounded-full overflow-hidden border-2 border-white/20 group-hover:border-std5-accent/50 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/30" />
                     <Image
-                      src={member.image}
+                      src={member.image || '/og-image.png'}
                       alt={member.name}
                       width={80}
                       height={80}
-                      className="w-full h-full object-cover filter grayscale contrast-125 group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/og-image.png';
+                      }}
                     />
                   </div>
 
@@ -317,39 +318,49 @@ const FounderModal = ({ founder, onClose }: FounderModalProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-std5-darker border border-white/10 rounded-2xl p-6 max-w-md w-full relative"
+        className="bg-std5-darker border border-white/10 rounded-2xl max-w-md w-full max-h-[90vh] overflow-hidden relative"
         onClick={e => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors"
-        >
-          <X size={24} />
-        </button>
+        {/* Header with close button */}
+        <div className="flex justify-between items-center p-4 border-b border-white/10">
+          <h3 className="text-xl font-bold text-white">{founder.name}</h3>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
 
-        <div className="flex flex-col items-center">
-          <div className="relative h-128 w-128 mb-6">
-            <Image
-              src={founder.image}
-              alt={founder.name}
-              width={128}
-              height={128}
-              className="object-cover h-128 w-128 rounded-full filter grayscale"
-            />
+        {/* Scrollable content */}
+        <div className="overflow-y-auto max-h-[calc(90vh-80px)] p-4">
+          <div className="flex flex-col items-center">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-4">
+              <Image
+                src={founder.image || '/og-image.png'}
+                alt={founder.name}
+                width={128}
+                height={128}
+                className="object-cover w-full h-full rounded-full"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/og-image.png';
+                }}
+              />
+            </div>
+
+            <p className="text-std5-accent text-lg mb-4 text-center">{getLocalizedValue(founder.title)}</p>
+            {founder.about && (
+              <p className="text-gray-300 text-center leading-relaxed">{getLocalizedValue(founder.about)}</p>
+            )}
           </div>
-
-          <h3 className="text-2xl font-bold text-white mb-2">{founder.name}</h3>
-          <p className="text-std5-accent text-lg mb-4">{getLocalizedValue(founder.title)}</p>
-          {founder.about && (
-            <p className="text-gray-300 text-center leading-relaxed">{getLocalizedValue(founder.about)}</p>
-          )}
         </div>
       </motion.div>
     </motion.div>

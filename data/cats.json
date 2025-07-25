@@ -1,6 +1,7 @@
 {
   "cats": [
     {
+      "order": 1,
       "id": "1",
       "name": "Fiko",
       "role": {
@@ -12,16 +13,17 @@
         "ar": "ممثل"
       },
       "about": {
-        "tr": "Ofisimizin en enerjik üyesi. Her toplantıya katılmayı sever ve çalışanlarımızın moralini yüksek tutmakta uzman.",
-        "en": "The most energetic member of our office. Loves to attend every meeting and is an expert at keeping our staff's morale high.",
-        "es": "El miembro más enérgico de nuestra oficina. Le encanta asistir a todas las reuniones y es experto en mantener alta la moral de nuestro personal.",
-        "fr": "Le membre le plus énergique de notre bureau. Aime assister à toutes les réunions et est expert pour maintenir le moral de notre personnel élevé.",
-        "ru": "Самый энергичный член нашего офиса. Любит посещать все встречи и является экспертом в поддержании высокого морального духа нашего персонала.",
-        "ar": "العضو الأكثر نشاطاً في مكتبنا. يحب حضور كل اجتماع وهو خبير في الحفاظ على معنويات موظفينا مرتفعة."
+        "tr": "STD5 Fulyalı kurulurken henüz bebek olan 'Fikret' STD5 ile birlikte büyüdü. Çok akıllı(şüpheli) ve uysal olmasıyla tanınır. Tercihen yaş mama değil tavuk verirseniz size sadıkmış gibi davranabilir. ",
+        "en": "When STD5 Fulyalı was being established, Fikret was just a baby — and he grew up alongside STD5. Known for being very smart (allegedly) and gentle, he might act loyal to you if you offer chicken instead of wet food.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
       "image": "/api/uploads/1753306044443-IMG-20241220-WA0010.jpg"
     },
     {
+      "order": 2,
       "id": "2",
       "name": "Barbo",
       "role": {
@@ -33,56 +35,102 @@
         "ar": "شيف"
       },
       "about": {
-        "tr": "Mutfak bölümünün vazgeçilmez üyesi. Yemek saatlerini asla kaçırmaz ve kalite kontrolünü titizlikle yapar.",
-        "en": "The indispensable member of the kitchen department. Never misses meal times and performs quality control meticulously.",
-        "es": "El miembro indispensable del departamento de cocina. Nunca se pierde las horas de comida y realiza el control de calidad meticulosamente.",
-        "fr": "Le membre indispensable du département cuisine. Ne manque jamais les heures de repas et effectue le contrôle qualité méticuleusement.",
-        "ru": "Незаменимый член кухонного отдела. Никогда не пропускает время приема пищи и тщательно выполняет контроль качества.",
-        "ar": "العضو الذي لا غنى عنه في قسم المطبخ. لا يفوت أبداً أوقات الوجبات ويقوم بمراقبة الجودة بدقة."
+        "tr": "2023 Eylül doğumlu olan 'Barbaros' , uyurken dünyanın en tatlı kedisi uyandığında ise mümkünse ona yaklaşmayın! Bütün kediler ve insanlara karşı tavırlıdır. Her zaman STD5'i ve sevdiği kadını koruyacağına eminizdir.",
+        "en": "Born in September 2023, Barbaros is the sweetest cat in the world—while he's asleep. But once he's awake, it's best to keep your distance! He has an attitude toward all cats and humans. One thing's for sure: he'll always protect STD5 and the woman he loves.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
-      "image": "/api/uploads/1753306916544-kedi.jpeg"
+      "image": "/api/uploads/1753334251374-WhatsApp Image 2025-07-24 at 08.17.11.jpeg"
     },
     {
+      "order": 3,
       "id": "4",
-      "name": "herhangi bir kedi",
+      "name": "Fındık",
       "role": {
-        "tr": "Halkla İlişkiler Uzmanı",
-        "en": "Public Relations Specialist",
-        "es": "Especialista en Relaciones Públicas",
-        "fr": "Spécialiste des Relations Publiques",
-        "ru": "Специалист по связям с общественностью",
-        "ar": "متخصص العلاقات العامة"
+        "tr": "Aşık",
+        "en": "Lover",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
       "about": {
-        "tr": "Misafirlerimizi karşılama konusunda bir numara. Herkesin sevgilisi ve ofisimizin yüzü.",
-        "en": "Number one in welcoming our guests. Everyone's favorite and the face of our office.",
-        "es": "Número uno en dar la bienvenida a nuestros invitados. La favorita de todos y la cara de nuestra oficina.",
-        "fr": "Numéro un pour accueillir nos invités. La préférée de tous et le visage de notre bureau.",
-        "ru": "Номер один в приветствии наших гостей. Любимица всех и лицо нашего офиса.",
-        "ar": "رقم واحد في استقبال ضيوفنا. المفضلة لدى الجميع ووجه مكتبنا."
+        "tr": "Ailenin gariban ortanca çocuğu olan Fındık, sevdiği kızın dikkatini çekmek için onu ısırmasıyla tanınır. 2024 Nisan doğumlu, utangaç ve yakışıklıdır.",
+        "en": "The underdog middle child of the family, Fındık is known for biting the girl he likes just to get her attention. Born in April 2024, he's shy  and handsome.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
-      "image": "/api/uploads/1753311236464-kedi.jpeg"
+      "image": "/api/uploads/1753334518886-WhatsApp Image 2025-07-24 at 08.21.33.jpeg"
     },
     {
+      "order": 4,
       "id": "5",
-      "name": "Leo",
+      "name": "Pamuk",
       "role": {
-        "tr": "Baş Danışman",
-        "en": "Senior Consultant",
-        "es": "Consultor Senior",
-        "fr": "Consultant Senior",
-        "ru": "Старший консультант",
-        "ar": "مستشار أول"
+        "tr": "Başkan Yardımcısı",
+        "en": "Vice President",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
       "about": {
-        "tr": "Önemli kararlar alınırken masada mutlaka bulunur. Stratejik düşünme konusunda uzman.",
-        "en": "Always present at the table when important decisions are made. Expert in strategic thinking.",
-        "es": "Siempre presente en la mesa cuando se toman decisiones importantes. Experto en pensamiento estratégico.",
-        "fr": "Toujours présent à la table lors de la prise de décisions importantes. Expert en pensée stratégique.",
-        "ru": "Всегда присутствует за столом при принятии важных решений. Эксперт в стратегическом мышлении.",
-        "ar": "دائماً حاضر على الطاولة عند اتخاذ القرارات المهمة. خبير في التفكير الاستراتيجي."
+        "tr": "Dünyanın en güzel kızı...\nYavruyken yaşadığı bir olay sonucu asla içeri girmez ve bütün güzelliğini bahçemizde sergiler. Tüylerine dokunduğunuzda adının sebebini anlarsınız ama önce Pamuk'un onayından geçmeniz gerekmektedir.",
+        "en": "The most beautiful girl in the world…\nDue to something she experienced as a kitten, she never goes indoors and prefers to show off all her beauty in our garden. When you touch her fur, you'll understand why she's named Pamuk  but first, you'll need her approval.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
       },
-      "image": "/cats/1752104942623-Screenshot 2025-07-10 at 02.45.42.png"
+      "image": "/api/uploads/1753335614404-WhatsApp Image 2025-07-24 at 08.38.40.jpeg"
+    },
+    {
+      "order": 5,
+      "id": "1753335960737",
+      "name": "Şıpıdık",
+      "role": {
+        "tr": "Stajyer",
+        "en": "Intern",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+      },
+      "about": {
+        "tr": "Namı değer 'Şipo Bey'.\nFiko'nun tahtında gözü olduğunu düşündüğümüz Şipo her türlü koşulda hayata tutunmasıyla bilinir. Yaptığı şapşallıklarla kendini herkese sevdirir.\nDikkat! Yukardan atlayabilir.",
+        "en": "Also known as Şipo Bey.\nWe believe Şipo has his eyes on Fiko's throne. He is known for holding on to life under any circumstances. With his silly antics, he endears himself to everyone.\nWarning! He might jump from above.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+      },
+      "image": "/api/uploads/1753335957594-WhatsApp Image 2025-07-24 at 08.39.46.jpeg"
+    },
+    {
+      "order": 6,
+      "id": "1753336602194",
+      "name": "İncir",
+      "role": {
+        "tr": "Göçebe",
+        "en": "Nomad",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+      },
+      "about": {
+        "tr": "Peynir ve Zeytin doğduğunda oları kıskanarak bizi terk ettiğini düşündüğümüz aslan ruhlu güzel kızımız İncir. Daha önce kendisine yurt dışı teklifi gelmiş ama kabul etmemiştir. \nKarnına lütfen dokunmayın! Aslan ruhunu hatırlıyor.",
+        "en": "Our beautiful girl İncir, with a lion's spirit, whom we think left us out of jealousy when Peynir and Zeytin were born. She once received an offer to go abroad but refused it.\nPlease don't touch her belly! She still remembers her lion's spirit.",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+      },
+      "image": "/api/uploads/1753336565393-WhatsApp Image 2025-07-24 at 08.39.46 (1).jpeg"
     }
   ]
 }

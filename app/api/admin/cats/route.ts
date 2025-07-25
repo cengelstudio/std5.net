@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
     const data = await readCatsData();
     const newCat = await request.json();
 
+    // Yeni kedi için order değeri ata (en son sıraya ekle)
+    newCat.order = data.cats.length + 1;
     data.cats.push(newCat);
     await writeCatsData(data);
 

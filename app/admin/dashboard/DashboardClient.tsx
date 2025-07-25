@@ -15,6 +15,7 @@ interface Work {
   trailer_embed_url: string;
   gallery: string[];
   image: string;
+  order?: number;
 }
 
 interface CrewMember {
@@ -25,6 +26,7 @@ interface CrewMember {
   image: string;
   linkedin: string;
   cv: string | { [key: string]: string };
+  order?: number;
 }
 
 interface Cat {
@@ -33,6 +35,7 @@ interface Cat {
   role: string | { [key: string]: string };
   about: string | { [key: string]: string };
   image: string;
+  order?: number;
 }
 
 interface Founder {
@@ -417,7 +420,7 @@ export default function DashboardClient() {
       });
 
       if (response.ok) {
-        setContacts(contacts.map(contact => 
+        setContacts(contacts.map(contact =>
           contact.id === contactId ? { ...contact, status: newStatus } : contact
         ));
       }
@@ -444,6 +447,45 @@ export default function DashboardClient() {
       }
     } catch (error) {
       console.error('Contact deletion error:', error);
+    }
+  };
+
+  // Sıralama fonksiyonları
+  const handleMoveUp = async (type: 'works' | 'crew' | 'cats', id: string) => {
+    try {
+      const response = await fetch(`/api/${type}/reorder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, direction: 'up' }),
+      });
+
+      if (response.ok) {
+        // Sayfayı yenile
+        fetchData();
+      }
+    } catch (error) {
+      console.error(`Error moving ${type} up:`, error);
+    }
+  };
+
+  const handleMoveDown = async (type: 'works' | 'crew' | 'cats', id: string) => {
+    try {
+      const response = await fetch(`/api/${type}/reorder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, direction: 'down' }),
+      });
+
+      if (response.ok) {
+        // Sayfayı yenile
+        fetchData();
+      }
+    } catch (error) {
+      console.error(`Error moving ${type} down:`, error);
     }
   };
 
@@ -565,8 +607,8 @@ export default function DashboardClient() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-                {works.map((work) => (
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                {works.sort((a, b) => (a.order || 0) - (b.order || 0)).map((work, index) => (
                   <div key={work.id} className="group">
                     <div className="relative bg-gray-200 rounded-md overflow-hidden border border-gray-200">
                       {/* 2:3 Aspect Ratio Container */}
@@ -620,6 +662,29 @@ export default function DashboardClient() {
                         <span className="mx-1">•</span>
                         <span className="truncate">{work.platform}</span>
                       </div>
+
+                      {/* Sıra numarası ve sıralama butonları - alta taşındı */}
+                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-100">
+                        <div className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                          #{work.order || index + 1}
+                        </div>
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() => handleMoveUp('works', work.id)}
+                            disabled={index === 0}
+                            className={`w-6 h-6 text-xs rounded ${index === 0 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                          >
+                            ↑
+                          </button>
+                          <button
+                            onClick={() => handleMoveDown('works', work.id)}
+                            disabled={index === works.length - 1}
+                            className={`w-6 h-6 text-xs rounded ${index === works.length - 1 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                          >
+                            ↓
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -644,7 +709,7 @@ export default function DashboardClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {crew.map((member, index) => (
+                {crew.sort((a, b) => (a.order || 0) - (b.order || 0)).map((member, index) => (
                   <div key={member.id || index} className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors group">
                     <div className="text-center">
                       <div className="w-16 h-16 mx-auto mb-3 rounded-full overflow-hidden bg-gray-200">
@@ -684,11 +749,34 @@ export default function DashboardClient() {
                           Düzenle
                         </button>
                         <button
-                          onClick={() => handleDeleteCrew(member.id || index.toString())}
+                          onClick={() => member.id && handleDeleteCrew(member.id)}
                           className="flex-1 px-2 py-1 bg-red-100 text-red-700 text-xs rounded hover:bg-red-200 transition-colors cursor-pointer"
                         >
                           Sil
                         </button>
+                      </div>
+
+                      {/* Sıra numarası ve sıralama butonları - alta taşındı */}
+                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                        <div className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                          #{member.order || index + 1}
+                        </div>
+                        <div className="flex space-x-1">
+                                                  <button
+                          onClick={() => member.id && handleMoveUp('crew', member.id)}
+                          disabled={index === 0}
+                          className={`w-6 h-6 text-xs rounded ${index === 0 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                        >
+                          ↑
+                        </button>
+                        <button
+                          onClick={() => member.id && handleMoveDown('crew', member.id)}
+                          disabled={index === crew.length - 1}
+                          className={`w-6 h-6 text-xs rounded ${index === crew.length - 1 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                        >
+                          ↓
+                        </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -795,8 +883,8 @@ export default function DashboardClient() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-                {cats.map((cat) => (
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                {cats.sort((a, b) => (a.order || 0) - (b.order || 0)).map((cat, index) => (
                   <div key={cat.id} className="group">
                     <div className="relative bg-gray-200 rounded-md overflow-hidden border border-gray-200">
                       <div className="aspect-square relative">
@@ -828,6 +916,29 @@ export default function DashboardClient() {
                           <Trash2 size={12} />
                           Sil
                         </button>
+                      </div>
+
+                      {/* Sıra numarası ve sıralama butonları - alta taşındı */}
+                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-100">
+                        <div className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                          #{cat.order || index + 1}
+                        </div>
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() => handleMoveUp('cats', cat.id)}
+                            disabled={index === 0}
+                            className={`w-6 h-6 text-xs rounded ${index === 0 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                          >
+                            ↑
+                          </button>
+                          <button
+                            onClick={() => handleMoveDown('cats', cat.id)}
+                            disabled={index === cats.length - 1}
+                            className={`w-6 h-6 text-xs rounded ${index === cats.length - 1 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'}`}
+                          >
+                            ↓
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1276,7 +1387,7 @@ export default function DashboardClient() {
                           </span>
                         </div>
                       </div>
-                      
+
                       <div className="mb-3">
                         <h4 className="font-medium text-gray-900 mb-1">Konu: {contact.subject}</h4>
                         <p className="text-sm text-gray-700 whitespace-pre-wrap">{contact.message}</p>
@@ -1558,7 +1669,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? formData.description : formData.description.tr}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         tr: e.target.value
@@ -1574,7 +1685,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? '' : formData.description.en}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         en: e.target.value
@@ -1589,7 +1700,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? '' : formData.description.es}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         es: e.target.value
@@ -1604,7 +1715,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? '' : formData.description.fr}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         fr: e.target.value
@@ -1619,7 +1730,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? '' : formData.description.ru}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         ru: e.target.value
@@ -1634,7 +1745,7 @@ function WorkFormModal({
                   <textarea
                     value={typeof formData.description === 'string' ? '' : formData.description.ar}
                     onChange={(e) => setFormData({
-                      ...formData, 
+                      ...formData,
                       description: {
                         ...(typeof formData.description === 'object' ? formData.description : { tr: '', en: '', es: '', fr: '', ru: '', ar: '' }),
                         ar: e.target.value
@@ -1852,7 +1963,7 @@ function CrewFormModal({
       }
 
       const method = member ? 'PUT' : 'POST';
-      const url = member ? `/api/admin/crew/${member.id}` : '/api/admin/crew';
+      const url = member && member.id ? `/api/admin/crew/${member.id}` : '/api/admin/crew';
 
       const response = await fetch(url, {
         method,
@@ -2456,8 +2567,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? formData.title : formData.title.tr}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
                   : {...formData.title, tr: e.target.value}
               })}
@@ -2474,8 +2585,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? '' : formData.title.en}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: formData.title, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
                   : {...formData.title, en: e.target.value}
               })}
@@ -2491,8 +2602,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? '' : formData.title.es}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: formData.title, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
                   : {...formData.title, es: e.target.value}
               })}
@@ -2508,8 +2619,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? '' : formData.title.fr}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: formData.title, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
                   : {...formData.title, fr: e.target.value}
               })}
@@ -2525,8 +2636,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? '' : formData.title.ru}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: formData.title, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
                   : {...formData.title, ru: e.target.value}
               })}
@@ -2542,8 +2653,8 @@ function FounderFormModal({
               type="text"
               value={typeof formData.title === 'string' ? '' : formData.title.ar}
               onChange={(e) => setFormData({
-                ...formData, 
-                title: typeof formData.title === 'string' 
+                ...formData,
+                title: typeof formData.title === 'string'
                   ? { tr: formData.title, en: '', es: '', fr: '', ru: '', ar: e.target.value }
                   : {...formData.title, ar: e.target.value}
               })}
@@ -2558,8 +2669,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? formData.about : formData.about.tr}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: e.target.value, en: '', es: '', fr: '', ru: '', ar: '' }
                   : {...formData.about, tr: e.target.value}
               })}
@@ -2576,8 +2687,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? '' : formData.about.en}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: formData.about, en: e.target.value, es: '', fr: '', ru: '', ar: '' }
                   : {...formData.about, en: e.target.value}
               })}
@@ -2593,8 +2704,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? '' : formData.about.es}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: formData.about, en: '', es: e.target.value, fr: '', ru: '', ar: '' }
                   : {...formData.about, es: e.target.value}
               })}
@@ -2610,8 +2721,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? '' : formData.about.fr}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: formData.about, en: '', es: '', fr: e.target.value, ru: '', ar: '' }
                   : {...formData.about, fr: e.target.value}
               })}
@@ -2627,8 +2738,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? '' : formData.about.ru}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: formData.about, en: '', es: '', fr: '', ru: e.target.value, ar: '' }
                   : {...formData.about, ru: e.target.value}
               })}
@@ -2644,8 +2755,8 @@ function FounderFormModal({
             <textarea
               value={typeof formData.about === 'string' ? '' : formData.about.ar}
               onChange={(e) => setFormData({
-                ...formData, 
-                about: typeof formData.about === 'string' 
+                ...formData,
+                about: typeof formData.about === 'string'
                   ? { tr: formData.about, en: '', es: '', fr: '', ru: '', ar: e.target.value }
                   : {...formData.about, ar: e.target.value}
               })}

@@ -43,6 +43,8 @@ export async function POST(request: NextRequest) {
     const crew = JSON.parse(data);
 
     newMember.id = crypto.randomUUID();
+    // Yeni üye için order değeri ata (en son sıraya ekle)
+    newMember.order = crew.length + 1;
     crew.push(newMember);
 
     await fs.writeFile(crewFilePath, JSON.stringify(crew, null, 2));

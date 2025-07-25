@@ -10,6 +10,7 @@ export interface Work {
   gallery: string[];
   image: string;
   client?: string;
+  order?: number;
 }
 
 export interface WorksResponse {

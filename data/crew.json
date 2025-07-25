@@ -1,53 +1,24 @@
 [
   {
-    "name": "Metehan Alp Saral",
+    "order": 1,
+    "name": "Bülent Atiktürk",
     "title": {
-      "tr": "Cengel Studio",
-      "en": "Cengel Studio",
-      "es": "Cengel Studio",
-      "fr": "Cengel Studio",
-      "ru": "Cengel Studio",
-      "ar": "Cengel Studio"
-    },
-    "department": {
-      "tr": "Cengel Studio",
-      "en": "Cengel Studio",
-      "es": "Cengel Studio",
-      "fr": "Cengel Studio",
-      "ru": "Cengel Studio",
-      "ar": "Cengel Studio"
-    },
-    "image": "/team/1751599035612.PNG",
-    "linkedin": "https://cengel.studio",
-    "cv": {
-      "tr": "#",
-      "en": "",
+      "tr": "Genel Koordinatör",
+      "en": "General Coordinator",
       "es": "",
       "fr": "",
       "ru": "",
       "ar": ""
     },
-    "id": "fea04d8f-4a52-4797-8275-66554d4050be"
-  },
-  {
-    "name": "Mustafa Tez can ",
-    "title": {
-      "tr": "Havuz",
-      "en": "Pool",
-      "es": "Pool",
-      "fr": "Pool",
-      "ru": "Bilmiyorum",
-      "ar": "İnan ki anlamam"
-    },
     "department": {
-      "tr": "Havuz",
-      "en": "Pool",
-      "es": "Pool",
-      "fr": "Pool",
-      "ru": "Bilmiyorum",
-      "ar": "İnan ki anlamam"
+      "tr": "Genel Koordinatör",
+      "en": "General Coordinator",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
     },
-    "image": "/api/uploads/1753311260297.jpeg",
+    "image": "",
     "linkedin": "",
     "cv": {
       "tr": "",
@@ -57,6 +28,843 @@
       "ru": "",
       "ar": ""
     },
-    "id": "b19f2cf3-5a87-4155-bece-de4662373418"
+    "id": "43836ba5-c78b-45ca-baa7-9c6ca5515c04"
+  },
+  {
+    "order": 2,
+    "name": "Derya Bekel ",
+    "title": {
+      "tr": "Koordinatör",
+      "en": "Coordinator",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Koordinatör",
+      "en": "Coordinator",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "f686d889-7577-40a5-9d14-1d72d9522e1a"
+  },
+  {
+    "order": 3,
+    "name": "Mustafa Tezcan",
+    "title": {
+      "tr": "Sosyal Medya Sorumlusu",
+      "en": "Social Media Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Sosyal Medya Sorumlusu",
+      "en": "Social Media Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "/api/uploads/1753370278675.jpeg",
+    "linkedin": "https://www.imdb.com/name/nm16592025/?ref_=nv_sr_srsg_0_tt_0_nm_5_in_0_q_mustafa%2520tezcan",
+    "cv": {
+      "tr": "/api/uploads/1753370278770.pdf",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "e169e04b-08ec-4299-8e3e-84d41daba8bd"
+  },
+  {
+    "order": 4,
+    "name": "Seçkin Bağıran",
+    "title": {
+      "tr": "BT Sorumlusu",
+      "en": "IT Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "BT Sorumlusu",
+      "en": "IT Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm9671225/?ref_=nv_sr_srsg_0_tt_0_nm_1_in_0_q_se%25C3%25A7kin%2520ba%25C4%259F%25C4%25B1ran",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "b7e2e16f-8537-4ab5-bbdc-f0a0012f740f"
+  },
+  {
+    "order": 5,
+    "name": "Mustafa Gökçe",
+    "title": {
+      "tr": "Renk Uzmanı",
+      "en": "Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Renk Uzmanı",
+      "en": "Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm9135355/?ref_=nv_sr_srsg_1_tt_1_nm_7_in_0_q_mustafa%2520g%25C3%25B6k%25C3%25A7e",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "ed49501f-11a6-4eeb-9c6c-9ecb961463b4"
+  },
+  {
+    "order": 6,
+    "name": "Hasan Arda Arabacıoğlu",
+    "title": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm10875626/?ref_=nv_sr_srsg_1_tt_2_nm_6_in_0_q_hasan%2520arda%2520",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "b21f8556-6982-48f8-b613-d3347d882aeb"
+  },
+  {
+    "order": 7,
+    "name": "Burak Güzel",
+    "title": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm14710478/?ref_=nv_sr_srsg_0_tt_0_nm_1_in_0_q_burak%2520g%25C3%25BCzel",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "be292024-1d86-46ca-bf9b-95ce1bc787d7"
+  },
+  {
+    "order": 8,
+    "name": "Turgut Çelikkartal",
+    "title": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Renk Asistanı",
+      "en": "Intermediate Colorist",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm9725569/?ref_=nv_sr_srsg_0_tt_0_nm_6_in_0_q_turgut%2520%25C3%25A7elik",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "838f6046-d25c-487f-9428-c1374aa44dd5"
+  },
+  {
+    "order": 9,
+    "name": "Hazal Palioğlu",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "/api/uploads/1753372963544.jpeg",
+    "linkedin": "https://www.imdb.com/name/nm13035831/?ref_=ext_shr_lnk",
+    "cv": {
+      "tr": "/api/uploads/1753372963627.pdf",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "7884a8f6-3e44-4366-a2da-081a4c983454"
+  },
+  {
+    "order": 10,
+    "name": "Selçuk Yılmaz",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "/api/uploads/1753373150243.jpeg",
+    "linkedin": "https://www.imdb.com/name/nm10290777/?ref_=ext_shr_lnk",
+    "cv": {
+      "tr": "/api/uploads/1753373150316.pdf",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "dcd5f52a-7df1-470c-bb72-7419dcfcea1c"
+  },
+  {
+    "order": 11,
+    "name": "Tan Çağman",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Soun Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "/api/uploads/1753373634433.jpeg",
+    "linkedin": "https://www.imdb.com/name/nm17331294/?ref_=ext_shr_lnk",
+    "cv": {
+      "tr": "/api/uploads/1753373634525.pdf",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "d656ef51-1758-42e0-b1fe-ecd6aa2dbc67"
+  },
+  {
+    "order": 12,
+    "name": "Duygu Uyar",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "/api/uploads/1753373875123.jpeg",
+    "linkedin": "https://www.imdb.com/name/nm16298660/?ref_=ext_shr_lnk",
+    "cv": {
+      "tr": "/api/uploads/1753373875201.pdf",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "0a95cbfa-12c9-43e8-a79e-21332fb5d230"
+  },
+  {
+    "order": 13,
+    "name": "Buğra Han Kara",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "https://www.imdb.com/name/nm17331293/?ref_=nv_sr_srsg_0_tt_1_nm_7_in_0_q_bu%25C4%259Fra%2520han%2520kara",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "44f5412a-9f72-4318-855a-1f3467b662d8"
+  },
+  {
+    "order": 14,
+    "name": "Hakan Gülmez",
+    "title": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Ses Mühendisi",
+      "en": "Sound Engineer",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "10e0f5db-191a-4e64-917a-e0bf3d78cd8c"
+  },
+  {
+    "order": 15,
+    "name": "Emre Güler",
+    "title": {
+      "tr": "BT Asistanı",
+      "en": "IT Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "BT Asistanı",
+      "en": "IT Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "2c5829dd-7f58-4ca8-868a-de2178dca5c5"
+  },
+  {
+    "order": 16,
+    "name": "Emir Karasaç",
+    "title": {
+      "tr": "BT Asistanı",
+      "en": "IT Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "BT Asistanı",
+      "en": "IT Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "2aac97a0-598a-4bf4-aa64-d107598dd6d5"
+  },
+  {
+    "order": 17,
+    "name": "Suat İbiş",
+    "title": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "bb2ada39-8fa8-4d40-ad95-ffb83ce3139d"
+  },
+  {
+    "order": 18,
+    "name": "Ümit Adaletli",
+    "title": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "5f0ed8de-83bd-42ba-ba0a-09c3893995be"
+  },
+  {
+    "order": 19,
+    "name": "Esma Görgel",
+    "title": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "0c388855-f356-42b5-a2b5-3ce48c219baa"
+  },
+  {
+    "order": 20,
+    "name": "Gülsüm Aykın",
+    "title": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Stüdyo Asistanı",
+      "en": " Studio Assistant",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "8be8da60-5432-4c47-8bf6-6f161d873e1d"
+  },
+  {
+    "order": 21,
+    "name": "Nazlı Şengöz",
+    "title": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "a9834b52-5ebe-406b-9fc5-194782a51929"
+  },
+  {
+    "order": 22,
+    "name": "Leyla Genç",
+    "title": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "a9fa1c95-7bac-44d0-b83a-92c5958d477c"
+  },
+  {
+    "order": 23,
+    "name": "İdris Durusu",
+    "title": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe Sorumlusu",
+      "en": "Cafe Manager",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "048fc9fa-c75f-4be3-b7af-48c3a279a1a7"
+  },
+  {
+    "order": 24,
+    "name": "Yeliz Taşkıran",
+    "title": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "7304b852-d55f-4c3b-958b-923cbf694e98"
+  },
+  {
+    "order": 25,
+    "name": "Fidan Erdinç",
+    "title": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "fcc05e99-536d-469f-93c4-ea4eb285fa26"
+  },
+  {
+    "order": 26,
+    "name": "Ünal Karakuş",
+    "title": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Kafe",
+      "en": "Cafe",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "7052d73a-96fd-4ac2-8435-180f16278f53"
+  },
+  {
+    "order": 27,
+    "name": "Nedim Çelebi",
+    "title": {
+      "tr": "Temizlik",
+      "en": "Cleaner",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Temizlik",
+      "en": "Cleaner",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "b97c3da9-5890-4804-9c05-06e4a6e2ddd2"
+  },
+  {
+    "order": 28,
+    "name": "Meral Zurnacı",
+    "title": {
+      "tr": "Temizlik ",
+      "en": "Cleaner",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "department": {
+      "tr": "Temizlik",
+      "en": "Clenar",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "image": "",
+    "linkedin": "",
+    "cv": {
+      "tr": "",
+      "en": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "id": "a6cac94d-804d-4e56-b749-c8885aaf5b6a"
   }
 ]

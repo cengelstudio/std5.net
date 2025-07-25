@@ -35,8 +35,17 @@ export async function GET(request: Request) {
       );
     }
 
-    // Sort by production year (newest first)
-    works.sort((a: Work, b: Work) => b.prod_year - a.prod_year);
+    // Sort by order first, then by production year (newest first)
+    works.sort((a: Work, b: Work) => {
+      // First sort by order
+      const orderA = a.order || 0;
+      const orderB = b.order || 0;
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      // If order is the same, sort by production year (newest first)
+      return b.prod_year - a.prod_year;
+    });
 
     // Get unique values for filters
     const allWorks: Work[] = JSON.parse(fileContents);

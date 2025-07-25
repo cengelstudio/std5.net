@@ -43,6 +43,8 @@ export async function POST(request: NextRequest) {
     const works = JSON.parse(data);
 
     newWork.id = crypto.randomUUID();
+    // Yeni proje için order değeri ata (en son sıraya ekle)
+    newWork.order = works.length + 1;
     works.push(newWork);
 
     await fs.writeFile(worksFilePath, JSON.stringify(works, null, 2));

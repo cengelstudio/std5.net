@@ -121,7 +121,7 @@ export default function Footer() {
         <div className="mt-16 pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 text-sm">
-              {t('footer.copyright')}
+              © {new Date().getFullYear()} STD5. {t('footer.allRightsReserved')}
             </p>
                         <div className="flex items-center gap-2">
               <span className="text-gray-500 text-xs">{t('footer.developedBy')}</span>

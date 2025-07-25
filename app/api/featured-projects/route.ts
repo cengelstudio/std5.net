@@ -10,10 +10,23 @@ export async function GET() {
   try {
     // Read featured projects configuration
     if (!fs.existsSync(FEATURED_PROJECTS_FILE)) {
-      // If no featured projects file exists, return first 6 works
-      const worksData = fs.readFileSync(WORKS_FILE, 'utf8');
-      const works: Work[] = JSON.parse(worksData);
-      return NextResponse.json({ works: works.slice(0, 6) });
+          // If no featured projects file exists, return first 6 works
+    const worksData = fs.readFileSync(WORKS_FILE, 'utf8');
+    const works: Work[] = JSON.parse(worksData);
+
+    // Sort by order first, then by production year (newest first)
+    works.sort((a: Work, b: Work) => {
+      // First sort by order
+      const orderA = a.order || 0;
+      const orderB = b.order || 0;
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      // If order is the same, sort by production year (newest first)
+      return b.prod_year - a.prod_year;
+    });
+
+    return NextResponse.json({ works: works.slice(0, 6) });
     }
 
     const featuredData = fs.readFileSync(FEATURED_PROJECTS_FILE, 'utf8');
@@ -23,6 +36,19 @@ export async function GET() {
     if (!featuredProjectIds || featuredProjectIds.length === 0) {
       const worksData = fs.readFileSync(WORKS_FILE, 'utf8');
       const works: Work[] = JSON.parse(worksData);
+
+      // Sort by order first, then by production year (newest first)
+      works.sort((a: Work, b: Work) => {
+        // First sort by order
+        const orderA = a.order || 0;
+        const orderB = b.order || 0;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        // If order is the same, sort by production year (newest first)
+        return b.prod_year - a.prod_year;
+      });
+
       return NextResponse.json({ works: works.slice(0, 6) });
     }
 
@@ -38,6 +64,18 @@ export async function GET() {
       .map((id: string) => worksMap.get(id))
       .filter((work: Work | undefined) => work !== undefined) as Work[];
 
+    // Sort by order first, then by production year (newest first)
+    featuredWorks.sort((a: Work, b: Work) => {
+      // First sort by order
+      const orderA = a.order || 0;
+      const orderB = b.order || 0;
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      // If order is the same, sort by production year (newest first)
+      return b.prod_year - a.prod_year;
+    });
+
     return NextResponse.json({ works: featuredWorks });
   } catch (error) {
     console.error('Error fetching featured projects:', error);
@@ -45,6 +83,19 @@ export async function GET() {
     try {
       const worksData = fs.readFileSync(WORKS_FILE, 'utf8');
       const works: Work[] = JSON.parse(worksData);
+
+      // Sort by order first, then by production year (newest first)
+      works.sort((a: Work, b: Work) => {
+        // First sort by order
+        const orderA = a.order || 0;
+        const orderB = b.order || 0;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        // If order is the same, sort by production year (newest first)
+        return b.prod_year - a.prod_year;
+      });
+
       return NextResponse.json({ works: works.slice(0, 6) });
     } catch {
       return NextResponse.json(

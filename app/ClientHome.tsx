@@ -152,8 +152,13 @@ export default function ClientHome() {
                 {/* İstatistikler */}
                 <div className="grid grid-cols-3 gap-3 md:gap-8 justify-items-center w-full max-w-xl md:max-w-2xl">
                   {STATS.slice(0, 3).map((stat, index) => {
-                    const href = stat.label === t('home.stats.completedProjects') ? createLocalizedPath('/projects') :
-                              stat.label === t('home.stats.locations') || stat.label === t('home.stats.studios') ? createLocalizedPath('/locations') : createLocalizedPath('/');
+                    // Yönlendirme mantığı - daha net ve güvenilir
+                    let href = '/';
+                    if (stat.number === '250+') {
+                      href = createLocalizedPath('/projects');
+                    } else if (stat.number === '45+' || stat.number === '3') {
+                      href = createLocalizedPath('/locations');
+                    }
 
                     return (
                       <Link key={`${stat.label}-${stat.number}`} href={href}>
@@ -263,7 +268,7 @@ export default function ClientHome() {
             </div>
           ) : (
             <div className="flex flex-row gap-4 w-full overflow-x-auto pb-2 scrollbar-hide sm:grid sm:grid-cols-3 md:grid-cols-6 sm:gap-4 sm:overflow-x-visible">
-              {featuredWorks.map((work: Work) => (
+              {featuredWorks.sort((a, b) => (a.order || 0) - (b.order || 0)).map((work: Work) => (
                 <a
                   key={work.id}
                   href={createLocalizedPath(`/work/${createSlug(work.title)}`)}

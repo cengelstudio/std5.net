@@ -37,10 +37,10 @@ export default function ProjectsClient() {
       let filteredWorks = data.works;
       if (searchTerm) {
         filteredWorks = filteredWorks.filter(work => {
-          const description = typeof work.description === 'string' 
-            ? work.description 
+          const description = typeof work.description === 'string'
+            ? work.description
             : (work.description as { [key: string]: string })[locale] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || '';
-          
+
           return work.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                  description.toLowerCase().includes(searchTerm.toLowerCase());
         });
@@ -82,7 +82,7 @@ export default function ProjectsClient() {
     if (window.innerWidth < 1030) {
       setTimeout(() => {
         window.scrollTo({
-          top: 215,
+          top: 295,
           behavior: 'smooth'
         });
       }, 100);
@@ -217,7 +217,7 @@ export default function ProjectsClient() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
               >
-                {works.map((work, index) => (
+                {works.sort((a, b) => (a.order || 0) - (b.order || 0)).map((work, index) => (
                   <motion.div
                     key={work.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -244,8 +244,8 @@ export default function ProjectsClient() {
                           {work.title}
                         </h3>
                         <p className="text-gray-400 text-sm line-clamp-2">
-                          {typeof work.description === 'string' 
-                            ? work.description 
+                          {typeof work.description === 'string'
+                            ? work.description
                             : (work.description as { [key: string]: string })[locale] || (work.description as { [key: string]: string }).tr || (work.description as { [key: string]: string }).en || ''}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
