@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#430086" />
-        <title>CMS | STD5</title>
+        <title>Yönetim Paneli | STD5</title>
         <meta name="description" content="STD5.net content management system, Developed by CengelStudio" />
       </head>
       <body>
